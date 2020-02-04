@@ -1,0 +1,19 @@
+.student_list{
+    .card{
+        box-shadow: 0 0 10px #555;
+        .card-header{
+            text-transform: uppercase;
+            border-bottom: 0;
+            font-size: 16px;
+            background: #36365d;
+            color: #fff;
+        }
+        .profile_image{
+            width: 125px;
+            height: 150px;
+            padding: 4px;
+            border: 1px solid #999;
+            border-radius: 5px;
+        }
+    }
+}
