@@ -37,7 +37,7 @@ const setAuthHeader = (token) => {
 
 export const signupUser = (bodyParams) => dispatch => {
     dispatch(signupLoading());
-    const url = '/users/signup';
+    const url = '/admin/signup';
     return Axios.post(url, bodyParams)
     .then(res => {
         dispatch(signupSuccess(res.data.token));
@@ -52,7 +52,7 @@ export const signupUser = (bodyParams) => dispatch => {
 
 export const signinUser = (bodyParams) => dispatch => {
     dispatch(signinLoading());
-    const url = '/users/signin';
+    const url = '/admin/signin';
     return Axios.post(url, bodyParams)
     .then(res => {
         dispatch(signinSuccess(res.data.token));

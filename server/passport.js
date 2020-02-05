@@ -5,7 +5,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const config = require('./configuration');
-const User = require('./models/user');
+const Admin = require('./models/admin');
 const Product = require('./models/products');
 
 const tokenExtractor = req => {
@@ -25,7 +25,7 @@ passport.use(new JwtStrategy({
 }, async (req, payload, done) => {
   try {
     // Find the user specified in token
-    const user = await User.findById(payload.sub);
+    const user = await Admin.findById(payload.sub);
 
     // If user doesn't exists, handle it
     if (!user) {
@@ -46,7 +46,7 @@ passport.use(new LocalStrategy({
 }, async (email, password, done) => {
   try {
     // Find the user given the email
-    const user = await User.findOne({ "email": email });
+    const user = await Admin.findOne({ "email": email });
     
     // If not, handle it
     if (!user) {

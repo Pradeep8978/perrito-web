@@ -25,29 +25,7 @@ const upload = multer({ storage: storage });
 router.route('/create')
   .post(passportJWT, validateBody(schemas.productSchema), ProductController.createProduct);
 
-router.route('/status')
-  .get(passportJWT, ProductController.checkAuth);
-
 router.route('/list')
   .get(passportJWT, validateParams(schemas.queryUser), ProductController.getProducts);
 
-router.route('/profile/update')
-  .put(passportJWT, ProductController.updateProfile);
-
-router.route('/profile')
-  .get(passportJWT, ProductController.getProfile);
-
-router.route('/image/upload')
-  .post(upload.single('resume'), (req, res, next) => {
-    const file = req.file;
-    console.log('REEQ BODY =>', req.body.origin)
-    if (!file) {
-      const error = new Error('Please upload a file');
-      error.httpStatusCode = 400
-      return next(error);
-    }
-    const file_location = `${req.body.origin}/${file.destination}/${file.filename}`
-      res.send(file_location);
-      
-  });
 module.exports = router;

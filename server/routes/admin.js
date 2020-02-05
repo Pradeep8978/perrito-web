@@ -4,7 +4,7 @@ const passport = require('passport');
 const passportConf = require('../passport');
 // const axios = require('axios')
 const { validateBody, schemas, validateParams } = require('../helpers/routeHelpers');
-const UsersController = require('../controllers/users');
+const AdminsController = require('../controllers/admin');
 const passportSignIn = passport.authenticate('local', { session: false });
 const passportJWT = passport.authenticate('jwt', { session: false });
 const multer = require('multer');
@@ -25,22 +25,22 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.route('/signup')
-  .post(validateBody(schemas.authSchema), UsersController.signUp);
+  .post(validateBody(schemas.authSchema), AdminsController.signUp);
 
 router.route('/signin')
-  .post(validateBody(schemas.loginSchema), passportSignIn, UsersController.signIn);
+  .post(validateBody(schemas.loginSchema), passportSignIn, AdminsController.signIn);
 
 router.route('/status')
-  .get(passportJWT, UsersController.checkAuth);
+  .get(passportJWT, AdminsController.checkAuth);
 
 router.route('/list')
-  .get(passportJWT, validateParams(schemas.queryUser), UsersController.getUsers);
+  .get(passportJWT, validateParams(schemas.queryAdmin), AdminsController.getAdmins);
 
 router.route('/profile/update')
-  .put(passportJWT, UsersController.updateProfile);
+  .put(passportJWT, AdminsController.updateProfile);
 
 router.route('/profile')
-  .get(passportJWT, UsersController.getProfile);
+  .get(passportJWT, AdminsController.getProfile);
 
 router.route('/image/upload')
   .post(upload.single('resume'), (req, res, next) => {
