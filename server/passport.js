@@ -7,9 +7,10 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const config = require('./configuration');
 const Admin = require('./models/admin');
 const Product = require('./models/products');
+const Customers = require('./models/customers');
+
 
 const tokenExtractor = req => {
-
   let token = null;  
   console.log('HEADERS =>', req.headers)
     token = req.headers.authorization;
