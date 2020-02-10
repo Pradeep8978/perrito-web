@@ -32,6 +32,7 @@ class createnew extends React.Component {
 
         this.state = {
             formValues: {
+                categories:'',
                 name: '',
                 images: [],
                 discription: [''],
@@ -220,7 +221,22 @@ class createnew extends React.Component {
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
                                         <Row>
-                                            <Col className="pr-1" md="12">
+                                        <Col className="pr-1" md="6">
+                                                <FormGroup>
+                                                    <label>Categories</label>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Name"
+                                                        type="text"
+                                                        name="categories"
+                                                        invalid={formErrors.name}
+                                                        onChange={this.changeHandler}
+                                                        value={this.state.formValues.categories}
+                                                    />
+                                                    <FormFeedback>{formErrors.name}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <label> Name</label>
                                                     <Input
