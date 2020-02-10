@@ -1,6 +1,8 @@
 
 import React from "react";
 import { contriesData } from './states'
+import Axios from 'axios'
+
 // reactstrap components
 import {
     Button,
@@ -14,6 +16,7 @@ import {
     Row,
     Col,
     Label,
+    Container,
 
 } from "reactstrap";
 import { validationConfig } from './validations';
@@ -30,21 +33,29 @@ class createnew extends React.Component {
         this.state = {
             formValues: {
                 name: '',
-                phone: '',
-                address_line_1: '',
-                address_line_2: '',
-                email: '',
-                alternate_phone: '',
-                gender: '',
-                date_of_birth: '',
-                room_number: '',
-                // profile: '',
-                designation: '',
-                idproof: '',
-                city: '',
-                state: '',
-                pincode: '',
-                date_of_joining: ''
+                images: [],
+                discription: [''],
+                specifications: [{
+                    label: '',
+                    value: ''
+                }],
+                dimesions:{
+                    height: '',
+                    width: '',
+                    weight: ''
+                },
+                seller_info: {
+                    name: '',
+                    email: '',
+                    city:'',
+                    phone:'',
+                    address_line_1: '',
+                    address_line_2: '',
+                    state: '',
+                    pincode: ''
+                },
+                important_info:'',
+                price: ''
             },
             formErrors: {},
             file: '',
@@ -64,7 +75,67 @@ class createnew extends React.Component {
             formErrors
         });
     }
+    addDiscripton = () => {
+        let { formValues } = this.state;
+        formValues.discription.push('')
+        this.setState({
+            formValues
+        })
+    }
 
+    addSpecifications = () => {
+        let { formValues } = this.state;
+        formValues.specifications.push({ label: '', value: '' })
+        this.setState({
+            formValues
+        })
+    }
+    changeDiscriptionHandler = (e, i) => {
+        // debugger;
+        let { formValues } = this.state;
+        formValues.discription[i] = e.target.value;
+        this.setState({
+            formValues
+        })
+    }
+    changeSpecificationHandler = (e, i) => {
+        // debugger;
+        let { formValues } = this.state;
+        formValues.specifications[i][e.target.name] = e.target.value;
+        this.setState({
+            formValues
+        })
+    }
+
+    changeDimesionsHandler = (e) => {
+        const { formValues } = this.state;
+        formValues.dimesions[e.target.name] = e.target.value;
+        this.setState({
+            formValues,
+        });
+    }
+
+    changeSellerInfosHandler = (e) => {
+        const { formValues } = this.state;
+        formValues.seller_info[e.target.name] = e.target.value;
+        this.setState({
+            formValues,
+        });
+    }
+
+
+    fileSelectedHandler = (file: any) => {
+
+        let { formValues } = this.state;
+        formValues.images.push(file);
+        this.setState({
+            formValues
+        })
+
+        // let addedFiles = this.state.formValues.images.concat(file)
+        // this.setState({ images: addedFiles })
+        console.log("upload file " + this.state.formValues.images)
+    }
     _handleImageChange(e) {
         e.preventDefault();
         let reader = new FileReader();
@@ -81,8 +152,8 @@ class createnew extends React.Component {
     }
 
     onChangeDate = (value, name) => {
-        const { formValues,formErrors } = this.state;
-      
+        const { formValues, formErrors } = this.state;
+
         try {
             value = (typeof value === 'string') ? value : value.format("DD/MM/YYYY");
             const validationFunc = validationConfig[name];
@@ -101,23 +172,32 @@ class createnew extends React.Component {
         const formErrors = {};
         let isValid = true;
         Object.keys(formValues).forEach(key => {
-          const validationFunc = validationConfig[key];
-          const errormessage = validationFunc ? validationFunc(formValues[key]) : "";
-          formErrors[key] = errormessage;
-          if(errormessage) isValid = false;
+            const validationFunc = validationConfig[key];
+            const errormessage = validationFunc ? validationFunc(formValues[key]) : "";
+            formErrors[key] = errormessage;
+            if (errormessage) isValid = false;
         });
         this.setState({
-          formErrors
+            formErrors
         });
         return isValid;
-      }
-    
-      handleSubmit = e => {
+    }
+
+    handleSubmit = e => {
         e.preventDefault();
-        // const {formValues} = this.state;
-        if(!this.validateAllFields()) return;
-     
-      }
+        const { formValues } = this.state;
+        if (!this.validateAllFields()) return;
+        const url = '/products/create' ;
+        return Axios.post(url, formValues)
+        .then(res => {
+            console.log('formvalues new ', res.data);
+            this.props.history.push("/admin/products")
+        })
+        .catch(err => {
+            throw err;
+        })
+
+    }
 
     render() {
         console.log(this.state.formValues)
@@ -132,7 +212,7 @@ class createnew extends React.Component {
                 <PanelHeader size="sm" />
                 <div className="content">
                     <Row>
-                        <Col md="8">
+                        <Col md="12">
                             <Card>
                                 <CardHeader>
                                     <h5 className="title">Create New</h5>
@@ -140,7 +220,7 @@ class createnew extends React.Component {
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
                                         <Row>
-                                            <Col className="pr-1" md="6">
+                                            <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <label> Name</label>
                                                     <Input
@@ -155,316 +235,308 @@ class createnew extends React.Component {
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
-                                            <Col className="pl-1" md="6">
+                                        </Row>
+                                        <Row>
+                                            <Col className="pr-1" md="6">
+                                                <label>Images</label>
                                                 <FormGroup>
-                                                    <label>Email</label>
+                                                    <Button className="mt-4">Images</Button>
+                                                    <Input type="file"
+                                                        name="images"
+                                                        value={this.state.formValues.images}
+                                                        onChange={this.fileSelectedHandler}
+                                                    />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Container>
+                                            <Row>
+                                                <Col className="pr-1" md="10">
+                                                    <FormGroup>
+                                                        <Label for="discription"> Discription</Label>
+                                                        {
+                                                            this.state.formValues.discription.map((item, i) => {
+                                                                return <Input type="textarea" name="text" id="discription"
+                                                                    name="discription"
+                                                                    value={item}
+                                                                    invalid={formErrors.discription}
+                                                                    onChange={(e) => { this.changeDiscriptionHandler(e, i) }}
+                                                                    style={{ border: "1px solid #E3E3E3", borderRadius: "20px", marginBottom: "20px" }} />
+
+                                                            })
+                                                        }
+                                                        <FormFeedback>{formErrors.discription}</FormFeedback>
+                                                    </FormGroup>
+                                                </Col>
+                                                <Col className="pr-1" md="2">
+                                                    <Button type="button" onClick={this.addDiscripton} >Add</Button>
+                                                </Col>
+                                            </Row>
+                                        </Container>
+
+
+                                        <label>Specifications</label>
+                                        <Row>
+                                            <Col className="pl-1" md="10">
+                                                {
+                                                    this.state.formValues.specifications.map((item, i) => {
+                                                        return <Container>
+                                                            <Row>
+                                                                <Col className="pl-1" md="6">
+                                                                    <FormGroup>
+                                                                        <Input
+                                                                            defaultValue=""
+                                                                            placeholder="Label"
+                                                                            type=""
+                                                                            name="label"
+                                                                            invalid={formErrors.room_number}
+                                                                            value={item.label}
+                                                                            onChange={(e) => { this.changeSpecificationHandler(e, i) }}
+                                                                        />
+                                                                        <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                <Col className="pl-1" md="6">
+                                                                    <FormGroup>
+                                                                        <Input
+                                                                            defaultValue=""
+                                                                            placeholder="Label Name"
+                                                                            type=""
+                                                                            name="value"
+                                                                            invalid={formErrors.value}
+                                                                            value={item.value}
+                                                                            onChange={(e) => { this.changeSpecificationHandler(e, i) }}
+                                                                        />
+                                                                        <FormFeedback>{formErrors.value}</FormFeedback>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                            </Row>
+                                                        </Container>
+                                                    })
+                                                }
+                                            </Col>
+                                            <Col className="pl-1" md="2">
+                                                <Button onClick={this.addSpecifications} >Add</Button>
+
+                                            </Col>
+                                        </Row>
+                                        <label>Dimesions</label>
+                                        <Row>
+                                            <Col className="pr-1" md="4">
+                                                <Label>Height</Label>
+                                                <FormGroup>
                                                     <Input
                                                         defaultValue=""
-                                                        placeholder="Enter Email"
+                                                        placeholder="Height"
+                                                        type="number"
+                                                        name="height"
+                                                        invalid={formErrors.dimesions}
+                                                        value={this.state.formValues.dimesions.height}
+                                                        onChange={this.changeDimesionsHandler}
+
+                                                    />
+                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="4">
+                                                <Label>width</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="width"
+                                                        type="number"
+                                                        name="width"
+                                                        invalid={formErrors.dimesions}
+                                                        value={this.state.formValues.dimesions.width}
+                                                        onChange={this.changeDimesionsHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="4">
+                                                <Label>weight</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Weight"
+                                                        type="number"
+                                                        name="weight"
+                                                        invalid={formErrors.dimesions}
+                                                        value={this.state.formValues.dimesions.weight}
+                                                        onChange={this.changeDimesionsHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <h5>Seller Information</h5>
+                                        <Row>
+                                            <Col className="pl-1" md="6">
+                                                <Label>Name</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Name"
+                                                        type="text"
+                                                        name="name"
+                                                        invalid={formErrors.room_number}
+                                                        value={this.state.formValues.seller_info.name}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
+                                                <Label>Email</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter email"
                                                         type="email"
                                                         name="email"
-                                                        invalid={formErrors.email}
-                                                        onChange={this.changeHandler}
-                                                        value={this.state.formValues.email}
+                                                        invalid={formErrors.sellername}
+                                                        value={this.state.formValues.seller_info.email}
+                                                        onChange={this.changeSellerInfosHandler}
                                                     />
-                                                    <FormFeedback>{formErrors.email}</FormFeedback>
+                                                    <FormFeedback>{formErrors.sellername}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col className="pr-1" md="6">
-                                                <FormGroup>
-                                                    <label>Phone Number</label>
-                                                    <Input
-                                                        defaultValue=""
-                                                        placeholder="Phone Number"
-                                                        type="text"
-                                                        name="phone"
-                                                        invalid={formErrors.phone}
-                                                        value={this.state.formValues.phone}
-                                                        onChange={this.changeHandler}
-                                                    />
-                                                    <FormFeedback>{formErrors.phone}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
                                             <Col className="pl-1" md="6">
+                                                <Label>City</Label>
                                                 <FormGroup>
-                                                    <label>Alternate Phone Number</label>
                                                     <Input
                                                         defaultValue=""
-                                                        placeholder="Alternate Phone Number"
-                                                        type="text"
-                                                        name="alternate_phone"
-                                                        invalid={formErrors.alternate_phone}
-                                                        value={this.state.formValues.alternate_phone}
-                                                        onChange={this.changeHandler}
-                                                    />
-                                                    <FormFeedback>{formErrors.alternate_phone}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-
-                                            <Col className="pr-1" md="6" >
-                                                <label>Gender</label>
-                                                <FormGroup check className="form-check-radio" style={{ display: "flex" }}>
-                                                    <Label check>
-                                                        <Input
-                                                            defaultValue="male"
-                                                            id="male"
-                                                            checked={this.state.formValues.gender === 'male'}
-                                                            name="gender"
-                                                            type="radio"
-                                                            onChange={this.changeHandler}
-                                                        ></Input>
-                                                        <span className="form-check-sign"></span>
-                                                        Male
-                                                  </Label>
-                                                    <Label check>
-                                                        <Input
-                                                            // defaultChecked
-                                                            defaultValue="female"
-                                                            id="female"
-                                                            checked={this.state.formValues.gender === 'female'}
-                                                            name="gender"
-                                                            type="radio"
-                                                            onChange={this.changeHandler}
-                                                        ></Input>
-                                                        <span className="form-check-sign"></span>
-                                                        female
-                                                   </Label>
-                                                </FormGroup>
-
-                                            </Col>
-                                            <Col className="pl-1" md="6">
-                                                <label>Date of Birth</label>
-                                                <FormGroup>
-                                                    <Datetime
-                                                        name="date_of_birth"
-                                                        value={this.state.formValues.date_of_birth}
-                                                        dateFormat={"DD/MM/YYYY"}
-                                                        closeOnSelect
-                                                        onChange={(val) => this.onChangeDate(val, "date_of_birth")}
-                                                        inputProps={{ placeholder: "Date Of Birth" }}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col className="pr-1" md="6">
-                                                <FormGroup>
-                                                    <label>Room Number</label>
-                                                    <Input
-                                                        defaultValue=""
-                                                        placeholder="Room Number"
-                                                        type="number"
-                                                        name="room_number"
+                                                        placeholder="Enter City"
+                                                        type=""
+                                                        name="city"
                                                         invalid={formErrors.room_number}
-                                                        value={this.state.formValues.room_number}
+                                                        value={this.state.formValues.seller_info.city}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
+                                                <Label>State</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter state"
+                                                        type="text"
+                                                        name="state"
+                                                        invalid={formErrors.sellerAddress}
+                                                        value={this.state.formValues.seller_info.state}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.sellerAddress}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col className="pl-1" md="6">
+                                                <Label>Address 1</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Address"
+                                                        type=""
+                                                        name="address_line_1"
+                                                        invalid={formErrors.room_number}
+                                                        value={this.state.formValues.seller_info.address_line_1}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
+                                                <Label>Address 2</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Address"
+                                                        type="text"
+                                                        name="address_line_2"
+                                                        invalid={formErrors.sellerAddress}
+                                                        value={this.state.formValues.seller_info.address_line_2}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.sellerAddress}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col className="pl-1" md="6">
+                                            <Label>Phone</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Phone"
+                                                        type="number"
+                                                        name="phone"
+                                                        invalid={formErrors.room_number}
+                                                        value={this.state.formValues.seller_info.phone}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            <Col className="pr-1" md="6">
+                                                <Label>Pincode</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Pincode"
+                                                        type="number"
+                                                        name="pincode"
+                                                        invalid={formErrors.sellerEmail}
+                                                        value={this.state.formValues.seller_info.pincode}
+                                                        onChange={this.changeSellerInfosHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.sellerEmail}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col className="pl-1" md="8">
+                                                <Label>Important Information</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Information"
+                                                        type=""
+                                                        name="important_info"
+                                                        invalid={formErrors.room_number}
+                                                        value={this.state.formValues.important_info}
                                                         onChange={this.changeHandler}
                                                     />
                                                     <FormFeedback>{formErrors.room_number}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
-                                            <Col className="pl-1" md="6">
-                                                <FormGroup>
-                                                    <Button className="mt-4">Choose Profile picture</Button>
-                                                    <Input type="file" name="profile" onChange={this._handleImageChange} />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col className="pr-1" md="6">
-                                                <FormGroup>
-                                                    <label htmlFor="slect_Designation">Designation</label>
-                                                    <Input id="slect_Designation" type="select"
-                                                        name="designation"
-                                                        value={this.state.formValues.designation}
-                                                        onChange={this.changeHandler}>
-                                                        <option value="none" selected  >
-                                                            Select an Option
-                                                       </option>
-                                                        <option>Student</option>
-                                                        <option>Employee</option>
-                                                        <option>Other</option>
-
-                                                    </Input>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col className="pl-1" md="6">
-                                                <FormGroup>
-                                                    <Button className="mt-4">Id Proof</Button>
-                                                    <Input type="file"
-                                                        name="idproof"
-                                                        value={this.state.formValues.idproof}
-                                                        onChange={this.changeHandler} />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col md="12">
-                                                <FormGroup>
-                                                    <label>Address line 1</label>
-                                                    <Input
-                                                        defaultValue=""
-                                                        placeholder="Home Address"
-                                                        type="text"
-                                                        name="address_line_1"
-                                                        invalid={formErrors.address_line_1}
-                                                        value={this.state.formValues.address_line_1}
-                                                        onChange={this.changeHandler}
-                                                    />
-                                                    <FormFeedback>{formErrors.address_line_1}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col md="12">
-                                                <FormGroup>
-                                                    <label>Address line 2</label>
-                                                    <Input
-                                                        defaultValue=""
-                                                        placeholder="Home Address"
-                                                        type="text"
-                                                        name="address_line_2"
-                                                        invalid={formErrors.address_line_2}
-                                                        value={this.state.formValues.address_line_2}
-                                                        onChange={this.changeHandler}
-                                                    />
-                                                    <FormFeedback>{formErrors.address_line_2}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
                                             <Col className="pr-1" md="4">
+                                                <Label>Prcice</Label>
                                                 <FormGroup>
-                                                    <label>City</label>
                                                     <Input
                                                         defaultValue=""
-                                                        placeholder="City"
+                                                        placeholder="Enter Prcice"
                                                         type="text"
-                                                        name="city"
-                                                        invalid={formErrors.city}
-                                                        value={this.state.formValues.city}
+                                                        name="price"
+                                                        invalid={formErrors.sellerAddress}
+                                                        value={this.state.formValues.price}
                                                         onChange={this.changeHandler}
                                                     />
-                                                    <FormFeedback>{formErrors.city}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
-                                            <Col className="px-1" md="4">
-                                                <FormGroup>
-                                                    <label htmlFor="slectedStates">states</label>
-                                                    <Input id="slectedStates" type="select"
-                                                        name="state"
-                                                        value={this.state.formValues.state}
-                                                        onChange={this.changeHandler} 
-                                                        invalid={formErrors.state}
-                                                        >
-                                                        {this.state.statesData.map((item, i) => {
-                                                            return <option value={item.value}>{item.label}</option>
-                                                        }
-                                                        )}
-                                                    </Input>
-                                                    <FormFeedback>{formErrors.state}</FormFeedback>
-
-                                                </FormGroup>
-                                            </Col>
-                                            <Col className="pl-1" md="4">
-                                                <FormGroup>
-                                                    <label>Postal Code</label>
-                                                    <Input placeholder="PinCode"
-                                                        type="number"
-                                                        name="pincode"
-                                                        invalid={formErrors.pincode}
-                                                        value={this.state.formValues.pincode}
-                                                        onChange={this.changeHandler} />
-                                                    <FormFeedback>{formErrors.pincode}</FormFeedback>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col md="12">
-                                                <label>Date of Joining</label>
-                                                <FormGroup>
-                                                    <Datetime
-                                                        name="date_of_joining"
-                                                        value={this.state.formValues.date_of_joining}
-                                                        dateFormat={"DD/MM/YYYY"}
-                                                        closeOnSelect
-                                                        invalid={formErrors.date_of_joining}
-                                                        onChange={(val) => this.onChangeDate(val, "date_of_joining")}
-                                                        inputProps={{ placeholder: "Date Of Joining" }}
-                                                    />
-                                                    <FormFeedback>{formErrors.date_of_joining}</FormFeedback>
+                                                    <FormFeedback>{formErrors.sellerAddress}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Button>Clear</Button>
-                                            <Button type="submit">Submit</Button>
+                                            <Button type="submit" >Submit</Button>
                                         </Row>
+                                        
                                     </Form>
                                 </CardBody>
-                            </Card>
-                        </Col>
-                        <Col md="4">
-                            <Card className="card-user">
-                                <div className="image">
-                                    <img alt="..." src={require("assets/img/bg5.jpg")} />
-                                </div>
-                                <CardBody>
-                                    <div className="author" style={{ textAlign: "-webkit-center" }}>
-                                        <a href="#pablo" onClick={e => e.preventDefault()}>
-                                            {/* <img
-                                                alt="..."
-                                                className="avatar border-gray"
-                                                src={require({$imagePreview})}
-                                            /> */}
-                                            <div className="avatar border-gray">
-                                                {$imagePreview}
-                                            </div>
-
-                                            <h5 className="title">{this.state.formValues.name}</h5>
-                                        </a>
-                                        <p className="description"><b>Phone Number:</b>  {this.state.formValues.phone}</p>
-                                    </div>
-                                    <p className="description text-center">
-                                        <b>Address:</b><span className="show-addreess"> {this.state.formValues.address_line_1}</span>
-                                    </p>
-                                    <p className="description text-center">
-                                        <span className="show-addreess"> {this.state.formValues.address_line_2}</span>
-                                    </p>
-                                </CardBody>
-                                {/* <hr />
-                                <div className="button-container">
-                                    <Button
-                                        className="btn-neutral btn-icon btn-round"
-                                        color="default"
-                                        href="#pablo"
-                                        onClick={e => e.preventDefault()}
-                                        size="lg"
-                                    >
-                                        <i className="fab fa-facebook-f" />
-                                    </Button>
-                                    <Button
-                                        className="btn-neutral btn-icon btn-round"
-                                        color="default"
-                                        href="#pablo"
-                                        onClick={e => e.preventDefault()}
-                                        size="lg"
-                                    >
-                                        <i className="fab fa-twitter" />
-                                    </Button>
-                                    <Button
-                                        className="btn-neutral btn-icon btn-round"
-                                        color="default"
-                                        href="#pablo"
-                                        onClick={e => e.preventDefault()}
-                                        size="lg"
-                                    >
-                                        <i className="fab fa-google-plus-g" />
-                                    </Button>
-                                </div> */}
                             </Card>
                         </Col>
                     </Row>
