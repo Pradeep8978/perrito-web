@@ -35,7 +35,7 @@ const productSchema = new Schema({
     modifiedOn : String
 });
 // Create a model
-const Product = mongoose.model('product', productSchema);
+const Product = mongoose.model('product', productSchema,'products');
 
 // Export the model
 module.exports = Product;

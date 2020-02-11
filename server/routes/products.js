@@ -24,10 +24,9 @@ const upload = multer({ storage: storage });
 
 router.route('/create')
   .post(passportJWT, validateBody(schemas.productSchema), ProductController.createProduct);
-
 router.route('/list')
-  .get(passportJWT, validateParams(schemas.queryUser), ProductController.getProducts);
-  router.route('/update/:id')
+  .get(passportJWT, validateParams(schemas.queryUser),ProductController.getProducts);
+router.route('/update/:id')
   .put(passportJWT,ProductController.updateProduct)
 
 module.exports = router;
