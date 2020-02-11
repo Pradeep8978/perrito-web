@@ -63,7 +63,7 @@ module.exports = {
     productSchema: Joi.object().keys({
       name: Joi.string().required(),
       categories: Joi.string().required(),
-      images: Joi.string().required(),
+      images: Joi.array().items(Joi.string()).required(),
       seller_info: Joi.object().keys({
         name:Joi.string().required(),
         address_line_1: Joi.string().required(),
@@ -72,27 +72,24 @@ module.exports = {
         state: Joi.string().required(),
         pincode: Joi.number().required(),
         email: Joi.string().required(),
+        phone:Joi.number().required(),
       }),
       dimensions: Joi.object().keys({
        height:Joi.string().required(),
        width:Joi.string().required(),
        weight:Joi.string().required(),
       }),
-      description: Joi.string().required(),
-      specifications: Joi.string().required(),
-      tags:Joi.string().required(),
+      // description: Joi.string().required(),
+      description: Joi.array().items(Joi.string()).required(),
+      specifications: Joi.array().items(Joi.object({
+        label:Joi.string().required(),
+        value:Joi.string().required(),
+      })).required(),
+      // specifications: Joi.string().required(),
+      tags: Joi.array().items(Joi.string()).required(),
+
       important_info: Joi.string().required(),
       price: Joi.number().required(),
-    }),
-    customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().required(),
-      name:Joi.string().required()
-    }),
-    customerloginSchema: Joi.object().keys({
-      phone:Joi.number().required()
-    }),
-    queryCustomer: Joi.object().keys({
-      role: Joi.string()
     }),
   }
 }

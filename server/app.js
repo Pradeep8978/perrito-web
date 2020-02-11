@@ -50,8 +50,6 @@ app.use("/admin", require("./routes/admin"));
 app.use("/products", require("./routes/products"));
 app.use("/customers", require("./routes/customers"));
 
-
-
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, '../client/build')));

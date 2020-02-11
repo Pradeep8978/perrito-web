@@ -3,6 +3,11 @@ const Product = require('../models/products');
 const { JWT_SECRET } = require('../configuration');
 const multer = require('multer');
 const upload = multer({dest:'uploads/'})
+const fs = require('fs');
+const getImageUrl = (body) => {
+  const imgPath = `./uploads/images/product_${body.name}_${new Date().getTime()}.png`;
+  return imgPath;
+}
 
 
 const signToken = user => {
@@ -17,10 +22,28 @@ const signToken = user => {
 module.exports = {
   createProduct: async (req, res, next) => { 
     const productObj = {...req.body, createdOn: new Date().getTime()};
+    const newProduct = new Product(productObj);
+    if(req.body.images){
+      const imageUrls = req.body.images.map(image=>{
+        var buf = Buffer.from(image, 'base64');
+        console.log('BUFFFER length=>', buf.length)
+        if(buf.length>100*1024){
+            res.status(400).send({message: 'image size exceeds 100KB'});
+            return;
+        }
+        const imgUrl = getImageUrl(req.body);
+        fs.writeFile(imgUrl, buf, 'binary', function(err){
+            if (err) throw err;
+            console.log('File saved.')
+        });
+      })
+      req.body.images = imageUrls;
+    }
+    newProduct.save(function (err, productDetails) {
     const newProduct = new Product(productObj);  
       newProduct.save(function (err, productDetails) {
       if (err) {
-          req.status(405).send(err);
+          res.status(405).send(err);
       }
       else {
         const token = signToken(newProduct);
@@ -28,7 +51,8 @@ module.exports = {
         res.status(200).json({token});
       }
   });
-  },
+  });
+},
   getProducts: async (req, res, next) => {
     Product.find({},function(err, response){
       if(err) res.status(404).json({message: "Error in fetfching products " + req.user.id});
@@ -61,8 +85,23 @@ module.exports = {
     if(req.body.specifications)updateProduct.specifications = req.body.specifications;
     if(req.body.tags)updateProduct.tags=req.body.tags;
     if(req.body.important_info) updateProduct.important_info= req.body.important_info;
-    if(req.body.price)updateProduct.price = req.body.price;
-
+    if(req.body.price)updateProduct.price = req.body.price; 
+    if(req.body.images){
+      const imageUrls = req.body.images.map(image=>{
+        var buf = Buffer.from(image, 'base64');
+        console.log('BUFFFER length=>', buf.length)
+        if(buf.length>100*1024){
+            res.status(400).send({message: 'image size exceeds 100KB'});
+            return;
+        }
+        const imgUrl = getImageUrl(req.body);
+        fs.writeFile(imgUrl, buf, 'binary', function(err){
+            if (err) throw err;
+            console.log('File saved.')
+        });
+      })
+      updateProduct.images = req.body.images;
+    } 
     Product.findOneAndUpdate({_id:id},updateProduct,{multi: false},function(err,response){
       if(err)res.json({message:"Error in updating product"});
       res.json(response)
