@@ -62,22 +62,34 @@ module.exports = {
     }),
     productSchema: Joi.object().keys({
       name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      phone: Joi.number().required(),
-      address: Joi.object().keys({
+      categories: Joi.string().required(),
+      images: Joi.array().items(Joi.string()).required(),
+      seller_info: Joi.object().keys({
+        name:Joi.string().required(),
         address_line_1: Joi.string().required(),
         address_line_2: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         pincode: Joi.number().required(),
+        email: Joi.string().required(),
+        phone:Joi.number().required(),
       }),
-      alternate_phone: Joi.number().required(),
-      gender: Joi.string().required(),
-      date_of_birth: Joi.string().required(),
-      room_number: Joi.string().required(),
-      designation: Joi.string().required(),
-      id_proof: Joi.string().required(),
-      date_of_joining: Joi.string().required()
+      dimensions: Joi.object().keys({
+       height:Joi.string().required(),
+       width:Joi.string().required(),
+       weight:Joi.string().required(),
+      }),
+      // description: Joi.string().required(),
+      description: Joi.array().items(Joi.string()).required(),
+      specifications: Joi.array().items(Joi.object({
+        label:Joi.string().required(),
+        value:Joi.string().required(),
+      })).required(),
+      // specifications: Joi.string().required(),
+      tags: Joi.array().items(Joi.string()).required(),
+
+      important_info: Joi.string().required(),
+      price: Joi.number().required(),
     }),
   }
 }

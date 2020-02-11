@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({ 
     name: String,
     categories: [String],
+    images: [String],
     seller_info:{
         name: String,
         address_line_1: String,
@@ -13,6 +14,8 @@ const productSchema = new Schema({
         city: String,
         state: String,
         pincode: Number,
+        email:String,
+        phone:Number
     },
     dimensions: {
         height: String,
@@ -20,10 +23,16 @@ const productSchema = new Schema({
         weight: String
     },
     description:[String],
-    specs: [String],
+    specifications: [{
+        label: String,
+        value: String,
+    }],
+    tags:[String],
+    count:Number,
     important_info: String,
-    availablePins: [String],
-    price: Number
+    price: Number,
+    createdOn : String,
+    modifiedOn : String
 });
 // Create a model
 const Product = mongoose.model('product', productSchema);

@@ -27,5 +27,7 @@ router.route('/create')
 
 router.route('/list')
   .get(passportJWT, validateParams(schemas.queryUser), ProductController.getProducts);
+  router.route('/update/:id')
+  .put(passportJWT,ProductController.updateProduct)
 
 module.exports = router;
