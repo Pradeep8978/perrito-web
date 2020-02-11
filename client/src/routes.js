@@ -25,6 +25,17 @@ import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
 import CreateNew from "views/createnew.jsx"
 import Products from 'containers/products.container'
+import ViewProducts from "components/viewDetails/ViewProducts";
+
+export const MiscRoutes = [
+  
+  {
+    path:"/admin/view",
+    name: "ViewProducts" ,
+    component: ViewProducts,
+  },
+ 
+]
 
 var dashRoutes = [
   {

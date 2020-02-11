@@ -7,7 +7,8 @@ const INITIAL_STATE = {
     updateLoading: false,
     updateError: null,
     deleteLoading: false,
-    deleteError: null
+    deleteError: null,
+    productDetails: []
 }
 
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -49,6 +50,12 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 createLoading: false,
                 createError: payload
             }
+        
+      case types.PRESERVE_STUDENT_DETAILS:
+        return {
+            ...state,
+             productDetails : payload
+        }
 
 
         case types.UPDATE_PRODUCT_LOADING:

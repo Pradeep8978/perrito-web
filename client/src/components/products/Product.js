@@ -59,8 +59,7 @@ export default class Products extends Component {
     }
     viewStudent = details => {
         this.props.actions.preserveStudentDetails(details);
-        this.props.history.push('/dashboard/academics/student/view');
-
+        this.props.history.push('/view');
     }
 
     onRemoveChip = key => {
@@ -95,7 +94,7 @@ export default class Products extends Component {
                         <input className="col-md-4 mr-2 form-control" type="text" placeholder={this.state.placeholder} value={this.state.filterText} onChange={this.onchangeFilterText} />
                         <select className="col-md-3 mr-2 form-control" value={this.state.filterType} onChange={this.onChangeFilterType}>
                             {
-                                // filter_config.map(item => <option key={item.key} value={item.value}>{item.label}</option>)
+                                // f ilter_config.map(item => <option key={item.key} value={item.value}>{item.label}</option>)
                             }
                         </select>
                         <button className="btn btn-primary ml-2" onClick={this.onApplyFilter}>Filter Students</button>

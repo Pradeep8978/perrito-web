@@ -32,15 +32,15 @@ class createnew extends React.Component {
 
         this.state = {
             formValues: {
-                categories:'',
+                categories: '',
                 name: '',
-                images: [],
-                discription: [''],
+                // images: [],
+                description: [''],
                 specifications: [{
                     label: '',
                     value: ''
                 }],
-                dimesions:{
+                dimensions: {
                     height: '',
                     width: '',
                     weight: ''
@@ -48,16 +48,19 @@ class createnew extends React.Component {
                 seller_info: {
                     name: '',
                     email: '',
-                    city:'',
-                    phone:'',
+                    city: '',
+                    phone: '',
                     address_line_1: '',
                     address_line_2: '',
                     state: '',
                     pincode: ''
                 },
-                important_info:'',
-                price: ''
+                important_info: '',
+                price: '',
+                tags:[],
+               
             },
+            tagText:'',
             formErrors: {},
             file: '',
             imagePreviewUrl: '',
@@ -78,7 +81,7 @@ class createnew extends React.Component {
     }
     addDiscripton = () => {
         let { formValues } = this.state;
-        formValues.discription.push('')
+        formValues.description.push('')
         this.setState({
             formValues
         })
@@ -94,7 +97,7 @@ class createnew extends React.Component {
     changeDiscriptionHandler = (e, i) => {
         // debugger;
         let { formValues } = this.state;
-        formValues.discription[i] = e.target.value;
+        formValues.description[i] = e.target.value;
         this.setState({
             formValues
         })
@@ -110,7 +113,7 @@ class createnew extends React.Component {
 
     changeDimesionsHandler = (e) => {
         const { formValues } = this.state;
-        formValues.dimesions[e.target.name] = e.target.value;
+        formValues.dimensions[e.target.name] = e.target.value;
         this.setState({
             formValues,
         });
@@ -123,19 +126,22 @@ class createnew extends React.Component {
             formValues,
         });
     }
-
-
-    fileSelectedHandler = (file: any) => {
-
-        let { formValues } = this.state;
-        formValues.images.push(file);
+    tagsHandler=(e)=>{
+        const { formValues} = this.state;
+        this.state.tagText = e.target.value;
+        formValues.tags = this.state.tagText.split(' ');
         this.setState({
             formValues
         })
+    }
 
-        // let addedFiles = this.state.formValues.images.concat(file)
-        // this.setState({ images: addedFiles })
-        console.log("upload file " + this.state.formValues.images)
+    fileSelectedHandler = (value) => {
+
+        let { formValues } = this.state;
+        formValues.images.concat(value);
+        this.setState({
+            formValues
+        })
     }
     _handleImageChange(e) {
         e.preventDefault();
@@ -188,26 +194,27 @@ class createnew extends React.Component {
         e.preventDefault();
         const { formValues } = this.state;
         if (!this.validateAllFields()) return;
-        const url = '/products/create' ;
+        const url = '/products/create';
         return Axios.post(url, formValues)
-        .then(res => {
-            console.log('formvalues new ', res.data);
-            this.props.history.push("/admin/products")
-        })
-        .catch(err => {
-            throw err;
-        })
+            .then(res => {
+                console.log('formvalues new ', res.data);
+                this.props.history.push("/admin/products")
+            })
+            .catch(err => {
+                throw err;
+            })
 
     }
 
     render() {
-        console.log(this.state.formValues)
+        console.log(this.state.formValues, this.state.tagText)
         let { imagePreviewUrl } = this.state;
         let $imagePreview = null;
         if (imagePreviewUrl) {
             $imagePreview = (<img src={imagePreviewUrl} />);
         }
-        const { formValues, formErrors } = this.state
+        const { formValues, formErrors } = this.state;
+        const categories = ["Select", "Food", "Toys", "Accessories", "Health", "Grooming", "Bath"]
         return (
             <>
                 <PanelHeader size="sm" />
@@ -221,18 +228,15 @@ class createnew extends React.Component {
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
                                         <Row>
-                                        <Col className="pr-1" md="6">
+                                            <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <label>Categories</label>
-                                                    <Input
-                                                        defaultValue=""
-                                                        placeholder="Enter Name"
-                                                        type="text"
-                                                        name="categories"
-                                                        invalid={formErrors.name}
-                                                        onChange={this.changeHandler}
-                                                        value={this.state.formValues.categories}
-                                                    />
+                                                    <Input type="select" name="categories" onChange={this.changeHandler}>
+                                                        {categories.map((item,i) => {
+                                                            return <option key={i}>{item}</option>
+                                                        })}
+
+                                                    </Input>
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
@@ -253,7 +257,24 @@ class createnew extends React.Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col className="pr-1" md="6">
+                                        <Col className="pr-1" md="12">
+                                                <FormGroup>
+                                                    <label>Tags</label>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter Tags"
+                                                        type="text"
+                                                        name="tagText"
+                                                        invalid={formErrors.name}
+                                                        onChange={this.tagsHandler}
+                                                        value={this.state.tagText}
+                                                    />
+                                                    <FormFeedback>{formErrors.name}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            </Row>
+                                        <Row>
+                                            {/* <Col className="pr-1" md="6">
                                                 <label>Images</label>
                                                 <FormGroup>
                                                     <Button className="mt-4">Images</Button>
@@ -263,17 +284,17 @@ class createnew extends React.Component {
                                                         onChange={this.fileSelectedHandler}
                                                     />
                                                 </FormGroup>
-                                            </Col>
+                                            </Col> */}
                                         </Row>
                                         <Container>
                                             <Row>
                                                 <Col className="pr-1" md="10">
                                                     <FormGroup>
-                                                        <Label for="discription"> Discription</Label>
+                                                        <Label for="discription">Description</Label>
                                                         {
-                                                            this.state.formValues.discription.map((item, i) => {
+                                                            this.state.formValues.description.map((item, i) => {
                                                                 return <Input type="textarea" name="text" id="discription"
-                                                                    name="discription"
+                                                                    name="description"
                                                                     value={item}
                                                                     invalid={formErrors.discription}
                                                                     onChange={(e) => { this.changeDiscriptionHandler(e, i) }}
@@ -336,7 +357,7 @@ class createnew extends React.Component {
 
                                             </Col>
                                         </Row>
-                                        <label>Dimesions</label>
+                                        <label>Dimensions</label>
                                         <Row>
                                             <Col className="pr-1" md="4">
                                                 <Label>Height</Label>
@@ -346,12 +367,12 @@ class createnew extends React.Component {
                                                         placeholder="Height"
                                                         type="number"
                                                         name="height"
-                                                        invalid={formErrors.dimesions}
-                                                        value={this.state.formValues.dimesions.height}
+                                                        invalid={formErrors.dimensions}
+                                                        value={this.state.formValues.dimensions.height}
                                                         onChange={this.changeDimesionsHandler}
 
                                                     />
-                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                    <FormFeedback>{formErrors.dimensions}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pr-1" md="4">
@@ -362,11 +383,11 @@ class createnew extends React.Component {
                                                         placeholder="width"
                                                         type="number"
                                                         name="width"
-                                                        invalid={formErrors.dimesions}
-                                                        value={this.state.formValues.dimesions.width}
+                                                        invalid={formErrors.dimensions}
+                                                        value={this.state.formValues.dimensions.width}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
-                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                    <FormFeedback>{formErrors.dimensions}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
                                             <Col className="pr-1" md="4">
@@ -377,11 +398,11 @@ class createnew extends React.Component {
                                                         placeholder="Weight"
                                                         type="number"
                                                         name="weight"
-                                                        invalid={formErrors.dimesions}
-                                                        value={this.state.formValues.dimesions.weight}
+                                                        invalid={formErrors.dimensions}
+                                                        value={this.state.formValues.dimensions.weight}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
-                                                    <FormFeedback>{formErrors.dimesions}</FormFeedback>
+                                                    <FormFeedback>{formErrors.dimensions}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -484,7 +505,7 @@ class createnew extends React.Component {
                                         </Row>
                                         <Row>
                                             <Col className="pl-1" md="6">
-                                            <Label>Phone</Label>
+                                                <Label>Phone</Label>
                                                 <FormGroup>
                                                     <Input
                                                         defaultValue=""
@@ -550,7 +571,7 @@ class createnew extends React.Component {
                                             <Button>Clear</Button>
                                             <Button type="submit" >Submit</Button>
                                         </Row>
-                                        
+
                                     </Form>
                                 </CardBody>
                             </Card>

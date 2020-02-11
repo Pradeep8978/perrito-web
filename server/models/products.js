@@ -14,7 +14,8 @@ const productSchema = new Schema({
         city: String,
         state: String,
         pincode: Number,
-        email:String
+        email:String,
+        phone:Number
     },
     dimensions: {
         height: String,
@@ -22,7 +23,10 @@ const productSchema = new Schema({
         weight: String
     },
     description:[String],
-    specifications: [String],
+    specifications: [{
+        label: String,
+        value: String,
+    }],
     tags:[String],
     count:Number,
     important_info: String,

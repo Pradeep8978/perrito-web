@@ -49,12 +49,12 @@ class PeersonList extends React.Component {
                                     <div>{item.name}</div>
                                 </div>
                                 <div className="col-4 mb-2">
-                                    <label>Date of joining</label>
-                                    <div>{item.date_of_joining}</div>
+                                    <label>categories</label>
+                                    <div>{item.categories}</div>
                                 </div>
                                 <div className="col-4 mb-2">
-                                    <label>Date Of Birth</label>
-                                    <div>{item.dob}</div>
+                                    <label>PRICE</label>
+                                    <div>{item.price}</div>
                                 </div>
                                 </div>
                                 </div>
