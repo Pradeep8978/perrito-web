@@ -4,8 +4,8 @@ const { JWT_SECRET } = require('../configuration');
 const multer = require('multer');
 const upload = multer({dest:'uploads/'})
 const fs = require('fs');
-const getImageUrl = (body) => {
-  const imgPath = `./uploads/images/product_${body.name}_${new Date().getTime()}.png`;
+const getImageUrl = (body, id) => {
+  const imgPath = `uploads/images/product_${body.name}_${new Date().getTime()}_${id}.png`;
   return imgPath;
 }
 
@@ -22,23 +22,28 @@ const signToken = user => {
 module.exports = {
   createProduct: async (req, res, next) => { 
     const productObj = {...req.body, createdOn: new Date().getTime()};
-    const newProduct = new Product(productObj);
+    const imageUrls = []
     if(req.body.images){
-      const imageUrls = req.body.images.map(image=>{
+      req.body.images.map((image, index)=>{
         var buf = Buffer.from(image, 'base64');
         console.log('BUFFFER length=>', buf.length)
         if(buf.length>100*1024){
             res.status(400).send({message: 'image size exceeds 100KB'});
             return;
         }
-        const imgUrl = getImageUrl(req.body);
+        const imgUrl = getImageUrl(req.body, index);
+        imageUrls.push(imgUrl);
         fs.writeFile(imgUrl, buf, 'binary', function(err){
             if (err) throw err;
             console.log('File saved.')
         });
       })
-      req.body.images = imageUrls;
+      // const imageUrls = await Promise.all(imagesPromise).then(res => res).catch(err => null)
+      console.log("image Urls",imageUrls)
+      productObj.images = imageUrls;
     }
+    const newProduct = new Product(productObj);
+
     newProduct.save(function (err, productDetails) {
     const newProduct = new Product(productObj);  
       newProduct.save(function (err, productDetails) {

@@ -15,6 +15,7 @@ var io  = require('socket.io').listen(server);
 const {MONGODB_CONN_STR} = require("./configuration/index")
 const bodyParser = require('body-parser');
 
+
 const CONN_STRING = MONGODB_CONN_STR;
 console.log(MONGODB_CONN_STR)
 mongoose.Promise = global.Promise;
@@ -31,9 +32,8 @@ mongoose.Promise = global.Promise;
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.urlencoded({
-
-  extended: false
-  
+  extended: false,
+  limit: '50mb'  
 }));
 app.use(bodyParser.json());
 
