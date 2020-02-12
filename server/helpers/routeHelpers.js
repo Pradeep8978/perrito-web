@@ -91,15 +91,5 @@ module.exports = {
       important_info: Joi.string().required(),
       price: Joi.number().required(),
     }),
-    customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().required(),
-      name:Joi.string().required()
-    }),
-    customerloginSchema: Joi.object().keys({
-      phone:Joi.number().required()
-    }),
-    queryCustomer: Joi.object().keys({
-      role: Joi.string()
-    }),
   }
 }
