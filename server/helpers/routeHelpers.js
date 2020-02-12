@@ -87,9 +87,13 @@ module.exports = {
       })).required(),
       // specifications: Joi.string().required(),
       tags: Joi.array().items(Joi.string()).required(),
-
       important_info: Joi.string().required(),
       price: Joi.number().required(),
     }),
-  }
+    reviewSchema:Joi.object().keys({
+      ratting:Joi.number().integer().min(1).max(5).required(),
+      description:Joi.string().required(),
+      customer_picture: Joi.array().items(Joi.string())
+    }),
+  }  
 }
