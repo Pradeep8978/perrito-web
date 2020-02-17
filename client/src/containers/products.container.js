@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import {fetchProducts, deleteProduct} from './../actions/products.actions';
-import Products from '../components/products/Products';
+import Products from '../components/products/Product';
 
 const mapStateToProps = state => {
     debugger
