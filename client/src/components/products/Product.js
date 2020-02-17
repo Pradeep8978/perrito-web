@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Chip } from 'reactstrap';
 import ProductList from './ProductList';
-import './Products.scss';
+import './Product.scss';
 
 export default class Products extends Component {
     state = {
