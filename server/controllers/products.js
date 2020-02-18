@@ -9,7 +9,6 @@ const getImageUrl = (body, id) => {
   return imgPath;
 }
 
-
 const signToken = user => {
   return JWT.sign({
     iss: 'perrito',
@@ -45,19 +44,16 @@ module.exports = {
     const newProduct = new Product(productObj);
 
     newProduct.save(function (err, productDetails) {
-    const newProduct = new Product(productObj);  
-      newProduct.save(function (err, productDetails) {
       if (err) {
           res.status(405).send(err);
       }
       else {
-        const token = signToken(newProduct);
         console.log("PRODUCT OBJECT=>", newProduct)
-        res.status(200).json({token});
+        res.status(200).json(productDetails);
       }
   });
-  });
-},
+  },
+
   getProducts: async (req, res, next) => {
     Product.find({},function(err, response){
       if(err) res.status(404).json({message: "Error in fetfching products " + req.user.id});

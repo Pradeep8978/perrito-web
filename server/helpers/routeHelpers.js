@@ -32,10 +32,9 @@ module.exports = {
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       phone: Joi.number().required(),
-      password: Joi.string().required()
-      
+      password: Joi.string().required()  
     }),
-  
+
     loginSchema: Joi.object().keys({
       email: Joi.string().email().required(),
       password: Joi.string().required()
@@ -63,7 +62,7 @@ module.exports = {
     productSchema: Joi.object().keys({
       name: Joi.string().required(),
       categories: Joi.string().required(),
-      images: Joi.array().items(Joi.string()).required(),
+      images: Joi.array().items(Joi.string()),
       seller_info: Joi.object().keys({
         name:Joi.string().required(),
         address_line_1: Joi.string().required(),

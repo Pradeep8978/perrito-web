@@ -64,3 +64,15 @@ export const signinUser = (bodyParams) => dispatch => {
         throw err;
     })
 }
+
+
+export const createUser = (bodyParams) => {
+    const url = '/product/create' ;
+     return Axios.post(url, bodyParams)
+     .then(res => {
+         return res;
+     })
+     .catch(err => {
+         throw err;
+     })
+}

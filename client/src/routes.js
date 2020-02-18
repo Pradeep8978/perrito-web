@@ -39,7 +39,15 @@ var dashRoutes = [
     name: "Products",
     icon: "design_app",
     component: Products,
-    layout: "/admin"
+    layout: "/admin",
+    // subRoutes: [
+    //   {
+    //     path: "/visual",
+    //     name: "Visualization",
+    //     icon: "pe-7s-display1",
+    //     component: Demo,
+    //     layout: "/visual",
+    //   }],
   },
   {
     path: "/createnew",

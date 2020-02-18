@@ -37,6 +37,7 @@ import SignUp from "containers/Signup.container";
 import Signin from "containers/Signin.container";
 import Axios from 'axios';
 import store from './store';
+import ViewProducts from "components/viewDetails/ViewProducts";
 
 Axios.defaults.headers.Authorization = localStorage.getItem('token');
 
@@ -63,8 +64,12 @@ ReactDOM.render(
         <Route
           path="/register"
           render={props => <SignUp {...props} />} />
+        <Route 
+        path="/view"
+        render = {props => <ViewProducts {...props}/>}/>
         {/* <Route path="/Dashboard" render={props => <Dashboard {...props} />} /> */}
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
+        
         {/* <Redirect to="/admin/dashboard" /> */}
         <Redirect from="*" to="/index" />
       </Switch>
