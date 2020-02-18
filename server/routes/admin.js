@@ -41,10 +41,7 @@ router.route('/profile/update')
 
 router.route('/profile')
   .get(passportJWT, AdminsController.getProfile);
-
-
-
-
+  
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, 'uploads');

@@ -20,7 +20,7 @@ module.exports = {
   customerReview: async(req,res)=>{   
       Customers.findOne({_id:req.params.customerid}, function(err, result) {
         if (err) throw err;
-        const productReview  = {...req.body, reviewOn: new Date().getTime(),productId:req.params.productid,customerId:req.params.customerid,customerName:result.name};
+        const productReview  = {...req.body, reviewOn: new Date().getTime(),productId:req.params.productid,customerId:req.params.customerid,customerName:result.name,customerImage:result.image};
         const newProductReview = new Review(productReview); 
         if(req.body.customer_picture){
           const imageUrls = req.body.customer_picture.map(image=>{
