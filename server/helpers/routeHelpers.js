@@ -63,6 +63,7 @@ module.exports = {
       name: Joi.string().required(),
       categories: Joi.string().required(),
       images: Joi.array().items(Joi.string()),
+       count:Joi.number().required(),
       seller_info: Joi.object().keys({
         name:Joi.string().required(),
         address_line_1: Joi.string().required(),

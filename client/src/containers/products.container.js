@@ -8,7 +8,8 @@ const mapStateToProps = state => {
     productList: state.products.productList,
     loading: state.products.loading,
     error: state.products.error,
-    viewDetails: state.products.viewDetails
+    viewDetails: state.products.viewDetails,
+    
 })};
 
 const mapDispatchToProps = {

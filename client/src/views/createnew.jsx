@@ -60,8 +60,8 @@ class createnew extends React.Component {
                 important_info: '',
                 price: '',
                 tags: [],
-
-            },
+                count: ''     
+                  },
             tagText: '',
             formErrors: {},
             file: '',
@@ -237,13 +237,19 @@ class createnew extends React.Component {
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
                                         <Row>
-                                            {
+                                            <Col md="2">
+                                                <span style={{display:"flex",marginLeft:"5px"}}>
+                                                {
                                                 formValues.images.map(data => {
                                                     return(
-                                                        <img src={`data:image/png;base64,${data}`} alt="Red dot"/>
+                                                        <img src={`data:image/png;base64,${data}`} alt="Red dot" style={{marginLeft:"5px"}}/>
                                                     )
                                                 })
                                             }
+                                                </span>
+                                            
+                                            </Col>
+                                            
                                         </Row>
                                         <Row>
                                             <Col className="pr-1" md="6">
@@ -299,6 +305,7 @@ class createnew extends React.Component {
                                                     <Input type="file"
                                                         name="images"
                                                         multiple
+                                                        pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
                                                         onChange={this.fileSelectedHandler}
                                                     />
                                                 </FormGroup>
@@ -424,6 +431,23 @@ class createnew extends React.Component {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
+                                        <Row>
+                                            <Col className="pl-1" md="8">
+                                                <Label>Products Count</Label>
+                                                <FormGroup>
+                                                    <Input
+                                                        defaultValue=""
+                                                        placeholder="Enter product count"
+                                                        type="number"
+                                                        name="count"
+                                                        invalid={formErrors.room_number}
+                                                        value={this.state.formValues.count}
+                                                        onChange={this.changeHandler}
+                                                    />
+                                                    <FormFeedback>{formErrors.room_number}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                            </Row>
                                         <h5>Seller Information</h5>
                                         <Row>
                                             <Col className="pl-1" md="6">

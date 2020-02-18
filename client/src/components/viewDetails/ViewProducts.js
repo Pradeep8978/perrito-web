@@ -37,9 +37,10 @@ class ViewProducts extends Component {
       <Container>
         <Row>
           <Card style={{ textAlign: "center" }}>
-            <h2>Product and Person Details</h2>
-            <img style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX" }} height="150px"
-            src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="Card image cap" />
+            <h2>Product and Seller Details</h2>
+            <img style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX" }} height="150px" 
+             src={"/"+ViewDetails.images[0] } alt="Card image cap" />
+             {/* <img className="profile_image" src={"/"+ViewDetails.images[0]} alt="Profile Image"/> */}
             <CardBody>
               <Row>
                 <Container>
@@ -130,6 +131,10 @@ class ViewProducts extends Component {
                       <tr>
                         <th>Price</th>
                         <td>{ViewDetails.price}</td>
+                      </tr>
+                      <tr>
+                        <th>Avaliable Products</th>
+                        <td>{ViewDetails.count}</td>
                       </tr>
                     </tbody>
                   </Table>
