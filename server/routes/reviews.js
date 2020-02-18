@@ -22,6 +22,6 @@ var storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 router.route('/customerReview/:customerid/:productid')
   .post(passportJWT, validateBody(schemas.reviewSchema), ReviewController.customerReview);
-router.route('/updateReview/:reviewid')
-  .put(passportJWT,ReviewController.updateReview);
+// router.route('/updateReview/:reviewid')
+//   .put(passportJWT,ReviewController.updateReview);
 module.exports = router;
