@@ -25,6 +25,8 @@ import './createNew.scss'
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
+import { fileToBase64 } from './DocumentService';
+
 
 class createnew extends React.Component {
     constructor(props) {
@@ -34,7 +36,7 @@ class createnew extends React.Component {
             formValues: {
                 categories: '',
                 name: '',
-                // images: [],
+                images: [],
                 description: [''],
                 specifications: [{
                     label: '',
@@ -57,16 +59,16 @@ class createnew extends React.Component {
                 },
                 important_info: '',
                 price: '',
-                tags:[],
-               
+                tags: [],
+
             },
-            tagText:'',
+            tagText: '',
             formErrors: {},
             file: '',
             imagePreviewUrl: '',
             statesData: contriesData
         }
-        this._handleImageChange = this._handleImageChange.bind(this);
+        // this._handleImageChange = this._handleImageChange.bind(this);
 
     }
     changeHandler = (e) => {
@@ -126,8 +128,8 @@ class createnew extends React.Component {
             formValues,
         });
     }
-    tagsHandler=(e)=>{
-        const { formValues} = this.state;
+    tagsHandler = (e) => {
+        const { formValues } = this.state;
         this.state.tagText = e.target.value;
         formValues.tags = this.state.tagText.split(' ');
         this.setState({
@@ -135,44 +137,51 @@ class createnew extends React.Component {
         })
     }
 
-    fileSelectedHandler = (value) => {
-
-        let { formValues } = this.state;
-        formValues.images.concat(value);
-        this.setState({
-            formValues
-        })
-    }
-    _handleImageChange(e) {
-        e.preventDefault();
-        let reader = new FileReader();
-        let file = e.target.files[0];
-
-        reader.onloadend = () => {
-            this.setState({
-                file: file,
-                imagePreviewUrl: reader.result
-            });
-        }
-
-        reader.readAsDataURL(file)
+    fileSelectedHandler = async (e) => {
+        const images = Object.values(e.target.files).map(file => {
+            console.log(file.size)
+          return fileToBase64(file)
+        });
+         Promise.all(images)
+         .then(res => { 
+             this.setState(prevState => ({
+                 formValues: {
+                     ...prevState.formValues,
+                     images: res
+                 }
+             }))
+         })
     }
 
-    onChangeDate = (value, name) => {
-        const { formValues, formErrors } = this.state;
+    // _handleImageChange(e) {
+    //     e.preventDefault();
+    //     let reader = new FileReader();
+    //     let file = e.target.files[0];
+    //     reader.onloadend = () => {
+    //         this.setState({
+    //             file: file,
+    //             imagePreviewUrl: reader.result
+    //         });
+    //     }
 
-        try {
-            value = (typeof value === 'string') ? value : value.format("DD/MM/YYYY");
-            const validationFunc = validationConfig[name];
-            formErrors[name] = validationFunc ? validationFunc(value) : "";
-            formValues[name] = value
-            this.setState({
-                formValues,
-                formErrors
-            })
-        } catch (e) { }
+    //     reader.readAsDataURL(file)
+    // }
 
-    }
+    // onChangeDate = (value, name) => {
+    //     const { formValues, formErrors } = this.state;
+
+    //     try {
+    //         value = (typeof value === 'string') ? value : value.format("DD/MM/YYYY");
+    //         const validationFunc = validationConfig[name];
+    //         formErrors[name] = validationFunc ? validationFunc(value) : "";
+    //         formValues[name] = value
+    //         this.setState({
+    //             formValues,
+    //             formErrors
+    //         })
+    //     } catch (e) { }
+
+    // }
 
     validateAllFields = () => {
         const { formValues } = this.state;
@@ -208,11 +217,11 @@ class createnew extends React.Component {
 
     render() {
         console.log(this.state.formValues, this.state.tagText)
-        let { imagePreviewUrl } = this.state;
-        let $imagePreview = null;
-        if (imagePreviewUrl) {
-            $imagePreview = (<img src={imagePreviewUrl} />);
-        }
+        // let { imagePreviewUrl } = this.state;
+        // let $imagePreview = null;
+        // if (imagePreviewUrl) {
+        //     $imagePreview = (<img src={imagePreviewUrl} />);
+        // }
         const { formValues, formErrors } = this.state;
         const categories = ["Select", "Food", "Toys", "Accessories", "Health", "Grooming", "Bath"]
         return (
@@ -228,11 +237,20 @@ class createnew extends React.Component {
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
                                         <Row>
+                                            {
+                                                formValues.images.map(data => {
+                                                    return(
+                                                        <img src={`data:image/png;base64,${data}`} alt="Red dot"/>
+                                                    )
+                                                })
+                                            }
+                                        </Row>
+                                        <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <label>Categories</label>
                                                     <Input type="select" name="categories" onChange={this.changeHandler}>
-                                                        {categories.map((item,i) => {
+                                                        {categories.map((item, i) => {
                                                             return <option key={i}>{item}</option>
                                                         })}
 
@@ -257,7 +275,7 @@ class createnew extends React.Component {
                                             </Col>
                                         </Row>
                                         <Row>
-                                        <Col className="pr-1" md="12">
+                                            <Col className="pr-1" md="12">
                                                 <FormGroup>
                                                     <label>Tags</label>
                                                     <Input
@@ -272,19 +290,19 @@ class createnew extends React.Component {
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
-                                            </Row>
+                                        </Row>
                                         <Row>
-                                            {/* <Col className="pr-1" md="6">
+                                            <Col className="pr-1" md="6">
                                                 <label>Images</label>
                                                 <FormGroup>
                                                     <Button className="mt-4">Images</Button>
                                                     <Input type="file"
                                                         name="images"
-                                                        value={this.state.formValues.images}
+                                                        multiple
                                                         onChange={this.fileSelectedHandler}
                                                     />
                                                 </FormGroup>
-                                            </Col> */}
+                                            </Col>
                                         </Row>
                                         <Container>
                                             <Row>

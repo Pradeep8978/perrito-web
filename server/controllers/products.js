@@ -9,17 +9,6 @@ const getImageUrl = (body) => {
   return imgPath;
 }
 
-
-
-const fs = require('fs');
-
-
-const getImageUrl = (body) => {
-  const imgPath = `./uploads/images/product_${body.name}_${new Date().getTime()}.png`;
-  return imgPath;
-}
-
-
 const signToken = user => {
   return JWT.sign({
     iss: 'perrito',

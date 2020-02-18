@@ -8,7 +8,7 @@ const INITIAL_STATE = {
     updateError: null,
     deleteLoading: false,
     deleteError: null,
-    productDetails: []
+    ViewDetails: null
 }
 
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -51,10 +51,11 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 createError: payload
             }
         
-      case types.PRESERVE_STUDENT_DETAILS:
+      case types.PRESERVE_PRODUCT_DETAILS:
         return {
             ...state,
-             productDetails : payload
+             ViewDetails : payload,
+            
         }
 
 

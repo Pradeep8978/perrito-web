@@ -53,12 +53,12 @@ export default class Products extends Component {
     }
 
     editStudent = details => {
-        this.props.actions.preserveStudentDetails(details);
+        this.props.preserveProductDetails(details);
         this.props.history.push('/dashboard/academics/student/edit');
-
     }
+    
     viewStudent = details => {
-        this.props.actions.preserveStudentDetails(details);
+        this.props.preserveProductDetails(details);
         this.props.history.push('/view');
     }
 

@@ -25,17 +25,6 @@ import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
 import CreateNew from "views/createnew.jsx"
 import Products from 'containers/products.container'
-import ViewProducts from "components/viewDetails/ViewProducts";
-
-export const MiscRoutes = [
-  
-  {
-    path:"/admin/view",
-    name: "ViewProducts" ,
-    component: ViewProducts,
-  },
- 
-]
 
 var dashRoutes = [
   {
@@ -50,7 +39,15 @@ var dashRoutes = [
     name: "Products",
     icon: "design_app",
     component: Products,
-    layout: "/admin"
+    layout: "/admin",
+    // subRoutes: [
+    //   {
+    //     path: "/visual",
+    //     name: "Visualization",
+    //     icon: "pe-7s-display1",
+    //     component: Demo,
+    //     layout: "/visual",
+    //   }],
   },
   {
     path: "/createnew",
