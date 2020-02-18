@@ -1,6 +1,12 @@
 import * as types from '../constants/types';
 import Axios from 'axios'
 
+// preserve state 
+export const preserveProductDetails = ( ViewDetails )=> ({
+    type: types.PRESERVE_PRODUCT_DETAILS,
+    payload:  ViewDetails,
+})
+
 //fetch product list
 const fetchProductsLoading = () => ({
     type: types.FETCH_PRODUCT_LIST_LOADING

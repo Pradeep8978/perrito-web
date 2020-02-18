@@ -41,20 +41,20 @@ class PeersonList extends React.Component {
                                 onDetailsClick= {() =>this.props.onDetailsClick(item)}
                             >   
                                 <div className="d-flex w-100 ml-2 mr-2">
-                                    <img className="profile_image" src={item.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="student_img" />
-                                    {/* <image className="profile_image" src={item.image} alt="Profile Image"/> */}
+                                    {/* <img className="profile_image" src={item.images || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="student_img" /> */}
+                                    <image className="profile_image" src={item.images[0]} alt="Profile Image"/>
                                     <div className="col-12 row ml-2">
                                 <div className="col-4 mb-2">
                                     <label>Name</label>
                                     <div>{item.name}</div>
                                 </div>
                                 <div className="col-4 mb-2">
-                                    <label>Date of joining</label>
-                                    <div>{item.date_of_joining}</div>
+                                    <label>categories</label>
+                                    <div>{item.categories}</div>
                                 </div>
                                 <div className="col-4 mb-2">
-                                    <label>Date Of Birth</label>
-                                    <div>{item.dob}</div>
+                                    <label>PRICE</label>
+                                    <div>{item.price}</div>
                                 </div>
                                 </div>
                                 </div>

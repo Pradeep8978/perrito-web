@@ -87,7 +87,7 @@ function IndexNavbar() {
               <Button
               className=""
               color=""
-              to="/login-page"
+              to="/login"
               outline
               size="lg"
               tag={Link}
@@ -95,11 +95,7 @@ function IndexNavbar() {
             >
                Login
             </Button>
-              </NavItem>
-              
-             
-             
-             
+              </NavItem> 
             </Nav>
           </Collapse>
         </Container>
