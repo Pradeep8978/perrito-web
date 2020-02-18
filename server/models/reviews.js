@@ -6,7 +6,8 @@ const Schema = mongoose.Schema;
 const reviewSchema = new Schema({ 
     ratting: Number,
     description: String,
-    customer_picture:[String]
+    customerName:String,
+    customerImage:String
 });
 // Create a model
 const Review = mongoose.model('review', reviewSchema,'review');

@@ -5,7 +5,19 @@ const Schema = mongoose.Schema;
 // Create a schema
 const customerSchema = new Schema({
     phone: Number,
-    name: String
+    name: String,
+    image:String,
+    email: String,
+    dob: String,
+    gender:String,
+    address: {
+      address_line_1: String,
+      address_line_2: String,
+      city: String,
+      state: String,
+      pincode: Number
+    },
+    createdOn :String
 });
 
 // Create a model

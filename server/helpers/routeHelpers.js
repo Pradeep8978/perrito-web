@@ -27,7 +27,6 @@ module.exports = {
   },
 
   schemas: {
-
     authSchema: Joi.object().keys({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
@@ -62,7 +61,8 @@ module.exports = {
     productSchema: Joi.object().keys({
       name: Joi.string().required(),
       categories: Joi.string().required(),
-      images: Joi.array().items(Joi.string()),
+      images: Joi.array().items(Joi.string()).required(),
+      count:Joi.number().required(),
       seller_info: Joi.object().keys({
         name:Joi.string().required(),
         address_line_1: Joi.string().required(),
@@ -94,5 +94,26 @@ module.exports = {
       description:Joi.string().required(),
       customer_picture: Joi.array().items(Joi.string())
     }),
-  }  
+    customerAuthSchema:Joi.object().keys({
+      phone:Joi.number().required(),
+      name:Joi.string().required(),
+      image:Joi.string()
+    }),
+    customerloginSchema:Joi.object().keys({
+      phone:Joi.number().required()
+    }),
+    customerupdateSchema:Joi.object().keys({
+      email: Joi.string().required(),
+      dob: Joi.string().required(),
+      gender: Joi.string().required(),
+      address:Joi.object().keys({
+        address_line_1: Joi.string().required(),
+        address_line_2: Joi.string().required(),
+        city: Joi.string().required(),
+        state: Joi.string().required(),
+        pincode: Joi.number().required(),
+      })
+    })
+  },
+  
 }

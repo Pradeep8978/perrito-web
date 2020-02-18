@@ -35,7 +35,7 @@ app.use(bodyParser.urlencoded({
   extended: false,
   limit: '50mb'  
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: "50mb"}));
 
 // Middlewares moved morgan into if for clear tests
 if (!process.env.NODE_ENV === "test") {
