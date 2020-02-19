@@ -17,37 +17,27 @@ const signToken = user => {
   }, JWT_SECRET);
 }
 module.exports = {
-  customerReview: async(req,res)=>{   
-      Customers.findOne({_id:req.params.customerid}, function(err, result) {
-        if (err) throw err;
-        const productReview  = {...req.body, reviewOn: new Date().getTime(),productId:req.params.productid,customerId:req.params.customerid,customerName:result.name,customerImage:result.image};
-        const newProductReview = new Review(productReview); 
-        if(req.body.customer_picture){
-          const imageUrls = req.body.customer_picture.map(image=>{
-            var buf = Buffer.from(image, 'base64');
-            console.log('BUFFFER length=>', buf.length)
-            if(buf.length>100*1024){
-                res.status(400).send({message: 'image size exceeds 100KB'});
-                return;
-            }
-            const imgUrl = getImageUrl(req.body);
-            fs.writeFile(imgUrl, buf, 'binary', function(err){
-                if (err) throw err;
-                console.log('File saved.')
-            });
-          })
-          req.body.customer_picture = imageUrls;
-        }  
-        newProductReview.save(function (err, reviewDetails){
-          if (err){
-            req.status(405).send(err);
-          }
-          else{
-            console.log("REVIEW DETAILS=>", newProductReview)
-            res.status(200).json(reviewDetails);
-          }
-        });
-      });    
+  customerReview: async(req,res)=>{
+    console.log("PRODUCT ID",req.params.productid)
+    console.log("CUSTOMER ID",req.user.id)
+    const findProductReview = await Review.find({"productId":req.params.productid,"customerId":req.user.id});
+    console.log("findProductReview",findProductReview)    
+      if(findProductReview.length != 0){
+        return res.status(403).json({ error: 'already given' });
+      }
+    Customers.findOne({_id:req.user.id}, function(err, result) {
+      const productReview  = {...req.body, reviewOn: new Date().getTime(),productId:req.params.productid,customerId:req.user.id,customerName:result.name,customerImage:result.image};
+      const newProductReview = new Review(productReview); 
+      newProductReview.save(function (err, reviewDetails){
+        if (err){
+          req.status(405).send(err);
+        }
+        else{
+          console.log("REVIEW DETAILS=>", newProductReview)
+          res.status(200).json(reviewDetails);
+        }
+      });
+    });
   },
   updateReview:async(req,res)=>{
     const  reviewId = req.params.reviewid;
