@@ -18,12 +18,9 @@ const signToken = user => {
 }
 module.exports = {
   customerReview: async(req,res)=>{
-    console.log("PRODUCT ID",req.params.productid)
-    console.log("CUSTOMER ID",req.user.id)
-    const findProductReview = await Review.find({"productId":req.params.productid,"customerId":req.user.id});
-    console.log("findProductReview",findProductReview)    
-      if(findProductReview.length != 0){
-        return res.status(403).json({ error: 'already given' });
+    const findProductReview = await Review.findOne({"productId":req.params.productid,"customerId":req.user.id});
+      if(findProductReview){
+        return res.status(403).json({ error: 'already reviewed' });
       }
     Customers.findOne({_id:req.user.id}, function(err, result) {
       const productReview  = {...req.body, reviewOn: new Date().getTime(),productId:req.params.productid,customerId:req.user.id,customerName:result.name,customerImage:result.image};
