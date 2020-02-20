@@ -28,7 +28,7 @@ router.route('/signup')
   .post(validateBody(schemas.authSchema), AdminsController.signUp);
 
 router.route('/signin')
-  .post(validateBody(schemas.loginSchema), passportSignIn, AdminsController.signIn);
+  .post( passportJWT,validateBody(schemas.loginSchema), passportSignIn, AdminsController.signIn);
 
 router.route('/status')
   .get(passportJWT, AdminsController.checkAuth);

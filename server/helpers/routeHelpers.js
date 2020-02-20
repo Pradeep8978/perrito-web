@@ -8,7 +8,6 @@ module.exports = {
       if (result.error) {
         return res.status(400).json(result.error);
       }
-
       if (!req.value) { req.value = {}; }
       req.value['body'] = result.value;
       next();
@@ -30,7 +29,7 @@ module.exports = {
     authSchema: Joi.object().keys({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
-      phone: Joi.number().required(),
+      phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
       password: Joi.string().required()  
     }),
 
@@ -70,7 +69,7 @@ module.exports = {
         city: Joi.string().required(),
         state: Joi.string().required(),
         pincode: Joi.number().required(),
-        email: Joi.string().required(),
+        email: Joi.string().email().required(),
         phone:Joi.number().required(),
       }),
       dimensions: Joi.object().keys({
@@ -95,7 +94,7 @@ module.exports = {
       customer_picture: Joi.array().items(Joi.string())
     }),
     customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().required(),
+      phone:Joi.number().integer().min(1000000000).max(9999999999).required(),
       name:Joi.string().required(),
       image:Joi.string()
     }),
@@ -103,7 +102,7 @@ module.exports = {
       phone:Joi.number().required()
     }),
     customerupdateSchema:Joi.object().keys({
-      email: Joi.string().required(),
+      email: Joi.string().email().required(),
       dob: Joi.string().required(),
       gender: Joi.string().required(),
       address:Joi.object().keys({
