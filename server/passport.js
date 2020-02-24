@@ -64,6 +64,7 @@ passport.use(new LocalStrategy({
         return done(null, false);
       }
       const isAdminMatch = await admin.isValidPassword(password);
+      console.log('PASSWORD MATCH =>', isAdminMatch);
       if (!isAdminMatch) {
         return done(null, false);
       }

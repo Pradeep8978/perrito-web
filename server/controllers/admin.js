@@ -44,7 +44,7 @@ module.exports = {
     console.log("req.user",req.user)
     // Generate token
     console.log('USER SIGN IN =>', req.user)
-    const token = signToken(req.body);
+    const token = signToken(req.user);
 
     // res.setHeader('Authorization', token);
     res.status(200).json({ token });

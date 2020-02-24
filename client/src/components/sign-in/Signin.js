@@ -39,7 +39,8 @@ class LoginPage extends React.Component {
       setPasswordFocus: false,
       formValues: {
         email: "",
-        password: ""
+        password: "",
+        role: "admin"
       },
       formErrors: {}
     }

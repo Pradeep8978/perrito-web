@@ -8,14 +8,14 @@ const getImageUrl = (body, id) => {
   const imgPath = `uploads/images/product_${body.name}_${new Date().getTime()}_${id}.png`;
   return imgPath;
 }
-const signToken = user => {
-  return JWT.sign({
-    iss: 'perrito',
-    sub: user.id,
-    iat: new Date().getTime(), // current time
-    exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
-  }, JWT_SECRET);
-}
+// const signToken = user => {
+//   return JWT.sign({
+//     iss: 'perrito',
+//     sub: user.id,
+//     iat: new Date().getTime(), // current time
+//     exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
+//   }, JWT_SECRET);
+// }
 module.exports = {
   createProduct: async (req, res, next) => {
     const productObj = { ...req.body, createdOn: new Date().getTime() };
@@ -43,9 +43,9 @@ module.exports = {
           res.status(405).send(err);
         }
         else {
-          const token = signToken(newProduct);
-          console.log("PRODUCT OBJECT=>", newProduct)
-          res.status(200).json({ newProduct });
+          // const token = signToken(productDetails);
+          console.log("PRODUCT OBJECT=>", productDetails)
+          res.status(200).json({ productDetails });
         }
       });
   },
