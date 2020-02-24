@@ -2,10 +2,11 @@ const JWT = require('jsonwebtoken');
 const Admin = require('../models/admin');
 const { JWT_SECRET } = require('../configuration');
 
-const signToken = user => {
+const signToken = admin => {
   return JWT.sign({
     iss: 'hostelly',
-    sub: user.id,
+    sub: admin.id,
+    role:"admin",
     iat: new Date().getTime(), // current time
     exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
   }, JWT_SECRET);
@@ -40,9 +41,11 @@ module.exports = {
   },
 
   signIn: async (req, res, next) => {
+    console.log("req.user",req.user)
     // Generate token
     console.log('USER SIGN IN =>', req.user)
-    const token = signToken(req.user);
+    const token = signToken(req.body);
+
     // res.setHeader('Authorization', token);
     res.status(200).json({ token });
   },

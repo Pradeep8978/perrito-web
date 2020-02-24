@@ -2,7 +2,7 @@ const express = require('express');
 const router = require('express-promise-router')();
 const passport = require('passport');
 // const passportConf = require('../passport');
-const {signInStrategy} = require('../customerPassport');
+// const {signInStrategy} = require('../customerPassport');
 // const axios = require('axios')
 const { validateBody, schemas, validateParams } = require('../helpers/routeHelpers');
 const CustomerController = require('../controllers/customers');
@@ -28,7 +28,7 @@ router.route('/signup')
   .post(validateBody(schemas.customerAuthSchema), CustomerController.signUp);
 
 router.route('/signin')
-  .post(validateBody(schemas.customerloginSchema), signInStrategy, CustomerController.signIn);
+  .post(validateBody(schemas.customerloginSchema), passportSignIn, CustomerController.signIn);
 
 router.route('/profile/update/:id')
   .put(validateBody(schemas.customerupdateSchema), CustomerController.updateProfile);
@@ -41,18 +41,5 @@ router.route('/profile/update/:id')
 
 // router.route('/profile')
 //   .get(passportJWT, CustomerController.getProfile);
-
-router.route('/image/upload')
-  .post(upload.single('resume'), (req, res, next) => {
-    const file = req.file;
-    console.log('REEQ BODY =>', req.body.origin)
-    if (!file) {
-      const error = new Error('Please upload a file');
-      error.httpStatusCode = 400
-      return next(error);
-    }
-    const file_location = `${req.body.origin}/${file.destination}/${file.filename}`
-      res.send(file_location);
-  });
 
 module.exports = router;

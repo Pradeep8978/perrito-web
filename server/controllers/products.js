@@ -33,7 +33,7 @@ module.exports = {
         fs.writeFile(imgUrl, buf, 'binary', function (err) {
           if (err) throw err;
           console.log('File saved.')
-        });
+        }); 
       })
       productObj.images = imageUrls;
     }
@@ -82,6 +82,7 @@ module.exports = {
     if (req.body.tags) updateProduct.tags = req.body.tags;
     if (req.body.important_info) updateProduct.important_info = req.body.important_info;
     if (req.body.price) updateProduct.price = req.body.price;
+    if (req.body.count) updateProduct.count = req.body.count;
     const imageUrls = []
     if (req.body.images) {
       req.body.images.map((image, index) => {
