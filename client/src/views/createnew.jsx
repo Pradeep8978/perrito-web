@@ -71,6 +71,15 @@ class createnew extends React.Component {
         // this._handleImageChange = this._handleImageChange.bind(this);
 
     }
+    componentDidMount(){
+        const url = '/products/list';
+        Axios.get('url'+this.props.match.params)
+        .then(res=>{
+            this.setState({
+                formValues:res.data
+            })
+        })
+    }
     changeHandler = (e) => {
         const { formValues, formErrors } = this.state;
         formValues[e.target.name] = e.target.value;
@@ -144,6 +153,7 @@ class createnew extends React.Component {
         });
          Promise.all(images)
          .then(res => { 
+             console.log("response images",res)
              this.setState(prevState => ({
                  formValues: {
                      ...prevState.formValues,
@@ -199,6 +209,8 @@ class createnew extends React.Component {
         return isValid;
     }
 
+
+    
     handleSubmit = e => {
         e.preventDefault();
         const { formValues } = this.state;
