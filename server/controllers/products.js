@@ -47,7 +47,7 @@ module.exports = {
           console.log("PRODUCT OBJECT=>", newProduct)
           res.status(200).json({ newProduct });
         }
-      });
+    });
   },
   getProducts: async (req, res, next) => {
     Product.find({}, function (err, response) {

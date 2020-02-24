@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     deleteError: null,
     ViewDetails: null
 }
-
+ 
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
     switch (type) {
         case types.FETCH_PRODUCT_LIST_LOADING:
