@@ -37,8 +37,6 @@ module.exports = {
       })
       productObj.images = imageUrls;
     }
-    const newProduct = new Product(productObj);
-    newProduct.save(function (err, productDetails) {
       const newProduct = new Product(productObj);
       newProduct.save(function (err, productDetails) {
         if (err) {
@@ -49,7 +47,6 @@ module.exports = {
           console.log("PRODUCT OBJECT=>", newProduct)
           res.status(200).json({ newProduct });
         }
-      });
     });
   },
   getProducts: async (req, res, next) => {

@@ -11,7 +11,7 @@ const mapStateToProps = state => {
     viewDetails: state.products.viewDetails,
     
 })};
-
+ 
 const mapDispatchToProps = {
     fetchProducts,
     deleteProduct,

@@ -51,12 +51,12 @@ export default class Products extends Component {
         this.setState({ deleting: true });
         this.props.deleteProduct(id);
     }
-
+  
     editStudent = details => {
         debugger;
         console.log("details"+ "=>" +details)
         this.props.preserveProductDetails(details);
-        this.props.history.push('');
+        this.props.history.push('/admin/createnew');
     }
     
     viewStudent = details => {

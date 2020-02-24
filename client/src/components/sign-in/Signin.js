@@ -38,6 +38,7 @@ class LoginPage extends React.Component {
       passwordFocus: false,
       setPasswordFocus: false,
       formValues: {
+        role:"admin",
         email: "",
         password: ""
       },
@@ -98,6 +99,7 @@ class LoginPage extends React.Component {
   render(){
     const {firstFocus, lastFocus, formErrors, formValues} = this.state;
     const {loading, error} = this.props;
+    console.log("loding", loading )
   return (
     <>
       {/* <ExamplesNavbar /> */}
@@ -168,6 +170,7 @@ class LoginPage extends React.Component {
                     </InputGroup>
                        <FormFeedback className="errormessage">{formErrors.password}</FormFeedback>
                   </CardBody>
+                
                   <CardFooter className="text-center">
                     <Button
                       block
@@ -178,7 +181,7 @@ class LoginPage extends React.Component {
                       onClick={this.handleSubmit}
                       // size="lg"
                     >
-                       {loading ? 'Please wait...' : 'Register'}
+                       {loading ? 'Please wait...' : 'Login'}
                     </Button>
                     <div className="pull-left">
                       <h6>
