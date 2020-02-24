@@ -11,11 +11,11 @@ const Customers = require('./models/customers');
 
 
 const tokenExtractor = req => {
-  let token = null;  
+  let token = null;
   console.log('HEADERS =>', req.headers)
-    token = req.headers.authorization;
+  token = req.headers.authorization;
   return token;
-  
+
 }
 
 // JSON WEB TOKENS STRATEGY
@@ -24,50 +24,67 @@ passport.use(new JwtStrategy({
   secretOrKey: config.JWT_SECRET,
   passReqToCallback: true
 }, async (req, payload, done) => {
+  var admin, customer
+  console.log("Role",payload.role)
+  console.log("SUB",payload.sub)
   try {
     // Find the user specified in token
-    let user = await Admin.findById(payload.sub);
-    if(!user) {
-      user = await Customers.findById(payload.sub);
+    if (payload.role == 'admin') {
+      admin = await Admin.findById(payload.sub);
+      if (!admin) {
+        return done(null, false);
+      }
+      done(null, admin);
     }
-
-    // If user doesn't exists, handle it
-    if (!user) {
-      return done(null, false);
+    if (payload.role == 'customer') {
+      customer = await Customers.findById(payload.sub);
+      if (!customer) {
+        return done(null, false);
+      }
+      done(null, customer);
     }
-
-    // Otherwise, return the user
-    req.user = user;
-    done(null, user);
-  } catch(error) {
+    // Otherwise, return the
+  } catch (error) {
     done(error, false);
   }
 }));
 
 // LOCAL STRATEGY
 passport.use(new LocalStrategy({
-  usernameField: 'email'
-}, async (email, password, done) => {
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true
+}, async (req, email, password, done) => {
+  let admin, customer;
   try {
     // Find the user given the email
-    const user = await Admin.findOne({ "email": email });
-    
-    // If not, handle it
-    if (!user) {
-      return done(null, false);
+    if (req.body.role == 'admin') {
+      admin = await Admin.findOne({ "email": email });
+      if (!admin) {
+        return done(null, false);
+      }
+      const isAdminMatch = await admin.isValidPassword(password);
+      if (!isAdminMatch) {
+        return done(null, false);
+      }
+      done(null, admin);
+
     }
-  
-    // Check if the password is correct
-    const isMatch = await user.isValidPassword(password);
-  
-    // If not, handle it
-    if (!isMatch) {
-      return done(null, false);
+
+    if (req.body.role == 'customer') {
+      customer = await Customers.findOne({ "email": email });
+      if (!customer) {
+        return done(null, false);
+      }
+      const isMatch = await customer.isValidPassword(password);
+      console.log('MATCH =>', isMatch)
+      if (!isMatch) {
+        return done(null, false);
+      }
+      done(null, customer);
     }
-  
-    // Otherwise, return the user
-    done(null, user);
-  } catch(error) {
+    // If not, handle it
+  } catch (error) {
     done(error, false);
   }
 }));

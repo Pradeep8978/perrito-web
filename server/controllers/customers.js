@@ -11,6 +11,7 @@ const signToken = customer => {
   return JWT.sign({
     iss: 'perrito',
     sub: customer.id,
+    role:"customer",
     iat: new Date().getTime(), // current time
     exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
   }, JWT_SECRET);
@@ -22,11 +23,11 @@ const getImageUrl = (body) => {
 
 module.exports = {
   signUp: async (req, res, next) => {
-    const {name, phone } = req.value.body;
+    const {name, phone,email,password } = req.value.body;
     // Check if there is a user with the same email
-    let foundCustomers = await Customers.findOne({ "phone": phone });
+    let foundCustomers = await Customers.findOne({ "email": email });
     if (foundCustomers) {
-      return res.status(403).json({ error: 'Mobile number is already in use' });
+      return res.status(403).json({ error: 'Email is already in use' });
     }
     const cusObj = { ...req.body, createdOn: new Date().getTime() }; 
     // const imageUrls = ""
@@ -54,9 +55,10 @@ module.exports = {
   },
 
   signIn: async (req, res, next) => {
+    console.log("USER",req.user)
     // Generate token
     console.log('CUSTOMER SIGN IN =>', req.customer)
-    const token = signToken(req.customer);
+    const token = signToken(req.body);
     // res.setHeader('Authorization', token);
     res.status(200).json({ token });
   },
