@@ -55,6 +55,7 @@ adminSchema.methods.isValidPassword = async function (newPassword) {
   }
 }
 
+
 // Create a model
 const Admin = mongoose.model('admin', adminSchema);
 

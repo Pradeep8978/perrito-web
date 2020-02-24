@@ -35,7 +35,8 @@ module.exports = {
 
     loginSchema: Joi.object().keys({
       email: Joi.string().email().required(),
-      password: Joi.string().required()
+      password: Joi.string().required(),
+      role:Joi.string()
     }),
     queryUser: Joi.object().keys({
       role: Joi.string()
@@ -95,11 +96,15 @@ module.exports = {
     }),
     customerAuthSchema:Joi.object().keys({
       phone:Joi.number().integer().min(1000000000).max(9999999999).required(),
+      email: Joi.string().email().required(),
+      password:Joi.string().required()   ,
       name:Joi.string().required(),
       image:Joi.string()
     }),
     customerloginSchema:Joi.object().keys({
-      phone:Joi.number().required()
+      email:Joi.string().email().required(),
+      password:Joi.string().required(),
+      role:Joi.string()
     }),
     customerupdateSchema:Joi.object().keys({
       email: Joi.string().email().required(),
