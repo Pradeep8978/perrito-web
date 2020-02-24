@@ -55,10 +55,10 @@ module.exports = {
   },
 
   signIn: async (req, res, next) => {
-    console.log("USER",req.user)
+    console.log("Customer Details =>",req.user)
     // Generate token
-    console.log('CUSTOMER SIGN IN =>', req.customer)
-    const token = signToken(req.body);
+    console.log('CUSTOMER SIGN IN =>', req.user)
+    const token = signToken(req.user);
     // res.setHeader('Authorization', token);
     res.status(200).json({ token });
   },
