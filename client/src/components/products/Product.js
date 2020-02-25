@@ -34,7 +34,7 @@ export default class Products extends Component {
         const { filterText, filterType, filters } = this.state;
         filters[filterType] = filterText;
         this.setState({ filters, filterText: '' });
-        // this.props.actions.getStudentList(this.props.tin, filters);
+        // this.props.actions.getProductList(this.props.tin, filters);
     }
     displayNotification = (title, type, message) => {
         this.props.notificationSystem.addNotification({
@@ -46,27 +46,29 @@ export default class Products extends Component {
         });
     }
 
-    deleteStudent = ({ id }) => {
+    deleteProduct = ({ id }) => {
         const title = "";
         this.setState({ deleting: true });
         this.props.deleteProduct(id);
     }
-
-    editStudent = details => {
+  
+    editProduct = details => {
+        debugger;
+        console.log("details"+ "=>" +details)
         this.props.preserveProductDetails(details);
-        this.props.history.push('/dashboard/academics/student/edit');
+        this.props.history.push('/admin/product/update');
     }
     
-    viewStudent = details => {
+    viewProduct = details => {
         this.props.preserveProductDetails(details);
-        this.props.history.push('/view');
+        this.props.history.push('/admin/product/view');
     }
 
     onRemoveChip = key => {
         const { filters } = this.state;
         delete filters[key];
         this.setState({ filters });
-        this.props.actions.getStudentList(this.props.tin, filters);
+        this.props.actions.getProductList(this.props.tin, filters);
     }
 
     _renderChips = () => {
@@ -97,16 +99,16 @@ export default class Products extends Component {
                                 // f ilter_config.map(item => <option key={item.key} value={item.value}>{item.label}</option>)
                             }
                         </select>
-                        <button className="btn btn-primary ml-2" onClick={this.onApplyFilter}>Filter Students</button>
+                        <button className="btn btn-primary ml-2" onClick={this.onApplyFilter}>Filter Products</button>
                         <button className="btn btn-outline-danger ml-2" onClick={this.resetFilters}>Reset All Filters</button>
                     </div>
                     {this._renderChips()}
                 </div>
 
                 <ProductList
-                    onEditClick={this.editStudent}
-                    onDeleteClick={this.deleteStudent}
-                    onDetailsClick={this.viewStudent}
+                    onEditClick={this.editProduct}
+                    onDeleteClick={this.deleteProduct}
+                    onDetailsClick={this.viewProduct}
                     deleting={this.state.deleting}
                     {...this.props} />
             </>

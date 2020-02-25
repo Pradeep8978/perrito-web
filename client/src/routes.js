@@ -23,7 +23,7 @@ import TableList from "views/TableList.jsx";
 import Maps from "views/Maps.jsx";
 import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
-import CreateNew from "views/createnew.jsx"
+import CreateProduct from "containers/createProduct.container"
 import Products from 'containers/products.container'
 
 var dashRoutes = [
@@ -50,10 +50,18 @@ var dashRoutes = [
     //   }],
   },
   {
-    path: "/createnew",
-    name: "CreateNew",
+    path: "/product/create",
+    name: "Create Product",
     icon: "design_app",
-    component: CreateNew,
+    component: CreateProduct,
+    layout: "/admin"
+  },
+  {
+    path: "/product/update",
+    name: "Update Product",
+    icon: "design_app",
+    hide: true,
+    component: CreateProduct,
     layout: "/admin"
   },
   {

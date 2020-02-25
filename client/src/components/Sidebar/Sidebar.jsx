@@ -71,7 +71,7 @@ class Sidebar extends React.Component {
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
           <Nav>
-            {this.props.routes.map((prop, key) => {
+            {this.props.routes.filter(o => !o.hide).map((prop, key) => {
               if (prop.redirect) return null;
               return (
                 <li

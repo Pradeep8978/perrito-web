@@ -36,10 +36,21 @@ class ViewProducts extends Component {
     return (
       <Container>
         <Row>
+          <Col sm="12">       
           <Card style={{ textAlign: "center" }}>
-            <h2>Product and Person Details</h2>
-            <img style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX" }} height="150px"
-            src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="Card image cap" />
+            <h2>Product and Seller Details</h2>
+            {
+              ViewDetails.images.map((items) =>
+                <img
+                  style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX", marginLeft: "10px" }}
+                  height="150px"
+                  width="180px"
+                  src={"/" + items} alt="Card image cap" />
+              )
+
+            }
+
+            {/* <img className="profile_image" src={"/"+ViewDetails.images[0]} alt="Profile Image"/> */}
             <CardBody>
               <Row>
                 <Container>
@@ -62,7 +73,7 @@ class ViewProducts extends Component {
                         <th>Description</th>
                         <td>{ViewDetails.description}</td>
                       </tr>
-                      <p style={{color:'red'}}>Specfications</p>
+                      <p style={{ color: 'red' }}>Specfications</p>
                       <tr>
                         <th>Label</th>
                         {ViewDetails.specifications.map((item) => {
@@ -77,7 +88,7 @@ class ViewProducts extends Component {
                           )
                         })}
                       </tr>
-                      <p style={{color:'red'}}>Dimensions</p>
+                      <p style={{ color: 'red' }}>Dimensions</p>
                       <tr>
                         <th>Height</th>
                         <td>{ViewDetails.dimensions.height}</td>
@@ -90,7 +101,7 @@ class ViewProducts extends Component {
                         <th>Weight</th>
                         <td>{ViewDetails.dimensions.weight}</td>
                       </tr>
-                      <p style={{color:'red'}}>seller info</p>
+                      <p style={{ color: 'red' }}>seller info</p>
                       <tr>
                         <th>Name</th>
                         <td>{ViewDetails.seller_info.name}</td>
@@ -131,26 +142,31 @@ class ViewProducts extends Component {
                         <th>Price</th>
                         <td>{ViewDetails.price}</td>
                       </tr>
+                      <tr>
+                        <th>Avaliable Products</th>
+                        <td>{ViewDetails.count}</td>
+                      </tr>
                     </tbody>
                   </Table>
                 </Container>
 
               </Row>
-              
+
               <Button
-              className=""
-              color=""
-              to="/admin/products"
-              outline
-              size="lg"
-              tag={Link}
-              style={{background:"red"}}
-            >
-               Back
+                className=""
+                color=""
+                to="/admin/products"
+                outline
+                size="lg"
+                tag={Link}
+                style={{ background: "red" }}
+              >
+                Back
             </Button>
-      
+
             </CardBody>
           </Card>
+          </Col>
         </Row>
       </Container>
     )
