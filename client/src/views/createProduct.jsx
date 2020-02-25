@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 import { validationConfig } from './validations';
 import Datetime from 'react-datetime';
-import './createNew.scss'
+import './createProduct.scss'
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
@@ -60,25 +60,36 @@ class createnew extends React.Component {
                 important_info: '',
                 price: '',
                 tags: [],
-                count: ''     
-                  },
+                count: ''
+            },
             tagText: '',
             formErrors: {},
             file: '',
             imagePreviewUrl: '',
-            statesData: contriesData
+            statesData: contriesData,
+            isUpdate: false
         }
         // this._handleImageChange = this._handleImageChange.bind(this);
 
     }
-    componentDidMount(){
-        const url = '/products/list';
-        Axios.get('url'+this.props.match.params)
-        .then(res=>{
+
+    componentWillMount() {
+        const { selectedProduct } = this.props;
+        if (selectedProduct && window.location.href.includes('update')) {
             this.setState({
-                formValues:res.data
+                formValues: selectedProduct,
+                isUpdate: true
             })
-        })
+        }
+    }
+    componentDidMount() {
+        const url = '/products/list';
+        Axios.get('url' + this.props.match.params)
+            .then(res => {
+                this.setState({
+                    formValues: res.data
+                })
+            })
     }
     changeHandler = (e) => {
         const { formValues, formErrors } = this.state;
@@ -106,7 +117,6 @@ class createnew extends React.Component {
         })
     }
     changeDiscriptionHandler = (e, i) => {
-        // debugger;
         let { formValues } = this.state;
         formValues.description[i] = e.target.value;
         this.setState({
@@ -114,7 +124,6 @@ class createnew extends React.Component {
         })
     }
     changeSpecificationHandler = (e, i) => {
-        // debugger;
         let { formValues } = this.state;
         formValues.specifications[i][e.target.name] = e.target.value;
         this.setState({
@@ -149,49 +158,19 @@ class createnew extends React.Component {
     fileSelectedHandler = async (e) => {
         const images = Object.values(e.target.files).map(file => {
             console.log(file.size)
-          return fileToBase64(file)
+            return fileToBase64(file)
         });
-         Promise.all(images)
-         .then(res => { 
-             console.log("response images",res)
-             this.setState(prevState => ({
-                 formValues: {
-                     ...prevState.formValues,
-                     images: res
-                 }
-             }))
-         })
+        Promise.all(images)
+            .then(res => {
+                console.log("response images", res)
+                this.setState(prevState => ({
+                    formValues: {
+                        ...prevState.formValues,
+                        images: res
+                    }
+                }))
+            })
     }
-
-    // _handleImageChange(e) {
-    //     e.preventDefault();
-    //     let reader = new FileReader();
-    //     let file = e.target.files[0];
-    //     reader.onloadend = () => {
-    //         this.setState({
-    //             file: file,
-    //             imagePreviewUrl: reader.result
-    //         });
-    //     }
-
-    //     reader.readAsDataURL(file)
-    // }
-
-    // onChangeDate = (value, name) => {
-    //     const { formValues, formErrors } = this.state;
-
-    //     try {
-    //         value = (typeof value === 'string') ? value : value.format("DD/MM/YYYY");
-    //         const validationFunc = validationConfig[name];
-    //         formErrors[name] = validationFunc ? validationFunc(value) : "";
-    //         formValues[name] = value
-    //         this.setState({
-    //             formValues,
-    //             formErrors
-    //         })
-    //     } catch (e) { }
-
-    // }
 
     validateAllFields = () => {
         const { formValues } = this.state;
@@ -210,7 +189,7 @@ class createnew extends React.Component {
     }
 
 
-    
+
     handleSubmit = e => {
         e.preventDefault();
         const { formValues } = this.state;
@@ -229,40 +208,39 @@ class createnew extends React.Component {
 
     render() {
         console.log(this.state.formValues, this.state.tagText)
-        // let { imagePreviewUrl } = this.state;
-        // let $imagePreview = null;
-        // if (imagePreviewUrl) {
-        //     $imagePreview = (<img src={imagePreviewUrl} />);
-        // }
-        const { formValues, formErrors } = this.state;
-        const categories = ["Select", "Food", "Toys", "Accessories", "Health", "Grooming", "Bath"]
+        const { formValues, formErrors, isUpdate } = this.state;
+        const categories = ["Select", "Food", "Toys", "Accessories", "Health", "Grooming", "Bath"];
+        const cardTitle = isUpdate ? 'Update Product Details' : 'Create New Product';
         return (
             <>
                 <PanelHeader size="sm" />
                 <div className="content">
+                    <Card>
+                        <CardBody>
+                            {
+                                formValues.images.map(data => {
+                                    let url;
+                                    if(data.includes('uploads')){
+                                        url = data
+                                    }else{
+                                        url = `data:image/png;base64,${data}`
+                                    }
+                                    return (
+                                        <img src={url} className="product-image" style={{ marginLeft: "5px" }} />
+                                    )
+                                })
+                            }
+                        </CardBody>
+                    </Card>
                     <Row>
-                        <Col md="12">
+                        <Col md="8">
                             <Card>
                                 <CardHeader>
-                                    <h5 className="title">Create New</h5>
+                                    <h5 className="title">{cardTitle}</h5>
                                 </CardHeader>
                                 <CardBody>
                                     <Form onSubmit={this.handleSubmit}>
-                                        <Row>
-                                            <Col md="2">
-                                                <span style={{display:"flex",marginLeft:"5px"}}>
-                                                {
-                                                formValues.images.map(data => {
-                                                    return(
-                                                        <img src={`data:image/png;base64,${data}`} alt="Red dot" style={{marginLeft:"5px"}}/>
-                                                    )
-                                                })
-                                            }
-                                                </span>
-                                            
-                                            </Col>
-                                            
-                                        </Row>
+
                                         <Row>
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
@@ -459,7 +437,7 @@ class createnew extends React.Component {
                                                     <FormFeedback>{formErrors.room_number}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
-                                            </Row>
+                                        </Row>
                                         <h5>Seller Information</h5>
                                         <Row>
                                             <Col className="pl-1" md="6">
@@ -621,9 +599,9 @@ class createnew extends React.Component {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Row>
-                                            <Button>Clear</Button>
-                                            <Button type="submit" >Submit</Button>
+                                        <Row className="offset-md-9">
+                                            <Button color="danger">Clear</Button>
+                                            <Button color="success" type="submit" >Submit</Button>
                                         </Row>
 
                                     </Form>
