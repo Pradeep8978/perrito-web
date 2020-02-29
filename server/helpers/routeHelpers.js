@@ -104,7 +104,7 @@ module.exports = {
     customerloginSchema:Joi.object().keys({
       email:Joi.string().email().required(),
       password:Joi.string().required(),
-      role:Joi.string()
+      role:Joi.string().required()
     }),
     customerupdateSchema:Joi.object().keys({
       email: Joi.string().email().required(),
