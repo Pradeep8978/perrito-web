@@ -58,7 +58,7 @@ module.exports = {
     console.log("USER",req.user)
     // Generate token
     console.log('CUSTOMER SIGN IN =>', req.customer)
-    const token = signToken(req.body);
+    const token = signToken(req.customer);
     // res.setHeader('Authorization', token);
     res.status(200).json({ token });
   },
@@ -71,7 +71,7 @@ module.exports = {
 
 
   checkAuth: async (req, res, next) => {
-    const token = signToken(req.user);
+    const token = signToken(req.customer);
     console.log('I managed to get here!');
     res.json({ token });
   },
@@ -106,7 +106,8 @@ module.exports = {
       res.json(updateProfile);
     })
   },
+  
   getProfile: async (req, res) => {
-    res.send(req.user);
+    res.send(req.customer);
   }
 }
