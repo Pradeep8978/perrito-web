@@ -71,8 +71,9 @@ module.exports = {
 
 
   checkAuth: async (req, res, next) => {
+    const token = signToken(req.user);
     console.log('I managed to get here!');
-    res.json({ success: true });
+    res.json({ token });
   },
 
 //   getCustomers: async (req, res, next) => {

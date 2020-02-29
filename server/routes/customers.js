@@ -33,8 +33,8 @@ router.route('/signin')
 router.route('/profile/update/:id')
   .put(validateBody(schemas.customerupdateSchema), CustomerController.updateProfile);
 
-// router.route('/status')
-//   .get(passportJWT, CustomerController.checkAuth);
+router.route('/status')
+  .get(passportJWT, CustomerController.checkAuth);
 
 // router.route('/list')
 //   .get(passportJWT, validateParams(schemas.queryCustomer), CustomerController.getCustomers);
