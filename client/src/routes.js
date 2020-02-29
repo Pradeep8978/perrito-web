@@ -25,6 +25,7 @@ import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
 import CreateProduct from "containers/createProduct.container"
 import Products from 'containers/products.container'
+import ViewDetails from './components/viewDetails/ViewProducts'
 
 var dashRoutes = [
   {
@@ -56,12 +57,21 @@ var dashRoutes = [
     component: CreateProduct,
     layout: "/admin"
   },
+  
   {
     path: "/product/update",
     name: "Update Product",
     icon: "design_app",
     hide: true,
     component: CreateProduct,
+    layout: "/admin"
+  },
+  {
+    path: "/product/view",
+    name: "Update Product",
+    icon: "design_app",
+    hide: true,
+    component: ViewDetails,
     layout: "/admin"
   },
   {

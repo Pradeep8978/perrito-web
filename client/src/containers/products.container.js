@@ -3,8 +3,8 @@ import {fetchProducts, deleteProduct,preserveProductDetails} from './../actions/
 import Products from '../components/products/Product';
 
 const mapStateToProps = state => {
-    debugger
     return({
+        
     productList: state.products.productList,
     loading: state.products.loading,
     error: state.products.error,
