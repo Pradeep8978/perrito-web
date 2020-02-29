@@ -95,7 +95,7 @@ module.exports = {
       customer_picture: Joi.array().items(Joi.string())
     }),
     customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().integer().min(1000000000).max(9999999999).required(),
+      phone:Joi.number().integer().min(1000000000).max(9999999999),
       email: Joi.string().email().required(),
       password:Joi.string().required()   ,
       name:Joi.string().required(),
