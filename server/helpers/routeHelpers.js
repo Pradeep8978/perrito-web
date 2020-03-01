@@ -89,6 +89,9 @@ module.exports = {
       important_info: Joi.string().required(),
       price: Joi.number().required(),
     }),
+    productList: Joi.object().keys({
+      search: Joi.string()
+    }),
     reviewSchema:Joi.object().keys({
       ratting:Joi.number().integer().min(1).max(5).required(),
       description:Joi.string().required(),

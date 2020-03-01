@@ -8,14 +8,22 @@ const getImageUrl = (body, id) => {
   const imgPath = `uploads/images/product_${body.name}_${new Date().getTime()}_${id}.png`;
   return imgPath;
 }
-// const signToken = user => {
-//   return JWT.sign({
-//     iss: 'perrito',
-//     sub: user.id,
-//     iat: new Date().getTime(), // current time
-//     exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
-//   }, JWT_SECRET);
+
+// const getAggregationPipeline = (params) => {
+//   const pipeline = [];
+//   const {category, search} = params;
+//   if(category){
+//     pipeline.push({
+//       categories: {
+//         $in: [
+//           category
+//         ]
+//       }
+//     })
+//   }
+//   return pipeline;
 // }
+
 module.exports = {
   createProduct: async (req, res, next) => {
     const productObj = { ...req.body, createdOn: new Date().getTime() };
@@ -50,9 +58,21 @@ module.exports = {
     });
   },
   getProducts: async (req, res, next) => {
+    // const pipeline = getAggregationPipeline(req.params);
+    const search = req.query.search ? req.query.search.toLowerCase() : '';
     Product.find({}, function (err, response) {
-      if (err) res.status(404).json({ message: "Error in fetfching products " + req.user.id });
-      res.json(response);
+      if (err) res.status(404).send(err);
+      else{
+        if(search){
+        response = response.filter(o =>{
+          var regex = (arr) => new RegExp( arr.join( "|" ), "i");
+          if(regex(o.categories).test(search) || o.name.toLowerCase().includes(search) || regex(o.tags).test(search)){
+            return o;
+          }
+        })
+      }
+        res.json(response);
+      }
     });
   },
   updateProduct: async (req, res) => {
