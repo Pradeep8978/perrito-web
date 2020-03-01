@@ -30,8 +30,11 @@ router.route('/signup')
 router.route('/signin')
   .post(validateBody(schemas.customerloginSchema), passportSignIn, CustomerController.signIn);
 
-router.route('/profile/update/:id')
+router.route('/profile/update')
   .put(validateBody(schemas.customerupdateSchema), CustomerController.updateProfile);
+
+router.route('/profile')
+  .get(passportJWT, CustomerController.getProfile);
 
 router.route('/status')
   .get(passportJWT, CustomerController.checkAuth);
