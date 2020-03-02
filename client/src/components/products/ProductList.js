@@ -24,9 +24,9 @@ class PeersonList extends React.Component {
     }
 
     render() {
-        const { productList } = this.props;
+        const { productList, loading } = this.props;
         console.log('Student List =>', this.props);
-        if (this.props.studentListLoading) {
+        if (loading) {
             return this._renderSkeleton()
         }
         return (
@@ -36,24 +36,13 @@ class PeersonList extends React.Component {
                         productList.map(item => {
                             return (
                                 <InfoCard key={item.admission_number}
-                                name={item.name}
-                                    title={item.student_info && (item.student_info.first_name + " " + item.student_info.last_name)}
+                                title={item.name}
+                                    // title={item.student_info && (item.student_info.first_name + " " + item.student_info.last_name)}
                                     deleting={this.props.deleting}
                                     onEditClick={() => this.props.onEditClick(item)}
                                     onDeleteClick={() => this.props.onDeleteClick(item)}
                                     onDetailsClick={() => this.props.onDetailsClick(item)}
                                 >
-                                    {/* <Row>
-                                        <Col xs="6" style={{textAlign:"center"}}>
-                                            <img className="profile_image" src={"/" + item.images[0]} alt="Profile Image" /></Col>
-                                        <Col xs="6" style={{textAlign:"center"}}>
-                                            <label>Name</label>
-                                            <div>{item.name}</div>
-                                            <label>categories</label>
-                                            <label>PRICE</label>
-                                            <div>{item.price}</div>
-                                        </Col>
-                                    </Row> */}
                                     <div className="d-flex w-100 ml-2 mr-2">
                                         {/* <img className="profile_image" src={item.images || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="student_img" /> */}
                                         <img className="profile_image" src={"/" + item.images[0] || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg" } alt="Profile Image" />
@@ -74,20 +63,10 @@ class PeersonList extends React.Component {
                                                     </tr>
                                                 </tbody>
                                             </Table>
-                                            {/* <div className="col-4 mb-2">
-                                    <label>Name</label>
-                                    <div>{item.name}</div>
-                                </div>
-                                <div className="col-4 mb-2">
-                                    <label>categories</label>
-                                    <div>{item.categories}</div>
-                                </div>
-                                <div className="col-4 mb-2">
-                                    <label>PRICE</label>
-                                    <div>{item.price}</div>
-                                </div> */}
+                                            
                                         </div>
                                     </div>
+                                    
                                 </InfoCard>
                             )
                         })

@@ -41,20 +41,20 @@ module.exports = {
         fs.writeFile(imgUrl, buf, 'binary', function (err) {
           if (err) throw err;
           console.log('File saved.')
-        }); 
+        });
       })
       productObj.images = imageUrls;
     }
-      const newProduct = new Product(productObj);
-      newProduct.save(function (err, productDetails) {
-        if (err) {
-          res.status(405).send(err);
-        }
-        else {
-          // const token = signToken(productDetails);
-          console.log("PRODUCT OBJECT=>", productDetails)
-          res.status(200).json({ productDetails });
-        }
+    const newProduct = new Product(productObj);
+    newProduct.save(function (err, productDetails) {
+      if (err) {
+        res.status(405).send(err);
+      }
+      else {
+        // const token = signToken(productDetails);
+        console.log("PRODUCT OBJECT=>", productDetails)
+        res.status(200).json({ productDetails });
+      }
     });
   },
   getProducts: async (req, res, next) => {
@@ -99,13 +99,17 @@ module.exports = {
     }
     if (req.body.description) updateProduct.description = req.body.description;
     if (req.body.specifications) updateProduct.specifications = req.body.specifications;
-    if (req.body.tags) updateProduct.tags = req.body.tags;
+    if (req.body.tagText) updateProduct.tagText = req.body.tagText;
     if (req.body.important_info) updateProduct.important_info = req.body.important_info;
     if (req.body.price) updateProduct.price = req.body.price;
     if (req.body.count) updateProduct.count = req.body.count;
     const imageUrls = []
     if (req.body.images) {
       req.body.images.map((image, index) => {
+        if (image.includes('uploads')) {
+          imageUrls.push(image);
+          return;
+        }
         var buf = Buffer.from(image, 'base64');
         console.log('BUFFFER length=>', buf.length)
         if (buf.length > 100 * 1024) {

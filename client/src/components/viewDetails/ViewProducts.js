@@ -24,6 +24,8 @@ import {
 
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import PanelHeader from "../../components/PanelHeader/PanelHeader";
+
 
 
 class ViewProducts extends Component {
@@ -34,7 +36,9 @@ class ViewProducts extends Component {
     console.log('view products', this.props)
     const { ViewDetails } = this.props;
     return (
-      <Container>
+      <>
+                <PanelHeader size="sm" />
+
         <Row>
           <Col sm="12">       
           <Card style={{ textAlign: "center" }}>
@@ -54,7 +58,7 @@ class ViewProducts extends Component {
             <CardBody>
               <Row>
                 <Container>
-                  <Table>
+                  <Table responsive>
                     <tbody>
                       <tr>
                         <th>Name</th>
@@ -168,7 +172,8 @@ class ViewProducts extends Component {
           </Card>
           </Col>
         </Row>
-      </Container>
+    
+      </>
     )
   }
 

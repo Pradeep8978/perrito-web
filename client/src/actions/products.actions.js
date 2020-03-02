@@ -73,7 +73,7 @@ export const fetchProducts = () => dispatch => {
     return Axios.get(url)
     .then(res => {
         dispatch(fetchProductsSuccess(res.data));
-        return res;
+        return res; 
     })
     .catch(err => {
         dispatch(fetchProductsFailure(err));
@@ -93,9 +93,9 @@ export const createNewProduct = (bodyParams) => dispatch => {
         dispatch(createProductFailure(err));
         throw err;
     })
-}
+} 
 
-export const updateProduct = (bodyParams) => dispatch => {
+export const updateProduct = (bodyParams) => dispatch => {  debugger
     dispatch(updateProductLoading());
     const url = '/products/update';
     return Axios.put(url, bodyParams)
@@ -109,7 +109,7 @@ export const updateProduct = (bodyParams) => dispatch => {
     })
 }
 
-export const deleteProduct = () => dispatch => {
+export const deleteProduct = (id) => dispatch => {
     dispatch(deleteProductLoading());
     const url = '/products/delete';
     return Axios.delete(url)
