@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 import { validationConfig } from './validations';
 import Datetime from 'react-datetime';
-import Dropdown from './../components/DropDown/DropDown';
+// import Dropdown from './../components/DropDown/DropDown';
 import './createProduct.scss'
 
 // core components
