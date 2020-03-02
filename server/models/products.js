@@ -27,7 +27,7 @@ const productSchema = new Schema({
         label: String,
         value: String,
     }],
-    tags:[String],
+    tagText:[String],
     count:Number,
     important_info: String,
     price: Number,
