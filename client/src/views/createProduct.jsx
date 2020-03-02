@@ -195,9 +195,11 @@ class createnew extends React.Component {
         return Axios.post(url, formValues)
             .then(res => {
                 console.log('formvalues new ', res.data);
-
+                this.props.notify(2, 'Successfully Created');
+                this.props.history.push("/admin/products")
             })
             .catch(err => {
+                this.props.notify(3, 'Sorry unable to create Product. Make sure you fill all theee details');
                 throw err;
             })
     }
@@ -212,11 +214,13 @@ class createnew extends React.Component {
             url: `/products/update/${id}`, 
             data: formValues,
         }).then(res => {
-           console.log("resopnse=============>", res)
+            this.props.notify(2, 'Successfully Updated the product Details');
+            this.props.history.push("/admin/products");
         })
-            .catch(err => {
+        .catch(err => {
                 console.log("erro", err)
-            });
+                this.props.notify(3, 'Sorry unable to create Product. Make sure you fill all theee details');
+        });
 
     }
 
@@ -228,7 +232,6 @@ class createnew extends React.Component {
             this.props.history.push("/admin/products")
         } else {
             this.onSubmitCreate()
-            this.props.history.push("/admin/products")
         }
 
     }
@@ -444,7 +447,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="height"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.height}
+                                                        value={formValues.dimensions && formValues.dimensions.height}
                                                         onChange={this.changeDimesionsHandler}
 
                                                     />
@@ -460,7 +463,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="width"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.width}
+                                                        value={formValues.dimensions && formValues.dimensions.width}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
                                                     <FormFeedback>{formErrors.dimensions}</FormFeedback>
@@ -475,7 +478,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="weight"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.weight}
+                                                        value={formValues.dimensions &&formValues.dimensions.weight}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
                                                     <FormFeedback>{formErrors.dimensions}</FormFeedback>
