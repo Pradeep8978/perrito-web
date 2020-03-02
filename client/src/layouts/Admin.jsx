@@ -116,7 +116,7 @@ class Dashboard extends React.Component {
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  render={()=><Component notify={this.notify}/>}
+                  render={(props)=><Component notify={this.notify} {...props}/>}
                   key={key}
                 />
               );
