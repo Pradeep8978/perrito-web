@@ -21,6 +21,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Route, Switch, Redirect } from "react-router-dom";
+import NotificationAlert from "react-notification-alert";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";

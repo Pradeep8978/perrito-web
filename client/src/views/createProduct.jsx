@@ -21,6 +21,7 @@ import {
 } from "reactstrap";
 import { validationConfig } from './validations';
 import Datetime from 'react-datetime';
+import Dropdown from './../components/DropDown/DropDown';
 import './createProduct.scss'
 
 // core components
@@ -183,6 +184,9 @@ class createnew extends React.Component {
             formErrors[key] = errormessage;
             if (errormessage) isValid = false;
         });
+        if(!formValues.categories.length){
+            formErrors.categories = 'Please select a category';
+        }
         this.setState({
             formErrors
         });
@@ -295,13 +299,14 @@ class createnew extends React.Component {
                                                     <label>Categories</label>
                                                     <Input type="select" name="categories"
                                                         onChange={this.changeHandler}
-                                                        value={this.state.formValues.categories}>
+                                                        value={formValues.categories}>
                                                         {categories.map((item, i) => {
                                                             return <option key={i}
                                                             >{item}</option>
                                                         })}
 
                                                     </Input>
+                                                    {/* <Dropdown options={categories}/> */}
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
