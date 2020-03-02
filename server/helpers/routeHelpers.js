@@ -85,7 +85,7 @@ module.exports = {
         value:Joi.string().required(),
       })).required(),
       // specifications: Joi.string().required(),
-      tagText: Joi.array().items(Joi.string()).required(),
+      tags: Joi.array().items(Joi.string()).required(),
       important_info: Joi.string().required(),
       price: Joi.number().required(),
     }),

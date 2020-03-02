@@ -60,10 +60,10 @@ class createnew extends React.Component {
                 },
                 important_info: '',
                 price: '',
-                tagText: [],
+                tags: [],
                 count: ''
             },
-            // tagText: '',
+            // tags: '',
             formErrors: {},
             file: '',
             imagePreviewUrl: '',
@@ -149,8 +149,8 @@ class createnew extends React.Component {
     }
     tagsHandler = (e) => {
         const { formValues } = this.state;
-        this.state.tagText = e.target.value;
-        formValues.tagText = this.state.tagText.split(' ');
+        // this.state.tags = e.target.value;
+        formValues.tags = e.target.value.split(' ');
         this.setState({
             formValues
         })
@@ -326,10 +326,10 @@ class createnew extends React.Component {
                                                         defaultValue=""
                                                         placeholder="Enter Tags"
                                                         type="text"
-                                                        name="tagText"
+                                                        name="tags"
                                                         invalid={formErrors.name}
                                                         onChange={this.tagsHandler}
-                                                        value={this.state.formValues.tagText}
+                                                        value={this.state.formValues.tags.join(", ")}
                                                     />
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
