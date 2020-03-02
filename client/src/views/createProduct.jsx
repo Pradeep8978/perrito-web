@@ -82,15 +82,15 @@ class createnew extends React.Component {
             })
         }
     }
-    componentDidMount() {
-        const url = '/products/list';
-        Axios.get('url' + this.props.match.params)
-            .then(res => {
-                this.setState({
-                    formValues: res.data
-                })
-            })
-    }
+    // componentDidMount() {
+    //     const url = '/products/list';
+    //     Axios.get('url' + this.props.match.params)
+    //         .then(res => {
+    //             this.setState({
+    //                 formValues: res.data
+    //             })
+    //         })
+    // }
     changeHandler = (e) => {
         const { formValues, formErrors } = this.state;
         formValues[e.target.name] = e.target.value;
