@@ -40,10 +40,12 @@ customerSchema.pre('save', async function (next) {
 
 });
 customerSchema.pre('findOneAndUpdate', function (next) {
+  if (!this._update.password ) {
+    return next();
+}
   this._update.password = bcrypt.hashSync(this._update.password, 10)
   next();
 })
-
 customerSchema.methods.isValidPassword = async function (newPassword) {
   console.log(newPassword, this.password);
   try {

@@ -109,8 +109,11 @@ module.exports = {
       password:Joi.string().required(),
       role:Joi.string().required()
     }),
-    customerupdateSchema:Joi.object().keys({
-      email: Joi.string().email().required(),
+    customerupdateSchema:Joi.object().keys({      
+      phone: Joi.number().integer().min(1000000000).max(9999999999),
+      name: Joi.string(),
+      password: Joi.string(),
+      email: Joi.string().email(),
       dob: Joi.string().required(),
       gender: Joi.string().required(),
       address:Joi.object().keys({

@@ -55,7 +55,7 @@ module.exports = {
   },
 
   signIn: async (req, res, next) => {
-    console.log("USER", req.user)
+    console.log("Customer Details =>",req.user)
     // Generate token
     console.log('CUSTOMER SIGN IN =>', req.user)
     const token = signToken(req.user);
