@@ -11,13 +11,13 @@ const customerSchema = new Schema({
   password: String,
   dob: String,
   gender: String,
-  address: {
+  address: [{
     address_line_1: String,
     address_line_2: String,
     city: String,
     state: String,
     pincode: Number
-  },
+  }],
   createdOn: String
 });
 customerSchema.pre('save', async function (next) {

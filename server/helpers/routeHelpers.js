@@ -113,13 +113,15 @@ module.exports = {
       email: Joi.string().email().required(),
       dob: Joi.string().required(),
       gender: Joi.string().required(),
-      address:Joi.object().keys({
+      address: Joi.array().items(
+      Joi.object().keys({
         address_line_1: Joi.string().required(),
         address_line_2: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         pincode: Joi.number().required(),
       })
+      )
     })
   },
   
