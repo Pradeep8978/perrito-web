@@ -229,6 +229,7 @@ class createnew extends React.Component {
     }
 
     handleSubmit = e => {
+        console.log("Update",this.state.isUpdate)
         e.preventDefault();
         if (!this.validateAllFields()) return;
         if (this.state.isUpdate) {

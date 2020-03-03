@@ -60,7 +60,11 @@ module.exports = {
   getProducts: async (req, res, next) => {
     // const pipeline = getAggregationPipeline(req.params);
     const search = req.query.search ? req.query.search.toLowerCase() : '';
-    Product.find({}, function (err, response) {
+    const searchConfig = {};
+    if(req.query.categories){
+      searchConfig.categories = req.query.categories
+    }
+    Product.find(searchConfig , function (err, response) {
       if (err) res.status(404).send(err);
       else{
         if(search){
