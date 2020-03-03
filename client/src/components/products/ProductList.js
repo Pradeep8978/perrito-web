@@ -40,7 +40,7 @@ class PeersonList extends React.Component {
                                     // title={item.student_info && (item.student_info.first_name + " " + item.student_info.last_name)}
                                     deleting={this.props.deleting}
                                     onEditClick={() => this.props.onEditClick(item)}
-                                    onDeleteClick={() => this.props.onDeleteClick(item)}
+                                    onDeleteClick={() => this.props.onDeleteClick(item._id)}
                                     onDetailsClick={() => this.props.onDetailsClick(item)}
                                 >
                                     <div className="d-flex w-100 ml-2 mr-2">
