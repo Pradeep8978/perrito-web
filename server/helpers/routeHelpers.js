@@ -90,7 +90,8 @@ module.exports = {
       price: Joi.number().required(),
     }),
     productList: Joi.object().keys({
-      search: Joi.string()
+      search: Joi.string(),
+      categories: Joi.string()
     }),
     reviewSchema:Joi.object().keys({
       ratting:Joi.number().integer().min(1).max(5).required(),
@@ -123,7 +124,13 @@ module.exports = {
         state: Joi.string().required(),
         pincode: Joi.number().required(),
       })
-    })
+    }),    
+  feedbackSchema:Joi.object().keys({
+    title:Joi.string().required(),
+    message:Joi.string().required(),
+    customerImage: Joi.array().items(Joi.string()),
+    customerName:Joi.string()
+  })
   },
   
 }
