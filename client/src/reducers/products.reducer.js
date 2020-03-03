@@ -12,6 +12,7 @@ const INITIAL_STATE = {
 }
  
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
+    console.log("state", state)
     switch (type) {
         case types.FETCH_PRODUCT_LIST_LOADING:
             return {
@@ -55,7 +56,7 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
         return {
             ...state,
              selectedProduct : payload,
-            
+             ViewDetails:payload
         }
 
 
@@ -71,7 +72,7 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 updateLoading: false
             }
         case types.UPDATE_PRODUCT_FAILURE:
-            return {
+            return {  
                 ...state,
                 updateLoading: false,
                 updateError: payload

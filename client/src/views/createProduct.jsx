@@ -1,6 +1,6 @@
 
 import React from "react";
-import { contriesData } from './states'
+// import { contriesData } from './states'
 import Axios from 'axios'
 
 // reactstrap components
@@ -21,11 +21,13 @@ import {
 } from "reactstrap";
 import { validationConfig } from './validations';
 import Datetime from 'react-datetime';
+// import Dropdown from './../components/DropDown/DropDown';
 import './createProduct.scss'
 
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader.jsx";
 import { fileToBase64 } from './DocumentService';
+
 
 
 class createnew extends React.Component {
@@ -34,7 +36,7 @@ class createnew extends React.Component {
 
         this.state = {
             formValues: {
-                categories: '',
+                categories: [],
                 name: '',
                 images: [],
                 description: [''],
@@ -62,11 +64,11 @@ class createnew extends React.Component {
                 tags: [],
                 count: ''
             },
-            tagText: '',
+            // tags: '',
             formErrors: {},
             file: '',
             imagePreviewUrl: '',
-            statesData: contriesData,
+            // statesData: contriesData,
             isUpdate: false
         }
         // this._handleImageChange = this._handleImageChange.bind(this);
@@ -82,15 +84,15 @@ class createnew extends React.Component {
             })
         }
     }
-    componentDidMount() {
-        const url = '/products/list';
-        Axios.get('url' + this.props.match.params)
-            .then(res => {
-                this.setState({
-                    formValues: res.data
-                })
-            })
-    }
+    // componentDidMount() {
+    //     const url = '/products/list';
+    //     Axios.get('url' + this.props.match.params)
+    //         .then(res => {
+    //             this.setState({
+    //                 formValues: res.data
+    //             })
+    //         })
+    // }
     changeHandler = (e) => {
         const { formValues, formErrors } = this.state;
         formValues[e.target.name] = e.target.value;
@@ -148,8 +150,8 @@ class createnew extends React.Component {
     }
     tagsHandler = (e) => {
         const { formValues } = this.state;
-        this.state.tagText = e.target.value;
-        formValues.tags = this.state.tagText.split(' ');
+        // this.state.tags = e.target.value;
+        formValues.tags = e.target.value.split(' ');
         this.setState({
             formValues
         })
@@ -182,32 +184,82 @@ class createnew extends React.Component {
             formErrors[key] = errormessage;
             if (errormessage) isValid = false;
         });
+        if(!formValues.categories.length){
+            formErrors.categories = 'Please select a category';
+        }
         this.setState({
             formErrors
         });
         return isValid;
     }
 
-
-
-    handleSubmit = e => {
-        e.preventDefault();
+    onSubmitCreate = () => {
         const { formValues } = this.state;
-        if (!this.validateAllFields()) return;
         const url = '/products/create';
         return Axios.post(url, formValues)
             .then(res => {
                 console.log('formvalues new ', res.data);
+                this.props.notify(2, 'Successfully Created');
                 this.props.history.push("/admin/products")
             })
             .catch(err => {
+                this.props.notify(3, 'Sorry unable to create Product. Make sure you fill all theee details');
                 throw err;
             })
+    }
+
+    onSubmitUpdate = () => {
+        const { formValues } = this.state;
+        console.log("formValues====>", formValues)
+        // this.props.updateProduct(formValues)
+        const id = formValues._id
+        Axios({
+            method: "PUT",
+            url: `/products/update/${id}`, 
+            data: formValues,
+        }).then(res => {
+            this.props.notify(2, 'Successfully Updated the product Details');
+            this.props.history.push("/admin/products");
+        })
+        .catch(err => {
+                console.log("erro", err)
+                this.props.notify(3, 'Sorry unable to create Product. Make sure you fill all theee details');
+        });
 
     }
 
+    handleSubmit = e => {
+        e.preventDefault();
+        if (!this.validateAllFields()) return;
+        if (this.state.isUpdate) {
+            this.onSubmitUpdate()
+            this.props.history.push("/admin/products")
+        } else {
+            this.onSubmitCreate()
+        }
+
+    }
+
+    revmoveDescriptionHanlder = (index) => {
+        const newdata = this.state.formValues.description;
+        newdata.splice(index, 1);
+        // newdata.filter((item,i) => i !== index)
+        console.log("newdata", newdata)
+        this.setState({
+            description: newdata
+        })
+    }
+
+    removeSpecificationHandler = (ind) => {
+        const newdata = this.state.formValues.specifications;
+        newdata.splice(ind, 1);
+        console.log("newdata", newdata)
+        this.setState({
+            specifications: newdata
+        })
+    }
     render() {
-        console.log(this.state.formValues, this.state.tagText)
+        // console.log("catatagires===>", this.state.formValues)
         const { formValues, formErrors, isUpdate } = this.state;
         const categories = ["Select", "Food", "Toys", "Accessories", "Health", "Grooming", "Bath"];
         const cardTitle = isUpdate ? 'Update Product Details' : 'Create New Product';
@@ -220,9 +272,9 @@ class createnew extends React.Component {
                             {
                                 formValues.images.map(data => {
                                     let url;
-                                    if(data.includes('uploads')){
-                                        url = data
-                                    }else{
+                                    if (data.includes('uploads')) {
+                                        url = `/${data}`
+                                    } else {
                                         url = `data:image/png;base64,${data}`
                                     }
                                     return (
@@ -245,12 +297,16 @@ class createnew extends React.Component {
                                             <Col className="pr-1" md="6">
                                                 <FormGroup>
                                                     <label>Categories</label>
-                                                    <Input type="select" name="categories" onChange={this.changeHandler}>
+                                                    <Input type="select" name="categories"
+                                                        onChange={this.changeHandler}
+                                                        value={formValues.categories}>
                                                         {categories.map((item, i) => {
-                                                            return <option key={i}>{item}</option>
+                                                            return <option key={i}
+                                                            >{item}</option>
                                                         })}
 
                                                     </Input>
+                                                    {/* <Dropdown options={categories}/> */}
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
                                             </Col>
@@ -278,10 +334,10 @@ class createnew extends React.Component {
                                                         defaultValue=""
                                                         placeholder="Enter Tags"
                                                         type="text"
-                                                        name="tagText"
+                                                        name="tags"
                                                         invalid={formErrors.name}
                                                         onChange={this.tagsHandler}
-                                                        value={this.state.tagText}
+                                                        value={this.state.formValues.tags.join(", ")}
                                                     />
                                                     <FormFeedback>{formErrors.name}</FormFeedback>
                                                 </FormGroup>
@@ -295,46 +351,55 @@ class createnew extends React.Component {
                                                     <Input type="file"
                                                         name="images"
                                                         multiple
-                                                        pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
+                                                        // pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
                                                         onChange={this.fileSelectedHandler}
                                                     />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Container>
-                                            <Row>
-                                                <Col className="pr-1" md="10">
-                                                    <FormGroup>
-                                                        <Label for="discription">Description</Label>
-                                                        {
-                                                            this.state.formValues.description.map((item, i) => {
-                                                                return <Input type="textarea" name="text" id="discription"
-                                                                    name="description"
-                                                                    value={item}
-                                                                    invalid={formErrors.discription}
-                                                                    onChange={(e) => { this.changeDiscriptionHandler(e, i) }}
-                                                                    style={{ border: "1px solid #E3E3E3", borderRadius: "20px", marginBottom: "20px" }} />
 
-                                                            })
-                                                        }
-                                                        <FormFeedback>{formErrors.discription}</FormFeedback>
-                                                    </FormGroup>
-                                                </Col>
-                                                <Col className="pr-1" md="2">
-                                                    <Button type="button" onClick={this.addDiscripton} >Add</Button>
-                                                </Col>
-                                            </Row>
-                                        </Container>
-
-
-                                        <label>Specifications</label>
                                         <Row>
-                                            <Col className="pl-1" md="10">
+                                            <Col className="pr-1" md="12">
+                                                <FormGroup>
+                                                    <Label for="discription">Description</Label>&nbsp;
+                                                        <a href="#" onClick={this.addDiscripton} className="add-btn">Add</a>
+                                                    {
+                                                        this.state.formValues.description.map((item, i) => {
+                                                            return <div>
+                                                                <Row >
+                                                                    <Col className="pr-1" md="10">
+                                                                        <Input type="textarea" name="text" id="discription"
+                                                                            name="description"
+                                                                            value={item}
+                                                                            invalid={formErrors.discription}
+                                                                            onChange={(e) => { this.changeDiscriptionHandler(e, i) }}
+                                                                            style={{
+                                                                                border: "1px solid #E3E3E3",
+                                                                                borderRadius: "20px", marginBottom: "20px"
+                                                                            }} />
+
+                                                                    </Col>
+                                                                    <Col className="pr-1" md="2">
+                                                                        {this.state.formValues.description.length > 1 ? <i class="fa fa-trash" style={{ color: "red" }} aria-hidden="true" onClick={() => this.revmoveDescriptionHanlder(i)}></i> : null}
+                                                                    </Col>
+                                                                </Row>
+                                                            </div>
+                                                        })
+                                                    }
+                                                    <FormFeedback>{formErrors.discription}</FormFeedback>
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+
+                                        <label>Specifications</label> &nbsp;
+                                        <a href="#" onClick={this.addSpecifications} className="add-btn">Add</a>
+                                        <Row>
+                                            <Col className="pl-1" md="12">
                                                 {
                                                     this.state.formValues.specifications.map((item, i) => {
                                                         return <Container>
                                                             <Row>
-                                                                <Col className="pl-1" md="6">
+                                                                <Col className="pl-1" md="5">
                                                                     <FormGroup>
                                                                         <Input
                                                                             defaultValue=""
@@ -362,13 +427,17 @@ class createnew extends React.Component {
                                                                         <FormFeedback>{formErrors.value}</FormFeedback>
                                                                     </FormGroup>
                                                                 </Col>
+                                                                <Col className="pl-1" md="1">
+                                                                    {this.state.formValues.specifications.length > 1 ? <i class="fa fa-trash" style={{ color: "red" }} aria-hidden="true" onClick={() => this.removeSpecificationHandler(i)}></i> : null}
+
+                                                                </Col>
                                                             </Row>
                                                         </Container>
                                                     })
                                                 }
                                             </Col>
                                             <Col className="pl-1" md="2">
-                                                <Button onClick={this.addSpecifications} >Add</Button>
+                                                {/* <Button onClick={this.addSpecifications} >Add</Button> */}
 
                                             </Col>
                                         </Row>
@@ -383,7 +452,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="height"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.height}
+                                                        value={formValues.dimensions && formValues.dimensions.height}
                                                         onChange={this.changeDimesionsHandler}
 
                                                     />
@@ -399,7 +468,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="width"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.width}
+                                                        value={formValues.dimensions && formValues.dimensions.width}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
                                                     <FormFeedback>{formErrors.dimensions}</FormFeedback>
@@ -414,7 +483,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="weight"
                                                         invalid={formErrors.dimensions}
-                                                        value={this.state.formValues.dimensions.weight}
+                                                        value={formValues.dimensions &&formValues.dimensions.weight}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
                                                     <FormFeedback>{formErrors.dimensions}</FormFeedback>
@@ -614,5 +683,6 @@ class createnew extends React.Component {
         );
     }
 }
+
 
 export default createnew;

@@ -1,5 +1,6 @@
 import {connect} from 'react-redux';
 import {createUser} from '../actions/auth.actions';
+import { updateProduct} from '../actions/products.actions'
 import createnew from '../views/createProduct.jsx'
 
 const mapStateToProps = state => ({
@@ -9,7 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    createUser
+    createUser,
+    updateProduct
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(createnew);

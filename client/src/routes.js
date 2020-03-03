@@ -25,6 +25,7 @@ import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
 import CreateProduct from "containers/createProduct.container"
 import Products from 'containers/products.container'
+import ViewDetails from './components/viewDetails/ViewProducts'
 
 var dashRoutes = [
   {
@@ -32,7 +33,8 @@ var dashRoutes = [
     name: "Dashboard",
     icon: "design_app",
     component: Dashboard,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true,
   },
   {
     path: "/products",
@@ -56,6 +58,7 @@ var dashRoutes = [
     component: CreateProduct,
     layout: "/admin"
   },
+  
   {
     path: "/product/update",
     name: "Update Product",
@@ -65,25 +68,36 @@ var dashRoutes = [
     layout: "/admin"
   },
   {
+    path: "/product/view",
+    name: "Update Product",
+    icon: "design_app",
+    hide: true,
+    component: ViewDetails,
+    layout: "/admin"
+  },
+  {
     path: "/icons",
     name: "Icons",
     icon: "design_image",
     component: Icons,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true,
   },
   {
     path: "/maps",
     name: "Maps",
     icon: "location_map-big",
     component: Maps,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true,
   },
   {
     path: "/notifications",
     name: "Notifications",
     icon: "ui-1_bell-53",
     component: Notifications,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true,
   },
   {
     path: "/user-page",
@@ -97,14 +111,16 @@ var dashRoutes = [
     name: "Table List",
     icon: "files_paper",
     component: TableList,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true
   },
   {
     path: "/typography",
     name: "Typography",
     icon: "design-2_ruler-pencil",
     component: Typography,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true
   },
   {
     pro: true,
@@ -112,7 +128,8 @@ var dashRoutes = [
     name: "Upgrade to PRO",
     icon: "objects_spaceship",
     component: Upgrade,
-    layout: "/admin"
+    layout: "/admin",
+    hide: true
   }
 ];
 export default dashRoutes;

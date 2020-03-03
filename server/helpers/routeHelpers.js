@@ -89,13 +89,16 @@ module.exports = {
       important_info: Joi.string().required(),
       price: Joi.number().required(),
     }),
+    productList: Joi.object().keys({
+      search: Joi.string()
+    }),
     reviewSchema:Joi.object().keys({
       ratting:Joi.number().integer().min(1).max(5).required(),
       description:Joi.string().required(),
       customer_picture: Joi.array().items(Joi.string())
     }),
     customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().integer().min(1000000000).max(9999999999).required(),
+      phone:Joi.number().integer().min(1000000000).max(9999999999),
       email: Joi.string().email().required(),
       password:Joi.string().required()   ,
       name:Joi.string().required(),
@@ -104,7 +107,7 @@ module.exports = {
     customerloginSchema:Joi.object().keys({
       email:Joi.string().email().required(),
       password:Joi.string().required(),
-      role:Joi.string()
+      role:Joi.string().required()
     }),
     customerupdateSchema:Joi.object().keys({      
       phone: Joi.number().integer().min(1000000000).max(9999999999),

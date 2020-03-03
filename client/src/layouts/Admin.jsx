@@ -21,6 +21,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
 import { Route, Switch, Redirect } from "react-router-dom";
+import NotificationAlert from "react-notification-alert";
 
 // core components
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
@@ -58,9 +59,50 @@ class Dashboard extends React.Component {
   handleColorClick = color => {
     this.setState({ backgroundColor: color });
   };
+
+  notify = (color, message, place = "tr") => {
+    // var color = Math.floor(Math.random() * 5 + 1);
+    var type;
+    switch (color) {
+      case 1:
+        type = "primary";
+        break;
+      case 2:
+        type = "success";
+        break;
+      case 3:
+        type = "danger";
+        break;
+      case 4:
+        type = "warning";
+        break;
+      case 5:
+        type = "info";
+        break;
+      default:
+        break;
+    }
+    var options = {};
+    options = {
+      place: place,
+      message: (
+        <div>
+          <div>
+            {message}
+          </div>
+        </div>
+      ),
+      type: type,
+      icon: "now-ui-icons ui-1_bell-53",
+      autoDismiss: 7
+    };
+    this.refs.notificationAlert.notificationAlert(options);
+  }
+  
   render() {
     return (
       <div className="wrapper">
+         <NotificationAlert ref="notificationAlert" />
         <Sidebar
           {...this.props}
           routes={routes}
@@ -70,10 +112,11 @@ class Dashboard extends React.Component {
           <DemoNavbar {...this.props} />
           <Switch>
             {routes.map((prop, key) => {
+              const Component = prop.component
               return (
                 <Route
                   path={prop.layout + prop.path}
-                  component={prop.component}
+                  render={(props)=><Component notify={this.notify} {...props}/>}
                   key={key}
                 />
               );

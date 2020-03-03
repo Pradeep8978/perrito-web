@@ -5,23 +5,31 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' })
 const fs = require('fs');
 const getImageUrl = (body, id) => {
-  const imgPath = `uploads/images/product_${body.name}_${new Date().getTime()}_${id}.png`;
+  const imgPath = `uploads/images/product_${body.name.split("/").join("")}_${new Date().getTime()}_${id}.png`;
   return imgPath;
 }
-// const signToken = user => {
-//   return JWT.sign({
-//     iss: 'perrito',
-//     sub: user.id,
-//     iat: new Date().getTime(), // current time
-//     exp: new Date().setDate(new Date().getDate() + 1) // current time + 1 day ahead
-//   }, JWT_SECRET);
+
+// const getAggregationPipeline = (params) => {
+//   const pipeline = [];
+//   const {category, search} = params;
+//   if(category){
+//     pipeline.push({
+//       categories: {
+//         $in: [
+//           category
+//         ]
+//       }
+//     })
+//   }
+//   return pipeline;
 // }
+
 module.exports = {
   createProduct: async (req, res, next) => {
     const productObj = { ...req.body, createdOn: new Date().getTime() };
     const imageUrls = []
     if (req.body.images) {
-      req.body.images.map((image, index) => {
+      req.body.images.forEach((image, index) => {
         var buf = Buffer.from(image, 'base64');
         console.log('BUFFFER length=>', buf.length)
         if (buf.length > 100 * 1024) {
@@ -33,26 +41,38 @@ module.exports = {
         fs.writeFile(imgUrl, buf, 'binary', function (err) {
           if (err) throw err;
           console.log('File saved.')
-        }); 
+        });
       })
       productObj.images = imageUrls;
     }
-      const newProduct = new Product(productObj);
-      newProduct.save(function (err, productDetails) {
-        if (err) {
-          res.status(405).send(err);
-        }
-        else {
-          // const token = signToken(productDetails);
-          console.log("PRODUCT OBJECT=>", productDetails)
-          res.status(200).json({ productDetails });
-        }
+    const newProduct = new Product(productObj);
+    newProduct.save(function (err, productDetails) {
+      if (err) {
+        res.status(405).send(err);
+      }
+      else {
+        // const token = signToken(productDetails);
+        console.log("PRODUCT OBJECT=>", productDetails)
+        res.status(200).json({ productDetails });
+      }
     });
   },
   getProducts: async (req, res, next) => {
+    // const pipeline = getAggregationPipeline(req.params);
+    const search = req.query.search ? req.query.search.toLowerCase() : '';
     Product.find({}, function (err, response) {
-      if (err) res.status(404).json({ message: "Error in fetfching products " + req.user.id });
-      res.json(response);
+      if (err) res.status(404).send(err);
+      else{
+        if(search){
+        response = response.filter(o =>{
+          var regex = (arr) => new RegExp( arr.join( "|" ), "i");
+          if(regex(o.categories).test(search) || o.name.toLowerCase().includes(search) || regex(o.tags).test(search)){
+            return o;
+          }
+        })
+      }
+        res.json(response);
+      }
     });
   },
   updateProduct: async (req, res) => {
@@ -85,7 +105,11 @@ module.exports = {
     if (req.body.count) updateProduct.count = req.body.count;
     const imageUrls = []
     if (req.body.images) {
-      req.body.images.map((image, index) => {
+      req.body.images.forEach((image, index) => {
+        if (image.includes('uploads')) {
+          imageUrls.push(image);
+          return;
+        }
         var buf = Buffer.from(image, 'base64');
         console.log('BUFFFER length=>', buf.length)
         if (buf.length > 100 * 1024) {
@@ -113,6 +137,4 @@ module.exports = {
       res.json(response);
     });
   }
-
-
 }
