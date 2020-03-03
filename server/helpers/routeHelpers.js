@@ -120,11 +120,22 @@ module.exports = {
       Joi.object().keys({
         address_line_1: Joi.string().required(),
         address_line_2: Joi.string().required(),
+        landmark: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         pincode: Joi.number().required(),
       })
       )
+    }),
+    customerAddress: Joi.object().keys({
+      name: Joi.string().required(),
+      phone: Joi.number().integer().min(1000000000).max(9999999999),
+      address_line_1: Joi.string().required(),
+      address_line_2: Joi.string().required(),
+      landmark: Joi.string().required(),
+      city: Joi.string().required(),
+      state: Joi.string().required(),
+      pincode: Joi.number().required(),
     })
   },
   

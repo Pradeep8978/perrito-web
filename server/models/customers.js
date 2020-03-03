@@ -14,6 +14,7 @@ const customerSchema = new Schema({
   address: [{
     address_line_1: String,
     address_line_2: String,
+    landmark: String,
     city: String,
     state: String,
     pincode: Number
