@@ -1,42 +1,52 @@
-const Joi = require('joi');
+const Joi = require("joi");
 
 module.exports = {
-  validateBody: (schema) => {
+  validateBody: schema => {
     return (req, res, next) => {
-      console.log('REQ BODY =>', req.body)
+      console.log("REQ BODY =>", req.body);
       const result = Joi.validate(req.body, schema);
       if (result.error) {
         return res.status(400).json(result.error);
       }
-      if (!req.value) { req.value = {}; }
-      req.value['body'] = result.value;
+      if (!req.value) {
+        req.value = {};
+      }
+      req.value["body"] = result.value;
       next();
-    }
+    };
   },
 
-  validateParams: (schema) => {
+  validateParams: schema => {
     return (req, res, next) => {
-      const params = {...req.params, ...req.query}
+      const params = { ...req.params, ...req.query };
       const result = Joi.validate(params, schema);
       if (result.error) {
         return res.status(400).json(result.error);
       }
       next();
-    }
+    };
   },
 
   schemas: {
     authSchema: Joi.object().keys({
       name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      phone: Joi.number().integer().min(1000000000).max(9999999999).required(),
-      password: Joi.string().required()  
+      email: Joi.string()
+        .email()
+        .required(),
+      phone: Joi.number()
+        .integer()
+        .min(1000000000)
+        .max(9999999999)
+        .required(),
+      password: Joi.string().required()
     }),
 
     loginSchema: Joi.object().keys({
-      email: Joi.string().email().required(),
+      email: Joi.string()
+        .email()
+        .required(),
       password: Joi.string().required(),
-      role:Joi.string()
+      role: Joi.string()
     }),
     queryUser: Joi.object().keys({
       role: Joi.string()
@@ -61,82 +71,117 @@ module.exports = {
     productSchema: Joi.object().keys({
       name: Joi.string().required(),
       categories: Joi.string().required(),
-      images: Joi.array().items(Joi.string()).required(),
-      count:Joi.number().required(),
+      images: Joi.array()
+        .items(Joi.string())
+        .required(),
+      count: Joi.number().required(),
       seller_info: Joi.object().keys({
-        name:Joi.string().required(),
+        name: Joi.string().required(),
         address_line_1: Joi.string().required(),
         address_line_2: Joi.string().required(),
         city: Joi.string().required(),
         state: Joi.string().required(),
         pincode: Joi.number().required(),
-        email: Joi.string().email().required(),
-        phone:Joi.number().required(),
+        email: Joi.string()
+          .email()
+          .required(),
+        phone: Joi.number().required()
       }),
       dimensions: Joi.object().keys({
-       height:Joi.string().required(),
-       width:Joi.string().required(),
-       weight:Joi.string().required(),
+        height: Joi.string().required(),
+        width: Joi.string().required(),
+        weight: Joi.string().required()
       }),
       // description: Joi.string().required(),
-      description: Joi.array().items(Joi.string()).required(),
-      specifications: Joi.array().items(Joi.object({
-        label:Joi.string().required(),
-        value:Joi.string().required(),
-      })).required(),
+      description: Joi.array()
+        .items(Joi.string())
+        .required(),
+      specifications: Joi.array()
+        .items(
+          Joi.object({
+            label: Joi.string().required(),
+            value: Joi.string().required()
+          })
+        )
+        .required(),
       // specifications: Joi.string().required(),
-      tags: Joi.array().items(Joi.string()).required(),
+      tags: Joi.array()
+        .items(Joi.string())
+        .required(),
       important_info: Joi.string().required(),
-      price: Joi.number().required(),
+      price: Joi.number().required()
     }),
     productList: Joi.object().keys({
-      search: Joi.string()
+      search: Joi.string(),
+      categories: Joi.string()
     }),
-    reviewSchema:Joi.object().keys({
-      ratting:Joi.number().integer().min(1).max(5).required(),
-      description:Joi.string().required(),
+    reviewSchema: Joi.object().keys({
+      ratting: Joi.number()
+        .integer()
+        .min(1)
+        .max(5)
+        .required(),
+      description: Joi.string().required(),
       customer_picture: Joi.array().items(Joi.string())
     }),
-    customerAuthSchema:Joi.object().keys({
-      phone:Joi.number().integer().min(1000000000).max(9999999999),
-      email: Joi.string().email().required(),
-      password:Joi.string().required()   ,
-      name:Joi.string().required(),
-      image:Joi.string()
+    customerAuthSchema: Joi.object().keys({
+      phone: Joi.number()
+        .integer()
+        .min(1000000000)
+        .max(9999999999),
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string().required(),
+      name: Joi.string().required(),
+      image: Joi.string()
     }),
-    customerloginSchema:Joi.object().keys({
-      email:Joi.string().email().required(),
-      password:Joi.string().required(),
-      role:Joi.string().required()
+    customerloginSchema: Joi.object().keys({
+      email: Joi.string()
+        .email()
+        .required(),
+      password: Joi.string().required(),
+      role: Joi.string().required()
     }),
-    customerupdateSchema:Joi.object().keys({      
-      phone: Joi.number().integer().min(1000000000).max(9999999999),
+    customerupdateSchema: Joi.object().keys({
+      phone: Joi.number()
+        .integer()
+        .min(1000000000)
+        .max(9999999999),
       name: Joi.string(),
       password: Joi.string(),
       email: Joi.string().email(),
       dob: Joi.string().required(),
       gender: Joi.string().required(),
       address: Joi.array().items(
-      Joi.object().keys({
-        address_line_1: Joi.string().required(),
-        address_line_2: Joi.string().required(),
-        landmark: Joi.string().required(),
-        city: Joi.string().required(),
-        state: Joi.string().required(),
-        pincode: Joi.number().required(),
-      })
+        Joi.object().keys({
+          address_line_1: Joi.string().required(),
+          address_line_2: Joi.string().required(),
+          landmark: Joi.string().required(),
+          city: Joi.string().required(),
+          state: Joi.string().required(),
+          pincode: Joi.number().required()
+        })
       )
+    }),
+    feedbackSchema: Joi.object().keys({
+      title: Joi.string().required(),
+      message: Joi.string().required(),
+      customerImage: Joi.array().items(Joi.string()),
+      customerName: Joi.string()
     }),
     customerAddress: Joi.object().keys({
       name: Joi.string().required(),
-      phone: Joi.number().integer().min(1000000000).max(9999999999),
+      phone: Joi.number()
+        .integer()
+        .min(1000000000)
+        .max(9999999999),
       address_line_1: Joi.string().required(),
       address_line_2: Joi.string().required(),
       landmark: Joi.string().required(),
       city: Joi.string().required(),
       state: Joi.string().required(),
-      pincode: Joi.number().required(),
+      pincode: Joi.number().required()
     })
-  },
-  
-}
+  }
+};
