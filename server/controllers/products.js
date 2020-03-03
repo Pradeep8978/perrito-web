@@ -5,7 +5,7 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' })
 const fs = require('fs');
 const getImageUrl = (body, id) => {
-  const imgPath = `uploads/images/product_${body.name}_${new Date().getTime()}_${id}.png`;
+  const imgPath = `uploads/images/product_${body.name.split("/").join("")}_${new Date().getTime()}_${id}.png`;
   return imgPath;
 }
 
@@ -29,7 +29,7 @@ module.exports = {
     const productObj = { ...req.body, createdOn: new Date().getTime() };
     const imageUrls = []
     if (req.body.images) {
-      req.body.images.map((image, index) => {
+      req.body.images.forEach((image, index) => {
         var buf = Buffer.from(image, 'base64');
         console.log('BUFFFER length=>', buf.length)
         if (buf.length > 100 * 1024) {
@@ -105,7 +105,7 @@ module.exports = {
     if (req.body.count) updateProduct.count = req.body.count;
     const imageUrls = []
     if (req.body.images) {
-      req.body.images.map((image, index) => {
+      req.body.images.forEach((image, index) => {
         if (image.includes('uploads')) {
           imageUrls.push(image);
           return;
@@ -137,6 +137,4 @@ module.exports = {
       res.json(response);
     });
   }
-
-
 }

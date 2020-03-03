@@ -28,5 +28,7 @@ router.route('/list')
   .get(passportJWT, validateParams(schemas.productList),ProductController.getProducts);
 router.route('/update/:id')
   .put(passportJWT,ProductController.updateProduct)
+  router.route("/delete/:id")
+  .delete(passportJWT,ProductController.deleteProduct)
 
 module.exports = router;

@@ -25,8 +25,6 @@ passport.use(new JwtStrategy({
   passReqToCallback: true
 }, async (req, payload, done) => {
   var admin, customer
-  console.log("Role",payload.role)
-  console.log("SUB",payload.sub)
   try {
     // Find the user specified in token
     if (payload.role == 'admin') {
