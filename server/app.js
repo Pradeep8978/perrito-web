@@ -50,6 +50,7 @@ app.use("/admin", require("./routes/admin"));
 app.use("/products", require("./routes/products"));
 app.use("/customers", require("./routes/customers"));
 app.use("/reviews", require("./routes/reviews"));
+app.use("/feedback", require("./routes/feedback"));
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
