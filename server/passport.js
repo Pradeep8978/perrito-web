@@ -8,6 +8,7 @@ const config = require('./configuration');
 const Admin = require('./models/admin');
 const Product = require('./models/products');
 const Customers = require('./models/customers');
+const Orders = require('./models/orders');
 
 
 const tokenExtractor = req => {
