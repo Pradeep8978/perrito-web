@@ -367,8 +367,8 @@ class createnew extends React.Component {
                                                     {
                                                         this.state.formValues.description.map((item, i) => {
                                                             return <div>
-                                                                <Row >
-                                                                    <Col className="pr-1" md="10">
+                                                                <Row  style={{display:"flex"}}>
+                                                                    <Col className="pr-1" md="11">
                                                                         <Input type="textarea" name="text" id="discription"
                                                                             name="description"
                                                                             value={item}
@@ -380,9 +380,10 @@ class createnew extends React.Component {
                                                                             }} />
 
                                                                     </Col>
-                                                                    <Col className="pr-1" md="2">
-                                                                        {this.state.formValues.description.length > 1 ? <i class="fa fa-trash" style={{ color: "red" }} aria-hidden="true" onClick={() => this.revmoveDescriptionHanlder(i)}></i> : null}
-                                                                    </Col>
+                                                                    {this.state.formValues.description.length > 1 ? <i class="fa fa-trash" style={{ color: "red",marginLeft:"10px",marginTop:"20px" }} aria-hidden="true" onClick={() => this.revmoveDescriptionHanlder(i)}></i> : null}
+
+                                                                    {/* <Col className="pr-1" md="2">
+                                                                    </Col> */}
                                                                 </Row>
                                                             </div>
                                                         })
@@ -400,7 +401,7 @@ class createnew extends React.Component {
                                                     this.state.formValues.specifications.map((item, i) => {
                                                         return <Container>
                                                             <Row>
-                                                                <Col className="pl-1" md="5">
+                                                                <Col className="pl-1" md="6">
                                                                     <FormGroup>
                                                                         <Input
                                                                             defaultValue=""
@@ -415,7 +416,7 @@ class createnew extends React.Component {
                                                                     </FormGroup>
                                                                 </Col>
                                                                 <Col className="pl-1" md="6">
-                                                                    <FormGroup>
+                                                                    <FormGroup style={{display:"flex"}}>
                                                                         <Input
                                                                             defaultValue=""
                                                                             placeholder="Label Name"
@@ -426,12 +427,13 @@ class createnew extends React.Component {
                                                                             onChange={(e) => { this.changeSpecificationHandler(e, i) }}
                                                                         />
                                                                         <FormFeedback>{formErrors.value}</FormFeedback>
+                                                                    {this.state.formValues.specifications.length > 1 ? <i class="fa fa-trash" style={{ color: "red",marginLeft:"10px",marginTop:"10px" }} aria-hidden="true" onClick={() => this.removeSpecificationHandler(i)}></i> : null}
+
                                                                     </FormGroup>
                                                                 </Col>
-                                                                <Col className="pl-1" md="1">
-                                                                    {this.state.formValues.specifications.length > 1 ? <i class="fa fa-trash" style={{ color: "red" }} aria-hidden="true" onClick={() => this.removeSpecificationHandler(i)}></i> : null}
+                                                                {/* <Col className="pl-1" md="1">
 
-                                                                </Col>
+                                                                </Col> */}
                                                             </Row>
                                                         </Container>
                                                     })
@@ -669,9 +671,12 @@ class createnew extends React.Component {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Row className="offset-md-9">
+                                        <Row >
+                                            <Col style={{textAlign:"center"}}>
                                             <Button color="danger">Clear</Button>
                                             <Button color="success" type="submit" >Submit</Button>
+                                            </Col>
+                                           
                                         </Row>
 
                                     </Form>
