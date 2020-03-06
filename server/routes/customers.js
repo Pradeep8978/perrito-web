@@ -46,7 +46,7 @@ router
     CustomerController.updateProfile
 );
 
-router.route("/profile/address/new").post(validateBody(schemas.customerAddress), CustomerController.addNewAddress);
+router.route("/profile/address/new").post(passportJWT,validateBody(schemas.customerAddress), CustomerController.addNewAddress);
 
 router.route("/profile").get(passportJWT, CustomerController.getProfile);
 
