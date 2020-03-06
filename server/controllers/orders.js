@@ -11,50 +11,58 @@ const getImageUrl = (body, id) => {
 }
 
 module.exports = {
-    orderProduct: async (req, res, next) => {
-        Product.findOne({_id:req.params.id}, function(err, result) {
-            // const label = result.specifications.map((item)=> {
-            //     return  item.label;
-            // })
-            // const value = result.specifications.map((item)=> {
-            //     return  item.value;
-            // })
-            const orderProduct  = {orderOn: new Date().getTime(),
-                customerId:req.user.id,
-                proName:result.name,
-                proCategory:result.categories,
-                proImage:result.images,
-                seller_name: result.seller_info.name,
-                seller_address_line_1: result.seller_info.address_line_1,
-                seller_address_line_2:  result.seller_info.address_line_2,
-                seller_city: result.seller_info.city,
-                seller_state: result.seller_info.state,
-                seller_pincode: result.seller_info.pincode,
-                seller_email:result.seller_info.email,
-                seller_phone:result.seller_info.phone,
-                proHeight: result.dimensions.height,
-                proWidth: result.dimensions.width,
-                proWeight: result.dimensions.weight,
-                proDescription:result.description,
-                // proLabel: label,
-                // proValue: value,
-                proTags:result.tags,
-                proCount:result.count,
-                proImportant_info: result.important_info,
-                proPrice: result.price,
-                ProductId:req.params.id
-            };
-
-            const newProductOrder = new Orders(orderProduct); 
-            newProductOrder.save(function (err, orderDetails){
-              if (err){
-                req.status(405).send(err);
-              }
-              else{
-                console.log("FEEDBACK DETAILS=>", orderDetails)
-                res.status(200).json(orderDetails);
-              }
-            });
-        });
-    }
+  // orderProduct: async (req, res, next) => {
+  //   const {deliveryAddress} = req.body;
+  //   let products = await Product.find({
+  //     '_id': { $in: ['5e5e11de28d46a00173e340c', '5e5e10d628d46a00173e3409'] }
+  //   });
+  //   products = products.map(product => {
+  //     // product.productId = product._id;
+  //     // delete product._id
+  //     return{
+  //       ...product  
+  //     }
+  //   })
+  //     // const newProductOrder = new Orders(orderProducts);    
+  //     // console.log("newProductOrder",newProductOrder)
+  //     // Orders.insertMany(products, function (err, orderDetails) {
+  //     //   if (err) {
+  //     //     req.status(405).send(err);
+  //     //   }
+  //     //   else {
+  //     //     console.log ("ORDER DETAILS=>", orderDetails)
+  //     //     res.status(200).json(orderDetails);
+  //     //   }
+  //     // });
+  //   // })
+  // }
+  orderProduct: async (req, res, next) => {
+    const orderDetails = {...req.body , orderedOn: new Date().getTime()};
+    let products = await Product.find({
+      '_id': { $in: ['5e5e11de28d46a00173e340c', '5e5e10d628d46a00173e3409'] }
+    });
+    products = products.map(product => {
+      const productDetails = {
+        _id : product.id,
+        quantity:1,
+        price : product.price,
+        requirements:[{
+          label:"color",
+          value:"red"
+        }]
+      }
+      return productDetails
+    })
+    orderDetails.products = products
+    const  newProductOrder = new Orders(orderDetails); 
+    newProductOrder.save(function (err, orderDetails) {
+      if (err) {
+        req.status(405).send(err);
+      }
+      else {
+        console.log ("ORDER DETAILS=>", orderDetails)
+        res.status(200).json(orderDetails);
+      }
+    });
+  }
 }

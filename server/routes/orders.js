@@ -22,7 +22,7 @@ var storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.route('/order/:id')
+router.route('/order')
   .post(passportJWT, ProductOrders.orderProduct);
   
 module.exports = router;
