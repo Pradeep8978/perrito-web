@@ -36,8 +36,8 @@ module.exports = {
         reviewOn: new Date().getTime(),
         productId: req.params.productid,
         customerId: req.user.id,
-        customerName: result.name,
-        customerImage: result.image
+        customerName: req.user.name,
+        customerImage: req.user.image
       };
       const newProductReview = new Review(productReview);
       newProductReview.save(function(err, reviewDetails) {
