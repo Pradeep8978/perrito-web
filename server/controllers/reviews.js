@@ -30,26 +30,38 @@ module.exports = {
     if (findProductReview) {
       return res.status(403).json({ error: "already reviewed" });
     }
-    // Customers.findOne({ _id: req.user.id }, function(err, result) {
-      const productReview = {
-        ...req.body,
-        reviewOn: new Date().getTime(),
-        productId: req.params.productid,
-        customerId: req.user.id,
-        customerName: req.user.name,
-        customerImage: req.user.image
-      };
-      const newProductReview = new Review(productReview);
-      newProductReview.save(function(err, reviewDetails) {
-        if (err) {
-          res.status(405).send(err);
-        } else {
-          console.log("REVIEW DETAILS=>", newProductReview);
-          res.status(200).json(reviewDetails);
-        }
-      });
-    // });
+    const productReview = {
+      ...req.body,
+      reviewOn: new Date().getTime(),
+      productId: req.params.productid,
+      customerId: req.user.id,
+      customerName: req.user.name,
+      customerImage: req.user.image
+    };
+    const newProductReview = new Review(productReview);
+    newProductReview.save(function(err, reviewDetails) {
+      if (err) {
+        res.status(405).send(err);
+      } else {
+        console.log("REVIEW DETAILS=>", newProductReview);
+        res.status(200).json(reviewDetails);
+      }
+    });
   },
+
+  getProductReviews: async (req, res) => {
+    const { productid } = req.params;
+    Review.find({ productid }, (err, reviews) => {
+      if (err) {
+        return req
+          .status(404)
+          .json({ message: "No reviews for this product", err });
+      } else {
+        res.send(reviews);
+      }
+    });
+  },
+  
   updateReview: async (req, res) => {
     const reviewId = req.params.reviewid;
     console.log("reviewId", reviewId);
