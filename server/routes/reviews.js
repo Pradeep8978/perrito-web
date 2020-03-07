@@ -24,7 +24,7 @@ router.route('/customerReview/:productid')
   .post(passportJWT, validateBody(schemas.reviewSchema), ReviewController.customerReview);
 
   router.route('/customerReview/list/:productid')
-  .post(passportJWT, validateBody(schemas.reviewSchema), ReviewController.getProductReviews);
+  .get(passportJWT, ReviewController.getProductReviews);
 // router.route('/updateReview/:reviewid')
 //   .put(passportJWT,ReviewController.updateReview);
 module.exports = router;
