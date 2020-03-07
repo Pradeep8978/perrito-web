@@ -121,8 +121,7 @@ module.exports = {
         .min(1)
         .max(5)
         .required(),
-      description: Joi.string().required
-      // customer_picture: Joi.array().items(Joi.string())
+      description: Joi.string().required()
     }),
     customerAuthSchema: Joi.object().keys({
       phone: Joi.number()
