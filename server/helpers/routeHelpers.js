@@ -154,6 +154,9 @@ module.exports = {
       gender: Joi.string().required(),
       address: Joi.array().items(
         Joi.object().keys({
+          name: Joi.string().required(),
+          phone: Joi.number().required(),
+          secondaryPhone: Joi.number(),
           address_line_1: Joi.string().required(),
           address_line_2: Joi.string().required(),
           landmark: Joi.string().required(),

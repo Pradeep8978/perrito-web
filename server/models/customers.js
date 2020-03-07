@@ -12,6 +12,9 @@ const customerSchema = new Schema({
   dob: String,
   gender: String,
   address: [{
+    name: String,
+    phone: String,
+    secondaryPhone: String,
     address_line_1: String,
     address_line_2: String,
     landmark: String,
