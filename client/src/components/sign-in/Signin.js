@@ -43,8 +43,11 @@ class LoginPage extends React.Component {
         password: "",
         role: "admin"
       },
+      type: 'input',
       formErrors: {}
     }
+    this.showHide = this.showHide.bind(this);
+
   }
   componentDidMount() {
     document.body.classList.add("login-page");
@@ -95,6 +98,13 @@ class LoginPage extends React.Component {
     .then(()=>{
       this.props.history.push("/admin")
     })
+  }
+  showHide(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      type: this.state.type === 'input' ? 'password' : 'input'
+    })  
   }
 
   render(){
@@ -163,11 +173,16 @@ class LoginPage extends React.Component {
                         placeholder="Password"
                         name="password"
                         onChange={this.onChangeHandler}
-                        type="text"
+                        type={this.state.type}
                         invalid={formErrors.password}
                         // onFocus={() => setLastFocus(true)}
                         // onBlur={() => setLastFocus(false)}
                       ></Input>
+                      <span className="password__show"
+                       onClick={this.showHide}
+                       style={{position:"absolute",right:'20px',top:"10px"}}>
+                         {this.state.type === 'input' ? <i class="far fa-eye"></i> : <i class="fas fa-eye-slash"></i>}
+                         </span>
                     </InputGroup>
                        <FormFeedback className="errormessage">{formErrors.password}</FormFeedback>
                   </CardBody>

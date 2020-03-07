@@ -46,10 +46,19 @@ export default class Products extends Component {
         });
     }
 
-    deleteProduct = ({ id }) => {
-        const title = "";
+    deleteProduct = (id) => {
         this.setState({ deleting: true });
-        this.props.deleteProduct(id);
+        this.props.deleteProduct(id)
+        .then(res=> {
+            this.props.notify(2, 'successfully deleted');
+            this.props.fetchProducts();
+            this.setState({ deleting: false });
+        })
+        .catch(err=> {
+            this.props.notify(3, 'Unable to remove product... please try again')
+
+        })
+        // window.location.reload(false);
     }
   
     editProduct = details => { 

@@ -111,7 +111,7 @@ export const updateProduct = (bodyParams) => dispatch => {  debugger
 
 export const deleteProduct = (id) => dispatch => {
     dispatch(deleteProductLoading());
-    const url = '/products/delete';
+    const url = `/products/delete/${id}`;
     return Axios.delete(url)
     .then(res => {
         dispatch(deleteProductSuccess(res.data));

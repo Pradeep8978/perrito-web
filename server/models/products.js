@@ -14,7 +14,7 @@ const productSchema = new Schema({
         city: String,
         state: String,
         pincode: Number,
-        email:String,
+        email:String,  
         phone:Number
     },
     dimensions: {
