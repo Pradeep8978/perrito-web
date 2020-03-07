@@ -26,33 +26,16 @@ const getImageUrl = body => {
 
 module.exports = {
   signUp: async (req, res, next) => {
-    const { name, phone, email, password } = req.value.body;
-    // Check if there is a user with the same email
+    const { email } = req.body;
     let foundCustomers = await Customers.findOne({ email: email });
     if (foundCustomers) {
       return res.status(403).json({ error: "Email is already in use" });
     }
     const cusObj = { ...req.body, createdOn: new Date().getTime() };
-    // const imageUrls = ""
-    if (req.body.image) {
-      var buf = Buffer.from(req.body.image, "base64");
-      console.log("BUFFFER length=>", buf.length);
-      if (buf.length > 100 * 1024) {
-        res.status(400).send({ message: "image size exceeds 100KB" });
-        return;
-      }
-      const imgUrl = getImageUrl(req.body);
-      fs.writeFile(imgUrl, buf, "binary", function(err) {
-        if (err) throw err;
-        console.log("File saved.");
-      });
-      cusObj.image = imgUrl;
-    }
     const newCustomers = new Customers(cusObj);
     const customerObj = await newCustomers.save();
     // Generate the token
     const token = signToken(newCustomers);
-    // res.setHeader('Authorization', token);
     console.log("CUSTOMER OBJECT=>", customerObj);
     res.status(200).json({ token });
   },
@@ -105,7 +88,9 @@ module.exports = {
       { $push: { address: req.body } },
       (err, response) => {
         if (err)
-          res.status(400).json({ message: "Error in adding customer Address" });
+          res
+            .status(400)
+            .json({ message: "Error in adding customer Address", error: err });
         else res.json(response);
       }
     );
