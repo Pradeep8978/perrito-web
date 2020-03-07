@@ -50,8 +50,8 @@ module.exports = {
   },
 
   getProductReviews: async (req, res) => {
-    const { productid } = req.params;
-    Review.find({ productid }, (err, reviews) => {
+    const { productId } = req.params;
+    Review.find({ productId }, (err, reviews) => {
       if (err) {
         return req
           .status(404)
@@ -61,7 +61,7 @@ module.exports = {
       }
     });
   },
-  
+
   updateReview: async (req, res) => {
     const reviewId = req.params.reviewid;
     console.log("reviewId", reviewId);

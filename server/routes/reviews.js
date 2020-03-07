@@ -23,8 +23,7 @@ const upload = multer({ storage: storage });
 router.route('/customerReview/:productid')
   .post(passportJWT, validateBody(schemas.reviewSchema), ReviewController.customerReview);
 
-  router.route('/customerReview/list/:productid')
+  router.route('/customerReview/list/:productId')
   .get(passportJWT, ReviewController.getProductReviews);
-// router.route('/updateReview/:reviewid')
-//   .put(passportJWT,ReviewController.updateReview);
+
 module.exports = router;
