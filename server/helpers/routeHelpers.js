@@ -116,7 +116,7 @@ module.exports = {
       categories: Joi.string()
     }),
     reviewSchema: Joi.object().keys({
-      ratting: Joi.number()
+      rating: Joi.number()
         .integer()
         .min(1)
         .max(5)

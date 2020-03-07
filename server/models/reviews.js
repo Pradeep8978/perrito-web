@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // Create a schema
 const reviewSchema = new Schema({ 
-    ratting: Number,
+    rating: Number,
     description: String,
     customerName:String,
     customerImage:String,
