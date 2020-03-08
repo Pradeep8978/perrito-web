@@ -7,11 +7,12 @@ const path = require("path");
 var app = express();
 var server = require('http').Server(app);
 // Start the server
+require('dotenv').config()
 const port = process.env.PORT || 8080;
 server.listen(port);
 var io  = require('socket.io').listen(server);
 
-
+// process.env.GOOGLE_APPLICATION_CREDENTIALS = require('../credentials.json');
 const {MONGODB_CONN_STR} = require("./configuration/index")
 const bodyParser = require('body-parser');
 
@@ -27,6 +28,26 @@ mongoose.Promise = global.Promise;
   .catch((error) => console.log(error));
 
   app.disable('etag');
+
+  const {Storage} = require('@google-cloud/storage');
+
+// Creates a client
+const storage = new Storage();
+// Creates a client from a Google service account key.
+// const storage = new Storage({keyFilename: "key.json"});
+
+/**
+ * TODO(developer): Uncomment these variables before running the sample.
+ */
+const bucketName = 'perrito-images';
+
+async function createBucket() {
+  // Creates the new bucket
+  await storage.createBucket(bucketName);
+  console.log(`Bucket ${bucketName} created.`);
+}
+
+createBucket().catch(console.error);
 
 // const app = express();
 app.use(cookieParser());
