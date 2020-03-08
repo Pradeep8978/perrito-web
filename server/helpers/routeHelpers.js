@@ -184,6 +184,32 @@ module.exports = {
       city: Joi.string().required(),
       state: Joi.string().required(),
       pincode: Joi.number().required()
+    }),
+    orderSchema: Joi.object().keys({
+      customerid: Joi.string().required(),
+      products: Joi.array().items({
+        _id: Joi.string().required(),
+        quantity: Joi.number().required(),
+        price: Joi.number().required(),
+        requirements: Joi.array()
+      }),
+      address: Joi.object().keys({
+        name: Joi.string().required(),
+        phone: Joi.number().required(),
+        secondaryPhone: Joi.number().required(),
+        address_line_1: Joi.string().required(),
+        address_line_2: Joi.string().required(),
+        landmark: Joi.string(),
+        city: Joi.string().required(),
+        state: Joi.string().required(),
+        pincode: Joi.number().required()
+      }),
+      tracking: Joi.string().required(),
+      transactionId: Joi.string().required(),
+      isCod: Joi.boolean().required(),
+      status: Joi.string().required(),
+      orderedOn: Joi.string().required(),
+      totalPrice: Joi.number().required()
     })
   }
 };
