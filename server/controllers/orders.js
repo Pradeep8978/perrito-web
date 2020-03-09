@@ -68,7 +68,8 @@ module.exports = {
     });
   },
   getAllOrders:(req,res)=>{
-    Orders.find({},(err,allOrdersList) => {
+    console.log("success");
+    Orders.find({},function(err,allOrdersList){
       if(err){
         res.status(400).send(err);
       }
