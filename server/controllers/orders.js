@@ -39,9 +39,14 @@ module.exports = {
   //   // })
   // }
   orderProduct: async (req, res, next) => {
-    const orderDetails = { ...req.body, orderedOn: new Date().getTime() };
-    const newProductOrder = new Orders(orderDetails);
-    newProductOrder.save(function(err, response) {
+    const orderDetails = req.body.orders.map(o => {
+      return {
+        ...o,
+        orderedOn: new Date().getTime(),
+        customerId: req.user.id
+      }
+    })
+    Orders.insertMany(orderDetails, (err, response) => {
       if (err) {
         res.status(400).send(err);
       } else {
