@@ -204,9 +204,9 @@ module.exports = {
         transactionId: Joi.string().required(),
         isCod: Joi.boolean().required(),
         status: Joi.string().required(),
-        cancelledOn: Joi.string().required(),
-        cancelledBy: Joi.string().required(),
-        orderedOn: Joi.string().required()
+        // cancelledOn: Joi.string().required(),
+        cancelledBy: Joi.string().required()
+        // orderedOn: Joi.string().required()
       })
     })
   }

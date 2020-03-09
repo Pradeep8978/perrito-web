@@ -66,5 +66,16 @@ module.exports = {
         res.status(200).json(orderList);
       }
     });
+  },
+  getAllOrders:(req,res)=>{
+    Orders.find({},(err,allOrdersList) => {
+      if(err){
+        res.status(400).send(err);
+      }
+      else{
+        console.log("ORDERS List=>", allOrdersList);
+        res.status(200).json(allOrdersList);
+      }
+    })
   }
 };

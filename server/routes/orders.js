@@ -27,5 +27,7 @@ router.route('/order/new')
 
 router.route('/order/list/:customerId')
   .post(passportJWT, ProductOrders.getOrderList);
+  router.route('/order/list')
+  .post(passportJWT,ProductOrders.getAllOrders)
   
 module.exports = router;
