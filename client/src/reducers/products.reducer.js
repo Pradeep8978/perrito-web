@@ -8,9 +8,10 @@ const INITIAL_STATE = {
     updateError: null,
     deleteLoading: false,
     deleteError: null,
-    ViewDetails: null
+    ViewDetails: null,
+    OrderList: null
 }
- 
+
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
     console.log("state", state)
     switch (type) {
@@ -51,13 +52,13 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 createLoading: false,
                 createError: payload
             }
-        
-      case types.PRESERVE_PRODUCT_DETAILS:
-        return {
-            ...state,
-             selectedProduct : payload,
-             ViewDetails:payload
-        }
+
+        case types.PRESERVE_PRODUCT_DETAILS:
+            return {
+                ...state,
+                selectedProduct: payload,
+                ViewDetails: payload
+            }
 
 
         case types.UPDATE_PRODUCT_LOADING:
@@ -72,7 +73,7 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 updateLoading: false
             }
         case types.UPDATE_PRODUCT_FAILURE:
-            return {  
+            return {
                 ...state,
                 updateLoading: false,
                 updateError: payload
@@ -96,6 +97,29 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 deleteLoading: false,
                 deleteError: payload
             }
+        //orders list
+        case types.FETCH_ORDER_LIST_LOADING:
+            debugger;
+            return {
+                ...state,
+                loading: true,
+                error: null,
+                OrderList: []
+            }
+        case types.FETCH_ORDER_LIST_SUCCESS:
+            debugger;
+            return {
+                ...state,
+                loading: false,
+                OrderList: payload
+            }
+        case types.FETCH_ORDER_LIST_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: payload
+            }
+
 
         default:
             return state;
