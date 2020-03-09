@@ -68,7 +68,6 @@ module.exports = {
     });
   },
   getAllOrders:(req,res)=>{
-    console.log("success");
     Orders.find({},function(err,allOrdersList){
       if(err){
         res.status(400).send(err);
@@ -78,5 +77,5 @@ module.exports = {
         res.status(200).json(allOrdersList);
       }
     })
-  }
-};
+  },
+  };
