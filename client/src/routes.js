@@ -23,9 +23,10 @@ import TableList from "views/TableList.jsx";
 import Maps from "views/Maps.jsx";
 import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
-import CreateProduct from "containers/createProduct.container"
-import Products from 'containers/products.container'
-import ViewDetails from './components/viewDetails/ViewProducts'
+import CreateProduct from "containers/createProduct.container";
+import Products from 'containers/products.container';
+import ViewDetails from './components/viewDetails/ViewProducts';
+import Orders from 'containers/Order.container'
 
 var dashRoutes = [
   {
@@ -59,6 +60,13 @@ var dashRoutes = [
     layout: "/admin"
   },
   
+  {
+    path: "/product/Orders",
+    name: "Orders",
+    icon: "design_app",
+    component:Orders,
+    layout: "/admin"
+  },
   {
     path: "/product/update",
     name: "Update Product",
