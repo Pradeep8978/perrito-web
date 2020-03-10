@@ -193,7 +193,7 @@ module.exports = {
         address: Joi.object().keys({
           name: Joi.string().required(),
           phone: Joi.number().required(),
-          secondaryPhone: Joi.number().required(),
+          secondaryPhone: Joi.number(),
           address_line_1: Joi.string().required(),
           address_line_2: Joi.string().required(),
           landmark: Joi.string(),
@@ -203,9 +203,9 @@ module.exports = {
         }),
         transactionId: Joi.string().required(),
         isCod: Joi.boolean().required(),
-        status: Joi.string().required(),
+        status: Joi.string(),
         // cancelledOn: Joi.string().required(),
-        cancelledBy: Joi.string().required()
+        cancelledBy: Joi.string()
         // orderedOn: Joi.string().required()
       })
     })
