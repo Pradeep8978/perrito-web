@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import { Chip } from 'reactstrap';
 import ProductList from './ProductList';
 import './Product.scss';
+import PanelHeader from '../PanelHeader/PanelHeader'
 
 export default class Products extends Component {
     state = {
@@ -104,6 +105,7 @@ export default class Products extends Component {
     render() {
         return (
             <>
+            <PanelHeader size="sm" />
                 <div className="filter_section">
                     <div className="row ml-2 pl-2">
                         <input className="col-md-4 mr-2 form-control" type="text" placeholder={this.state.placeholder} value={this.state.filterText} onChange={this.onchangeFilterText} />

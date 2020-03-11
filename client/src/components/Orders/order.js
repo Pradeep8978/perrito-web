@@ -4,7 +4,7 @@ import {
     Card, CardHeader, CardFooter, CardBody,
     CardTitle, CardText, Container, Nav, NavItem, NavLink, Table, Row, Col
 } from 'reactstrap';
-
+ import PanelHeader from '../PanelHeader/PanelHeader'
 
 class Order extends Component {
     constructor(props) {
@@ -33,21 +33,23 @@ class Order extends Component {
     render() {
         console.log("Oders=>", this.props.OrderList)
         const { OrderList, loading } = this.props;
-        console.log('Student List =>', this.props);
+
         if (loading) {
             return this._renderSkeleton()
         }
         return (
             <div>
+            <PanelHeader size="sm" />
                 {
                     OrderList.map((item, i) => {
                         return (
                             <Container >
                                 <Card className="info_card" >
                                     <Container>
-                                        <CardHeader style={{color:"red"}}><b>{item.address.name}</b></CardHeader>
+                                        {/* <CardHeader style={{color:"red"}}><b>{item.address.name}</b></CardHeader> */}
                                         <Row style={{padding:"20px"}}>
                                             <Col xs="6">
+                                            <span><b> Name:</b>  {item.address.name}</span>&nbsp;
                                                 <CardBody className="row">
                                                     <span><b> Phone:</b></span>&nbsp;
                                                     {item.address.phone}
@@ -84,12 +86,8 @@ class Order extends Component {
                                             </Col>
                                         </Row>
                                     </Container>
-
                                 </Card>
-
                             </Container>
-                            // <div>{item.address.name}</div>
-
                         )
                     })
                 }

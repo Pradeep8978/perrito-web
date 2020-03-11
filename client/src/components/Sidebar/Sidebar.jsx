@@ -22,7 +22,7 @@ import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
-import logo from "logo-white.svg";
+import logo from "../../assets/img/dog3.png";
 
 var ps;
 
@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
             className="simple-text logo-normal"
             target="_blank"
           >
-            Invenz
+        PERRITO
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
