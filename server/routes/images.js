@@ -27,9 +27,9 @@ router.route('/upload')
         res.status(400).send('No file uploaded.');
         return;
       }
-    
+      const fileName = req.body.fileName || `${new Date().getTime()}-${req.file.originalname}`;
       // Create a new blob in the bucket and upload the file data.
-      const blob = bucket.file(req.file.originalname);
+      const blob = bucket.file(fileName);
       const blobStream = blob.createWriteStream();
     
       blobStream.on('error', err => {
