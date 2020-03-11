@@ -42,6 +42,7 @@ router
 router
   .route("/profile/update")
   .put(
+    passportJWT,
     validateBody(schemas.customerupdateSchema),
     CustomerController.updateProfile
   );
