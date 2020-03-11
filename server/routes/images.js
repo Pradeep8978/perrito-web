@@ -22,7 +22,7 @@ const storage = new Storage({
   
 
 router.route('/upload')
-  .post(multer.single('profile'), (req, res, next) => {
+  .post(multer.single('image'), (req, res, next) => {
     if (!req.file) {
         res.status(400).send('No file uploaded.');
         return;

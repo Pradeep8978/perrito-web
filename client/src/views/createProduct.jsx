@@ -158,20 +158,35 @@ class createnew extends React.Component {
     }
 
     fileSelectedHandler = async (e) => {
-        const images = Object.values(e.target.files).map(file => {
-            console.log(file.size)
-            return fileToBase64(file)
-        });
-        Promise.all(images)
+        // const images = Object.values(e.target.files).map(file => {
+        //     console.log(file.size)
+        //     return fileToBase64(file)
+        // });
+        // Promise.all(images)
+        //     .then(res => {
+        //         console.log("response images", res)
+        //         this.setState(prevState => ({
+        //             formValues: {
+        //                 ...prevState.formValues,
+        //                 images: res
+        //             }
+        //         }))
+        //     })
+        const url = `/images/upload`;
+        const { formValues } = this.state;
+        let formData = new FormData();
+        formData.append('image', e.target.files[0]);
+        Axios.post(url, formData)
             .then(res => {
-                console.log("response images", res)
-                this.setState(prevState => ({
-                    formValues: {
-                        ...prevState.formValues,
-                        images: res
-                    }
-                }))
+                formValues.images.push(res.data);
+                this.setState({ formValues });
             })
+    }
+
+    onRemoveImage = index => {
+        const { formValues } = this.state;
+        formValues.images = formValues.images((o, i) => i !== index);
+        this.setState({ formValues })
     }
 
     validateAllFields = () => {
@@ -184,7 +199,7 @@ class createnew extends React.Component {
             formErrors[key] = errormessage;
             if (errormessage) isValid = false;
         });
-        if(!formValues.categories.length){
+        if (!formValues.categories.length) {
             formErrors.categories = 'Please select a category';
         }
         this.setState({
@@ -215,21 +230,21 @@ class createnew extends React.Component {
         const id = formValues._id
         Axios({
             method: "PUT",
-            url: `/products/update/${id}`, 
+            url: `/products/update/${id}`,
             data: formValues,
         }).then(res => {
             this.props.notify(2, 'Successfully Updated the product Details');
             this.props.history.push("/admin/products");
         })
-        .catch(err => {
+            .catch(err => {
                 console.log("erro", err)
                 this.props.notify(3, 'Sorry unable to create Product. Make sure you fill all theee details');
-        });
+            });
 
     }
 
     handleSubmit = e => {
-        console.log("Update",this.state.isUpdate)
+        console.log("Update", this.state.isUpdate)
         e.preventDefault();
         if (!this.validateAllFields()) return;
         if (this.state.isUpdate) {
@@ -270,19 +285,20 @@ class createnew extends React.Component {
                 <div className="content">
                     <Card>
                         <CardBody>
-                            {
-                                formValues.images.map(data => {
-                                    let url;
-                                    if (data.includes('uploads')) {
-                                        url = `/${data}`
-                                    } else {
-                                        url = `data:image/png;base64,${data}`
-                                    }
-                                    return (
-                                        <img src={url} className="product-image" style={{ marginLeft: "5px" }} />
-                                    )
-                                })
-                            }
+                            <Row className="image-wrapper">
+                                {
+                                    formValues.images.map((url, index) => {
+                                        return (
+                                            <div>
+                                                <img src={url} className="product-image" style={{ marginLeft: "5px" }} />
+                                                <Col>
+                                                    <Button onClick={() => this.onRemoveImage(index)}>Remove</Button>
+                                                </Col>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </Row>
                         </CardBody>
                     </Card>
                     <Row>
@@ -351,7 +367,6 @@ class createnew extends React.Component {
                                                     <Button className="mt-4">Images</Button>
                                                     <Input type="file"
                                                         name="images"
-                                                        multiple
                                                         // pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
                                                         onChange={this.fileSelectedHandler}
                                                     />
@@ -367,7 +382,7 @@ class createnew extends React.Component {
                                                     {
                                                         this.state.formValues.description.map((item, i) => {
                                                             return <div>
-                                                                <Row  style={{display:"flex"}}>
+                                                                <Row style={{ display: "flex" }}>
                                                                     <Col className="pr-1" md="11">
                                                                         <Input type="textarea" name="text" id="discription"
                                                                             name="description"
@@ -380,7 +395,7 @@ class createnew extends React.Component {
                                                                             }} />
 
                                                                     </Col>
-                                                                    {this.state.formValues.description.length > 1 ? <i class="fa fa-trash" style={{ color: "red",marginLeft:"10px",marginTop:"20px" }} aria-hidden="true" onClick={() => this.revmoveDescriptionHanlder(i)}></i> : null}
+                                                                    {this.state.formValues.description.length > 1 ? <i class="fa fa-trash" style={{ color: "red", marginLeft: "10px", marginTop: "20px" }} aria-hidden="true" onClick={() => this.revmoveDescriptionHanlder(i)}></i> : null}
 
                                                                     {/* <Col className="pr-1" md="2">
                                                                     </Col> */}
@@ -416,7 +431,7 @@ class createnew extends React.Component {
                                                                     </FormGroup>
                                                                 </Col>
                                                                 <Col className="pl-1" md="6">
-                                                                    <FormGroup style={{display:"flex"}}>
+                                                                    <FormGroup style={{ display: "flex" }}>
                                                                         <Input
                                                                             defaultValue=""
                                                                             placeholder="Label Name"
@@ -427,7 +442,7 @@ class createnew extends React.Component {
                                                                             onChange={(e) => { this.changeSpecificationHandler(e, i) }}
                                                                         />
                                                                         <FormFeedback>{formErrors.value}</FormFeedback>
-                                                                    {this.state.formValues.specifications.length > 1 ? <i class="fa fa-trash" style={{ color: "red",marginLeft:"10px",marginTop:"10px" }} aria-hidden="true" onClick={() => this.removeSpecificationHandler(i)}></i> : null}
+                                                                        {this.state.formValues.specifications.length > 1 ? <i class="fa fa-trash" style={{ color: "red", marginLeft: "10px", marginTop: "10px" }} aria-hidden="true" onClick={() => this.removeSpecificationHandler(i)}></i> : null}
 
                                                                     </FormGroup>
                                                                 </Col>
@@ -486,7 +501,7 @@ class createnew extends React.Component {
                                                         type="number"
                                                         name="weight"
                                                         invalid={formErrors.dimensions}
-                                                        value={formValues.dimensions &&formValues.dimensions.weight}
+                                                        value={formValues.dimensions && formValues.dimensions.weight}
                                                         onChange={this.changeDimesionsHandler}
                                                     />
                                                     <FormFeedback>{formErrors.dimensions}</FormFeedback>
@@ -672,11 +687,11 @@ class createnew extends React.Component {
                                             </Col>
                                         </Row>
                                         <Row >
-                                            <Col style={{textAlign:"center"}}>
-                                            <Button color="danger">Clear</Button>
-                                            <Button color="success" type="submit" >Submit</Button>
+                                            <Col style={{ textAlign: "center" }}>
+                                                <Button color="danger">Clear</Button>
+                                                <Button color="success" type="submit" >Submit</Button>
                                             </Col>
-                                           
+
                                         </Row>
 
                                     </Form>
