@@ -44,9 +44,29 @@ router
   .put(
     validateBody(schemas.customerupdateSchema),
     CustomerController.updateProfile
-);
+  );
 
-router.route("/profile/address/new").post(passportJWT,validateBody(schemas.customerAddress), CustomerController.addNewAddress);
+router
+  .route("/profile/address/new")
+  .post(
+    passportJWT,
+    validateBody(schemas.customerAddress),
+    CustomerController.addNewAddress
+  );
+router
+  .route("/profile/address/update/:addressId")
+  .put(
+    passportJWT,
+    validateBody(schemas.customerAddress),
+    CustomerController.updateAddress
+  );
+
+  router
+  .route("/profile/address/delete/:addressId")
+  .delete(
+    passportJWT,
+    CustomerController.removeAddress
+  );
 
 router.route("/profile").get(passportJWT, CustomerController.getProfile);
 

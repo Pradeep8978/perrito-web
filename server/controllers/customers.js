@@ -2,6 +2,7 @@ const JWT = require("jsonwebtoken");
 const Customers = require("../models/customers");
 const { JWT_SECRET } = require("../configuration");
 const multer = require("multer");
+const mongoose = require("mongoose");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
 
@@ -86,6 +87,35 @@ module.exports = {
     Customers.update(
       { _id: req.user.id },
       { $push: { address: req.body } },
+      (err, response) => {
+        if (err)
+          res
+            .status(400)
+            .json({ message: "Error in adding customer Address", error: err });
+        else res.json(response);
+      }
+    );
+  },
+
+  removeAddress: (req, res) => {
+    console.log('PARAMS =>', req.params)
+    Customers.updateOne(
+      { _id: req.user.id },
+      { $pull: { address:  { _id: mongoose.Types.ObjectId(req.params.addressId) }  } },
+      (err, response) => {
+        if (err)
+          res
+            .status(400)
+            .json({ message: "Error in Deleting customer Address", error: err });
+        else res.json(response);
+      }
+    );
+  },
+
+  updateAddress: (req, res) => {
+    Customers.updateOne(
+      { _id: req.user.id, "address.id": req.params.addressId },
+      { $set: { "address[0].name": req.body.name } },
       (err, response) => {
         if (err)
           res
