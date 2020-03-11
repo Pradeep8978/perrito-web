@@ -3,6 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 import InfoCard from '../InfoCard/InfoCard';
 import './ProductList.scss';
 import { Container, Row, Col, Table } from 'reactstrap';
+// import PanelHeader from '../PanelHeader/PanelHeader'
 
 class PeersonList extends React.Component {
     state = {};
@@ -30,6 +31,8 @@ class PeersonList extends React.Component {
             return this._renderSkeleton()
         }
         return (
+            <>
+                
             <Container >
                 <div className="student_list">
                     {
@@ -73,7 +76,7 @@ class PeersonList extends React.Component {
                     }
                 </div>
             </Container>
-
+</>
         )
     }
 }

@@ -38,7 +38,6 @@ class LoginPage extends React.Component {
       passwordFocus: false,
       setPasswordFocus: false,
       formValues: {
-        role:"admin",
         email: "",
         password: "",
         role: "admin"
@@ -82,7 +81,7 @@ class LoginPage extends React.Component {
       const validationFunc = validateConfig[key];
       const errormessage = validationFunc ? validationFunc(formValues[key]) : "";
       formErrors[key] = errormessage;
-      if(errormessage) isValid = false;
+      if (errormessage) isValid = false;
     });
     this.setState({
       formErrors
@@ -92,145 +91,158 @@ class LoginPage extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const {formValues} = this.state;
-    if(!this.validateAllFields()) return;
+    const { formValues } = this.state;
+    if (!this.validateAllFields()) return;
     this.props.signinUser(formValues)
-    .then(()=>{
-      this.props.history.push("/admin")
-    })
+      .then(() => {
+        this.props.history.push("/admin")
+      })
   }
-  showHide(e){
+
+
+  showHide(e) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({
       type: this.state.type === 'input' ? 'password' : 'input'
-    })  
+    })
   }
 
-  render(){
-    const {firstFocus, lastFocus, formErrors, formValues} = this.state;
-    const {loading, error} = this.props;
-    console.log("loding", loading )
-  return (
-    <>
-      {/* <ExamplesNavbar /> */}
-      <div className="page-header clear-filter" filter-color="blue">
-        <div
-          className="page-header-image"
-          style={{
-            backgroundImage: "url(" + require("assets/img/login.jpg") + ")"
-          }}
-        ></div>
-        <div className="content">
-          <Container>
-            <Col className="ml-auto mr-auto" md="4">
-              <Card className="card-login card-plain">
-                <Form action="" className="form" method="">
-                {error && <Alert>{error}</Alert>}
-                  <CardHeader className="text-center">
-                    <div className="logo-container">
-                      <img
-                        alt="..."
-                        src={require("assets/img/now-logo.png")}
-                      ></img>
-                    </div>
-                  </CardHeader>
-                  <CardBody>
-                    <InputGroup
-                      className={
-                        "no-border input-lg" +
-                        (firstFocus ? " input-group-focus" : "")
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons users_circle-08"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder="Email"
-                        type="text"
-                        name="email"
-                        onChange={this.onChangeHandler}
-                        invalid={formErrors.email}
+  renderError = () => {
+    return(
+      <div>
+        <p style={{color:"red"}}>Invalid credentials</p>
+        </div>
+    )
+  }
+
+  render() {
+    const { firstFocus, lastFocus, formErrors, formValues } = this.state;
+    const { loading, error} = this.props;
+    console.log("loding", loading)
+    console.log("error", error)
+    return (
+      <>
+        {/* <ExamplesNavbar /> */}
+        <div className="page-header clear-filter" filter-color="blue">
+        
+          <div
+            className="page-header-image"
+            style={{
+              backgroundImage: "url(" + require("assets/img/login.jpg") + ")"
+            }}
+          ></div>
+          <div className="content">
+            <Container>
+              <Col className="ml-auto mr-auto" md="4">
+                <Card className="card-login card-plain">
+                  <Form action="" className="form" method="">
+                    {/* {error && <Alert>{error}</Alert>} */}
+                    <CardHeader className="text-center">
+                      <div className="logo-container">
+                        <img
+                          alt="..."
+                          src={require("assets/img/now-logo.png")}
+                        ></img>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                    {this.props.error && this.renderError()}
+                      <InputGroup
+                        className={
+                          "no-border input-lg" +
+                          (firstFocus ? " input-group-focus" : "")
+                        }
+                      >
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="now-ui-icons users_circle-08"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Email"
+                          type="text"
+                          name="email"
+                          onChange={this.onChangeHandler}
+                          invalid={formErrors.email}
                         // onFocus={() => setFirstFocus(true)}
                         // onBlur={() => setFirstFocus(false)}
-                      ></Input>
-                       <FormFeedback className="errormessage">{formErrors.email}</FormFeedback>
-                    </InputGroup>
-                    <InputGroup
-                      className={
-                        "no-border input-lg" +
-                        (lastFocus ? " input-group-focus" : "")
-                      }
-                    >
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="now-ui-icons text_caps-small"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        placeholder="Password"
-                        name="password"
-                        onChange={this.onChangeHandler}
-                        type={this.state.type}
-                        invalid={formErrors.password}
+                        ></Input>
+                        <FormFeedback className="errormessage">{formErrors.email}</FormFeedback>
+                      </InputGroup>
+                      <InputGroup
+                        className={
+                          "no-border input-lg" +
+                          (lastFocus ? " input-group-focus" : "")
+                        }
+                      >
+                        <InputGroupAddon addonType="prepend">
+                          <InputGroupText>
+                            <i className="now-ui-icons text_caps-small"></i>
+                          </InputGroupText>
+                        </InputGroupAddon>
+                        <Input
+                          placeholder="Password"
+                          name="password"
+                          onChange={this.onChangeHandler}
+                          type={this.state.type}
+                          invalid={formErrors.password}
                         // onFocus={() => setLastFocus(true)}
                         // onBlur={() => setLastFocus(false)}
-                      ></Input>
-                      <span className="password__show"
-                       onClick={this.showHide}
-                       style={{position:"absolute",right:'20px',top:"10px"}}>
-                         {this.state.type === 'input' ? <i class="far fa-eye"></i> : <i class="fas fa-eye-slash"></i>}
-                         </span>
-                    </InputGroup>
-                       <FormFeedback className="errormessage">{formErrors.password}</FormFeedback>
-                  </CardBody>
-                
-                  <CardFooter className="text-center">
-                    <Button
-                      block
-                      className="btn-round"
-                      color="info"
-                      type="submit"
-                      disabled={loading}
-                      onClick={this.handleSubmit}
+                        ></Input>
+                        <span className="password__show"
+                          onClick={this.showHide}
+                          style={{ position: "absolute", right: '20px', top: "10px" }}>
+                          {this.state.type === 'input' ? <i class="far fa-eye"></i> : <i class="fas fa-eye-slash"></i>}
+                        </span>
+                      </InputGroup>
+                      <FormFeedback className="errormessage">{formErrors.password}</FormFeedback>
+                    </CardBody>
+
+                    <CardFooter className="text-center">
+                      <Button
+                        block
+                        className="btn-round"
+                        color="info"
+                        type="submit"
+                        disabled={loading}
+                        onClick={this.handleSubmit}
                       // size="lg"
-                    >
-                       {loading ? 'Please wait...' : 'Login'}
-                    </Button>
-                    <div className="pull-left">
-                      <h6>
-                        <Link
-                          className="link"
-                          href='/login'
-                        >
-                          Create Account
+                      >
+                        {loading ? 'Please wait...' : 'Login'}
+                      </Button>
+                      <div className="pull-left">
+                        <h6>
+                          <Link
+                            className="link"
+                            href='/login'
+                          >
+                            Create Account
                         </Link>
-                      </h6>
-                    </div>
-                    <div className="pull-right">
-                      <h6>
-                        <a
-                          className="link"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Need Help?
+                        </h6>
+                      </div>
+                      <div className="pull-right">
+                        <h6>
+                          <a
+                            className="link"
+                            href="#pablo"
+                            onClick={e => e.preventDefault()}
+                          >
+                            Need Help?
                         </a>
-                      </h6>
-                    </div>
-                  </CardFooter>
-                </Form>
-              </Card>
-            </Col>
-          </Container>
+                        </h6>
+                      </div>
+                    </CardFooter>
+                  </Form>
+                </Card>
+              </Col>
+            </Container>
+          </div>
+          <TransparentFooter />
         </div>
-        <TransparentFooter />
-      </div>
-    </>
-  );
-                    }
+      </>
+    );
+  }
 }
 
 export default LoginPage;

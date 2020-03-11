@@ -55,15 +55,15 @@ var dashRoutes = [
   {
     path: "/product/create",
     name: "Create Product",
-    icon: "design_app",
+    icon: "design-2_ruler-pencil",
     component: CreateProduct,
     layout: "/admin"
   },
   
   {
-    path: "/product/Orders",
+    path: "/product/orders",
     name: "Orders",
-    icon: "design_app",
+    icon: "ui-1_bell-53",
     component:Orders,
     layout: "/admin"
   },
