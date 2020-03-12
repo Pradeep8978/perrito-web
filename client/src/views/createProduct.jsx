@@ -185,7 +185,7 @@ class createnew extends React.Component {
 
     onRemoveImage = index => {
         const { formValues } = this.state;
-        formValues.images = formValues.images((o, i) => i !== index);
+        formValues.images = formValues.images.filter((o, i) => i !== index);
         this.setState({ formValues })
     }
 
