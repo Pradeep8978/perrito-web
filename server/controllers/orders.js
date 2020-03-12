@@ -57,8 +57,7 @@ module.exports = {
   },
 
   getOrderList: (req, res) => {
-    const { customerId } = req.params;
-    Orders.find({ customerId }, (err, orderList) => {
+    Orders.find({ customerId: req.user.id }, (err, orderList) => {
       if (err) {
         res.status(400).send(err);
       } else {

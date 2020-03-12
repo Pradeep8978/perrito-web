@@ -44,7 +44,7 @@ const orderSchema = new Schema({
   status: String,
   cancelledOn: String,
   cancelledBy: String,
-    address: {
+  address: {
     name: String,
     phone: Number,
     secondaryPhone: Number,
@@ -54,7 +54,7 @@ const orderSchema = new Schema({
     city: String,
     state: String,
     pincode: Number
-  },
+  }
 });
 // Create a model
 const Orders = mongoose.model("orders", orderSchema, "orders");

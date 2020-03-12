@@ -23,9 +23,10 @@ import TableList from "views/TableList.jsx";
 import Maps from "views/Maps.jsx";
 import Upgrade from "views/Upgrade.jsx";
 import UserPage from "views/UserPage.jsx";
-import CreateProduct from "containers/createProduct.container"
-import Products from 'containers/products.container'
-import ViewDetails from './components/viewDetails/ViewProducts'
+import CreateProduct from "containers/createProduct.container";
+import Products from 'containers/products.container';
+import ViewDetails from './components/viewDetails/ViewProducts';
+import Orders from 'containers/Order.container'
 
 var dashRoutes = [
   {
@@ -54,11 +55,18 @@ var dashRoutes = [
   {
     path: "/product/create",
     name: "Create Product",
-    icon: "design_app",
+    icon: "design-2_ruler-pencil",
     component: CreateProduct,
     layout: "/admin"
   },
   
+  {
+    path: "/product/orders",
+    name: "Orders",
+    icon: "ui-1_bell-53",
+    component:Orders,
+    layout: "/admin"
+  },
   {
     path: "/product/update",
     name: "Update Product",

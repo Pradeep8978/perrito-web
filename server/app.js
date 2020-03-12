@@ -29,26 +29,6 @@ mongoose.Promise = global.Promise;
 
   app.disable('etag');
 
-  const {Storage} = require('@google-cloud/storage');
-
-// Creates a client
-const storage = new Storage();
-// Creates a client from a Google service account key.
-// const storage = new Storage({keyFilename: "key.json"});
-
-/**
- * TODO(developer): Uncomment these variables before running the sample.
- */
-const bucketName = 'perrito-images';
-
-async function createBucket() {
-  // Creates the new bucket
-  await storage.createBucket(bucketName);
-  console.log(`Bucket ${bucketName} created.`);
-}
-
-createBucket().catch(console.error);
-
 // const app = express();
 app.use(cookieParser());
 app.use(cors());
@@ -73,6 +53,7 @@ app.use("/customers", require("./routes/customers"));
 app.use("/reviews", require("./routes/reviews"));
 app.use("/feedback", require("./routes/feedback"));
 app.use("/orders",require("./routes/orders"));
+app.use("/images", require("./routes/images"))
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files

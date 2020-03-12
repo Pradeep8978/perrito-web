@@ -7,6 +7,22 @@ export const preserveProductDetails = ( data )=> ({
     payload:  data,
 })
 
+//fetch Order list
+const fetchOrderLoading = () => ({
+    type: types.FETCH_ORDER_LIST_LOADING
+});
+
+const fetchOrderSuccess = (data) => ({
+    type: types.FETCH_ORDER_LIST_SUCCESS,
+    payload: data
+});
+
+const fetchOrderFailure = error => ({
+    type: types.FETCH_ORDER_LIST_FAILURE,
+    paylod: error
+});
+
+
 //fetch product list
 const fetchProductsLoading = () => ({
     type: types.FETCH_PRODUCT_LIST_LOADING
@@ -119,6 +135,20 @@ export const deleteProduct = (id) => dispatch => {
     })
     .catch(err => {
         dispatch(deleteProductFailure(err));
+        throw err;
+    })
+}
+
+export const fetchOrderList = () => dispatch => {
+    dispatch(fetchOrderLoading());
+    const url = '/orders/order/list/all';
+    return Axios.get(url)
+    .then(res => {
+        dispatch(fetchOrderSuccess(res.data));
+        return res; 
+    })
+    .catch(err => {
+        dispatch(fetchOrderFailure(err));
         throw err;
     })
 }

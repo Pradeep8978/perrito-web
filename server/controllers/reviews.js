@@ -23,13 +23,13 @@ const signToken = user => {
 };
 module.exports = {
   customerReview: async (req, res) => {
-    const findProductReview = await Review.findOne({
-      productId: req.params.productid,
-      customerId: req.user.id
-    });
-    if (findProductReview) {
-      return res.status(403).json({ error: "already reviewed" });
-    }
+    // const findProductReview = await Review.findOne({
+    //   productId: req.params.productid,
+    //   customerId: req.user.id
+    // });
+    // if (findProductReview) {
+    //   return res.status(403).json({ error: "already reviewed" });
+    // }
     const productReview = {
       ...req.body,
       reviewOn: new Date().getTime(),
