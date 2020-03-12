@@ -226,7 +226,6 @@ class createnew extends React.Component {
     onSubmitUpdate = () => {
         const { formValues } = this.state;
         console.log("formValues====>", formValues)
-        // this.props.updateProduct(formValues)
         const id = formValues._id
         Axios({
             method: "PUT",
@@ -249,7 +248,7 @@ class createnew extends React.Component {
         if (!this.validateAllFields()) return;
         if (this.state.isUpdate) {
             this.onSubmitUpdate()
-            this.props.history.push("/admin/products")
+            // this.props.history.push("/admin/products")
         } else {
             this.onSubmitCreate()
         }
@@ -285,19 +284,30 @@ class createnew extends React.Component {
                 <div className="content">
                     <Card>
                         <CardBody>
-                            <Row className="image-wrapper">
                                 {
                                     formValues.images.map((url, index) => {
                                         return (
-                                            <div>
+                                            <div className="image-wrapper">
                                                 <img src={url} className="product-image" style={{ marginLeft: "5px" }} />
-                                                <Col>
+                                                <div>
                                                     <Button onClick={() => this.onRemoveImage(index)}>Remove</Button>
-                                                </Col>
+                                                </div>
                                             </div>
                                         )
                                     })
                                 }
+                            <Row>
+                                <Col className="pr-1" md="6">
+                                    <label>Upload an Image</label>
+                                    <FormGroup>
+                                        <Button className="mt-4">Images</Button>
+                                        <Input type="file"
+                                            name="images"
+                                            // pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
+                                            onChange={this.fileSelectedHandler}
+                                        />
+                                    </FormGroup>
+                                </Col>
                             </Row>
                         </CardBody>
                     </Card>
@@ -360,19 +370,7 @@ class createnew extends React.Component {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Row>
-                                            <Col className="pr-1" md="6">
-                                                <label>Images</label>
-                                                <FormGroup>
-                                                    <Button className="mt-4">Images</Button>
-                                                    <Input type="file"
-                                                        name="images"
-                                                        // pattern="([^\s]+(\.(?i)(jpg|png|gif|bmp))$)"
-                                                        onChange={this.fileSelectedHandler}
-                                                    />
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
+
 
                                         <Row>
                                             <Col className="pr-1" md="12">

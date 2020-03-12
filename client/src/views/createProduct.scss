@@ -20,7 +20,11 @@
 .image-wrapper {
   position: relative;
   width: 100px;
-
+  display: inline-block;
+  margin: 10px;
+  button{
+    margin: 10px
+  }
   .img-banner{
     display: none;
   }

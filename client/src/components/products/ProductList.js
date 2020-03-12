@@ -48,7 +48,7 @@ class PeersonList extends React.Component {
                                 >
                                     <div className="d-flex w-100 ml-2 mr-2">
                                         {/* <img className="profile_image" src={item.images || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg"} alt="student_img" /> */}
-                                        <img className="profile_image" src={"/" + item.images[0] || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg" } alt="Profile Image" />
+                                        <img className="profile_image" src={item.images[0] || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2vLgGPS1eLS4f9DLoa6T7GTiimfHHPGXAk3TMV9hyMBQTSGGgFg" } alt="Profile Image" />
                                         <div className="" style={{marginLeft:"100px",textAlign:"start"}}>
                                             <Table borderless>
                                                 <tbody>
