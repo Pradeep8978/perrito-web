@@ -27,24 +27,6 @@ const getImageUrl = (body, id) => {
 module.exports = {
   createProduct: async (req, res, next) => {
     const productObj = { ...req.body, createdOn: new Date().getTime() };
-    const imageUrls = []
-    if (req.body.images) {
-      req.body.images.forEach((image, index) => {
-        var buf = Buffer.from(image, 'base64');
-        console.log('BUFFFER length=>', buf.length)
-        if (buf.length > 100 * 1024) {
-          res.status(400).send({ message: 'image size exceeds 100KB' });
-          return;
-        }
-        const imgUrl = getImageUrl(req.body, index);
-        imageUrls.push(imgUrl);
-        fs.writeFile(imgUrl, buf, 'binary', function (err) {
-          if (err) throw err;
-          console.log('File saved.')
-        });
-      })
-      productObj.images = imageUrls;
-    }
     const newProduct = new Product(productObj);
     newProduct.save(function (err, productDetails) {
       if (err) {
