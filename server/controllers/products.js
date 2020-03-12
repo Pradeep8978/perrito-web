@@ -45,15 +45,14 @@ module.exports = {
       searchConfig.categories = req.query.categories
       Product.find(
         {"categories":{ $regex: new RegExp("^" + searchConfig.categories.toLowerCase(), "i") } },
-        {sort: {'_id': -1}},
          function (err, response) {
         if (err) res.status(404).send(err);       
-          res.json(response);
+          res.json(response.reverse());
       });
     } else{
     Product.find({ }, function (err, response) {
       if (err) res.status(404).send(err);
-        res.json(response);
+        res.json(response.reverse());
     });
   }
     
