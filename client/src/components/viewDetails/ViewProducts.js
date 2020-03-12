@@ -49,7 +49,7 @@ class ViewProducts extends Component {
                   style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX", marginLeft: "10px" }}
                   height="150px"
                   width="180px"
-                  src={"/" + items} alt="Card image cap" />
+                  src={items} alt="Card image cap" />
               )
 
             }
