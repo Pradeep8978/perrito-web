@@ -17,10 +17,10 @@ const CircularJSON = require("circular-json");
 var os = require("os");
 // SET STORAGE
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "uploads");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname);
   }
 });
@@ -58,16 +58,16 @@ router
   .route("/profile/address/update/:addressId")
   .put(
     passportJWT,
-    validateBody(schemas.customerAddress),
     CustomerController.updateAddress
   );
 
-  router
+router
   .route("/profile/address/delete/:addressId")
   .delete(
     passportJWT,
     CustomerController.removeAddress
   );
+router.route("/update/password").put(passportJWT, validateBody(schemas.passwordUpdate), CustomerController.passwordUpdate)
 
 router.route("/profile").get(passportJWT, CustomerController.getProfile);
 

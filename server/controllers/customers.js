@@ -5,6 +5,8 @@ const multer = require("multer");
 const mongoose = require("mongoose");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
+const bcrypt = require('bcryptjs');
+
 
 const signToken = customer => {
   return JWT.sign(
@@ -21,7 +23,7 @@ const signToken = customer => {
 const getImageUrl = body => {
   const imgPath = `uploads/customerimages/customer_${
     body.name
-  }_${new Date().getTime()}.png`;
+    }_${new Date().getTime()}.png`;
   return imgPath;
 };
 
@@ -101,7 +103,7 @@ module.exports = {
     console.log('PARAMS =>', req.params)
     Customers.updateOne(
       { _id: req.user.id },
-      { $pull: { address:  { _id: mongoose.Types.ObjectId(req.params.addressId) }  } },
+      { $pull: { address: { _id: req.params.addressId } } },
       (err, response) => {
         if (err)
           res
@@ -113,9 +115,15 @@ module.exports = {
   },
 
   updateAddress: (req, res) => {
+    const updateAddress = {};
+    Object.keys(req.body).forEach(key => {
+      updateAddress[`address.$.${key}`] = req.body[key];
+    })
     Customers.updateOne(
-      { _id: req.user.id, "address.id": req.params.addressId },
-      { $set: { "address[0].name": req.body.name } },
+      { _id: req.user.id, 'address._id': req.params.addressId },
+      {
+        $set: updateAddress
+      },
       (err, response) => {
         if (err)
           res
@@ -128,5 +136,26 @@ module.exports = {
 
   getProfile: async (req, res) => {
     res.send(req.user);
+  },
+  passwordUpdate: async (req, res) => {
+    const oldpassword = req.body.oldpassword
+    let findPassword = await Customers.findOne({ _id: req.user.id });
+    const hash = findPassword.password
+    bcrypt.compare(oldpassword, hash, function (err, isMatch) {
+      if (err) {
+        throw err
+      } else if (!isMatch) {
+        res.status(400).json({ message: "old password is not match" });
+      } else {
+        Customers.findOneAndUpdate(
+          { _id: req.user.id }, { password: req.body.newpassword },
+          (err, response) => {
+            if (err)
+              res.status(400).json({ message: "Error in updating customer" });
+            else res.json(response);
+          }
+        );
+      }
+    })
   }
 };

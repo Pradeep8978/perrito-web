@@ -208,6 +208,11 @@ module.exports = {
         cancelledBy: Joi.string()
         // orderedOn: Joi.string().required()
       })
+    }),
+    passwordUpdate:Joi.object().keys({
+      oldpassword:Joi.string().required(),
+      newpassword:Joi.string().required(),
+      confirmpassword:Joi.any().valid(Joi.ref('newpassword')).required().options({ language: { any: { allowOnly: 'must match password' } } })
     })
   }
 };

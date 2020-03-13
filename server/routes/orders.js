@@ -24,9 +24,8 @@ const upload = multer({ storage: storage });
 
 router.route('/new')
 .post(passportJWT, validateBody(schemas.orderSchema), ProductOrders.orderProduct);
-router.route('/list/all')
+router.route('/order/list/all')
 .get(passportJWT,ProductOrders.getAllOrders);
-router.route('/list/')
-.get(passportJWT, ProductOrders.getOrderList);
-  
+router.route('/order/list')
+.get(passportJWT, ProductOrders.getOrderList);  
 module.exports = router;
