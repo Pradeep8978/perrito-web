@@ -26,7 +26,6 @@ router.route('/new')
 .post(passportJWT, validateBody(schemas.orderSchema), ProductOrders.orderProduct);
 router.route('/order/list/all')
 .get(passportJWT,ProductOrders.getAllOrders);
-router.route('/order/list/:customerId')
-.get(passportJWT, ProductOrders.getOrderList);
-  
+router.route('/order/list')
+.get(passportJWT, ProductOrders.getOrderList);  
 module.exports = router;
