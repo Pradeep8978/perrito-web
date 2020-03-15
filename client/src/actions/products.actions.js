@@ -7,6 +7,20 @@ export const preserveProductDetails = ( data )=> ({
     payload:  data,
 })
 
+//fetch reviews
+const fetchReviewsLoading = () => ({
+    type: types.FETCH_REVIEWS_LOADING
+});
+
+const fetchReviewsSuccess = (data) => ({
+    type: types.FETCH_REVIEWS_SUCCESS,
+    payload: data
+});
+
+const fetchReviewsFailure = error => ({
+    type: types.FETCH_REVIEWS_FAILURE,
+    paylod: error
+});
 //fetch Order list
 const fetchOrderLoading = () => ({
     type: types.FETCH_ORDER_LIST_LOADING
@@ -111,7 +125,7 @@ export const createNewProduct = (bodyParams) => dispatch => {
     })
 } 
 
-export const updateProduct = (bodyParams) => dispatch => {  debugger
+export const updateProduct = (bodyParams) => dispatch => {  
     dispatch(updateProductLoading());
     const url = '/products/update';
     return Axios.put(url, bodyParams)
@@ -141,7 +155,7 @@ export const deleteProduct = (id) => dispatch => {
 
 export const fetchOrderList = () => dispatch => {
     dispatch(fetchOrderLoading());
-    const url = '/orders/order/list/all';
+    const url = '/orders/list/all';
     return Axios.get(url)
     .then(res => {
         dispatch(fetchOrderSuccess(res.data));
@@ -149,6 +163,20 @@ export const fetchOrderList = () => dispatch => {
     })
     .catch(err => {
         dispatch(fetchOrderFailure(err));
+        throw err;
+    })
+}
+
+export const fetchReviews = (id) => dispatch => { debugger;
+    dispatch(fetchReviewsLoading());
+    const url = `/reviews/customerReview/list/${id}`;
+    return Axios.get(url)
+    .then(res => {
+        dispatch(fetchReviewsSuccess(res.data));
+        return res; 
+    })
+    .catch(err => {
+        dispatch(fetchReviewsFailure(err));
         throw err;
     })
 }
