@@ -46,7 +46,7 @@ module.exports = {
       Product.find(
         {"categories":{ $regex: new RegExp("^" + searchConfig.categories.toLowerCase(), "i") } },
          function (err, response) {
-        if (err) res.status(404).send(err);       
+        if (err) res.status(40).send(err);       
           res.json(response.reverse());
       });
     } else{

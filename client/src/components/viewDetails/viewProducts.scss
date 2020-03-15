@@ -1,0 +1,33 @@
+
+    
+
+    .div-table {
+        display: table;
+        width: 85%;
+        border-spacing: 5px;
+        margin: auto;
+    }
+    .tr {display: table-row;}
+    .tc {
+        display:table-cell;
+        vertical-align:top;
+        // background-color: #ccc;
+        padding:5px 10px;
+        text-align: left;
+        // border-right:1px solid red;
+    }
+    .productInfo{
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .product-img{
+        border: 1px solid #333;
+         padding: 10px;
+         border-radius: 5px;
+          margin-left: 10px;
+          height:150px;
+          width:180px;
+    }
+    .tc1 {width:20%;
+   }
+    // .tc4, .tc5, .tc6 {width: 80px;}

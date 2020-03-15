@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     deleteLoading: false,
     deleteError: null,
     ViewDetails: null,
-    OrderList: null
+    OrderList: null,
+    reviews:null
 }
 
 const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -78,7 +79,26 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
                 updateLoading: false,
                 updateError: payload
             }
+        //reviews
+        case types.FETCH_REVIEWS_LOADING:
+            return {
+                ...state,
+                updateLoading: true,
+                // updateError: null,
+            }
+        case types.FETCH_REVIEWS_SUCCESS:
+            return {
+                ...state,
+                updateLoading: false,
+                reviews:payload
 
+            }
+        case types.FETCH_REVIEWS_FAILURE:
+            return {
+                ...state,
+                updateLoading: false,
+                // updateError: payload
+            }
 
         case types.DELETE_PRODUCT_LOADING:
             return {
@@ -99,7 +119,7 @@ const ProductsReducer = (state = INITIAL_STATE, { type, payload }) => {
             }
         //orders list
         case types.FETCH_ORDER_LIST_LOADING:
-            debugger;
+            // debugger;
             return {
                 ...state,
                 loading: true,
