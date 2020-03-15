@@ -4,185 +4,232 @@ import { connect } from 'react-redux';
 import {
   Button,
   Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  FormFeedback,
-  Input,
   Row,
   Col,
-  Label,
-  Container,
-  CardImg, CardText,
-  Table,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  CardTitle, CardSubtitle
-
+  CardBody,
+  CardTitle,
+  CardText,
+  CardFooter,
+  Container
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import PanelHeader from "../../components/PanelHeader/PanelHeader";
-
+import './viewProducts.scss';
+import { fetchReviews } from '../../actions/products.actions'
 
 
 class ViewProducts extends Component {
+  componentDidMount = () => {
+    // let {id} = this.props.ViewDetails._id;
+    // console.log("asgvcbhnj",this.props.ViewDetails._id)
+    // debugger;
+    this.props.fetchReviews(this.props.ViewDetails._id)
 
-
-
+  }
   render() {
     console.log('view products', this.props)
-    const { ViewDetails } = this.props;
+    const { ViewDetails, reviews } = this.props;
+    console.log("viewDetails=====>", reviews)
     return (
       <>
-                <PanelHeader size="sm" />
+        <PanelHeader size="sm" />
 
         <Row>
-          <Col sm="12">       
-          <Card style={{ textAlign: "center" }}>
-            <h2>Product and Seller Details</h2>
-            {
-              ViewDetails.images.map((items) =>
-                <img
-                  style={{ border: "1px solid #333", padding: "10px", borderRadius: "5PX", marginLeft: "10px" }}
-                  height="150px"
-                  width="180px"
-                  src={items} alt="Card image cap" />
-              )
+          <Col sm="12">
+            <Card style={{ textAlign: "center" }}>
+              <h2 style={{ padding: "20px" }}>Product and Seller Details</h2>
+              {
+                ViewDetails.images.map((items) =>
+                  <img
+                    className="product-img"
+                    src={items} alt="Card image cap" />
+                )
 
-            }
+              }
 
-            {/* <img className="profile_image" src={"/"+ViewDetails.images[0]} alt="Profile Image"/> */}
-            <CardBody>
-              <Row>
+              <CardBody>
+
+
+                <div class="div-table">
+                  <div class="tr">
+                    <div class="tc tc1"><p className="productInfo">Name</p></div>
+                    <div class="tc tc2">{ViewDetails.name}</div>
+                  </div>
+
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Categories</p></div>
+                    <div class="tc">{ViewDetails.categories}</div>
+                  </div>
+
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Tags</p></div>
+                    <div class="tc"> {ViewDetails.tags}</div>
+                  </div>
+
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Description</p></div>
+                    <div class="tc">{ViewDetails.description.map((item, i) => {
+                      return <div style={{ marginBottom: "10px" }}>{item}</div>
+                    })}</div>
+                  </div>
+                  <h4>Specfications</h4>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Label</p></div>
+                    <div class="tc">
+                      <p className="productInfo">Label Name</p>
+                    </div>
+                  </div>
+
+                  <div class="tr">
+                    <div class="tc">
+                      {ViewDetails.specifications.map((item) => {
+                        return (
+                          <p>{item.label} </p>
+                        )
+                      })}
+                    </div>
+                    <div class="tc">
+                      {ViewDetails.specifications.map((item) => {
+                        return (
+                          <p>{item.value} </p>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc">
+                      <p className="productInfo">Dimensions</p>
+                    </div>
+                    <div class="tc">{ViewDetails.dimensions.height}x{ViewDetails.dimensions.width}x{ViewDetails.dimensions.weight}</div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Avaliable Products</p></div>
+                    <div class="tc">
+                      {ViewDetails.count}
+                    </div>
+                  </div>
+                  <h4>Seller Info</h4>
+                  <div class="tr">
+                    <div class="tc">
+                      <p className="productInfo">Name</p>
+                    </div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.name}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc">
+                      <p className="productInfo">Email</p>
+                    </div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.email}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Phone</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.phone}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">City</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.city}
+                    </div>
+                  </div>
+
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Address line 1</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.address_line_1}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Address line 2</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.address_line_2}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">state</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.state}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Pincode</p></div>
+                    <div class="tc">
+                      {ViewDetails.seller_info.pincode}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc">
+                      <p className="productInfo">important info</p>
+                    </div>
+                    <div class="tc">
+                      {ViewDetails.important_info}
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="tc"><p className="productInfo">Price </p></div>
+                    <div class="tc">
+                      {ViewDetails.price} INR
+                      </div>
+                  </div>
+                </div>
                 <Container>
-                  <Table responsive>
-                    <tbody>
-                      <tr>
-                        <th>Name</th>
-                        <td>{ViewDetails.name}</td>
-                      </tr>
-                      <tr>
-                        <th>categories</th>
-                        <td>{ViewDetails.categories}</td>
-
-                      </tr>
-                      <tr>
-                        <th>Tags</th>
-                        <td>{ViewDetails.tags}</td>
-                      </tr>
-                      <tr>
-                        <th>Description</th>
-                        <td>{ViewDetails.description}</td>
-                      </tr>
-                      <p style={{ color: 'red' }}>Specfications</p>
-                      <tr>
-                        <th>Label</th>
-                        {ViewDetails.specifications.map((item) => {
-                          return (<td>{item.label}</td>
-                          )
-                        })}
-                      </tr>
-                      <tr>
-                        <th>Label Name</th>
-                        {ViewDetails.specifications.map((item) => {
-                          return (<td>{item.value}</td>
-                          )
-                        })}
-                      </tr>
-                      <p style={{ color: 'red' }}>Dimensions</p>
-                      <tr>
-                        <th>Height</th>
-                        <td>{ViewDetails.dimensions.height}</td>
-                      </tr>
-                      <tr>
-                        <th>Width</th>
-                        <td>{ViewDetails.dimensions.width}</td>
-                      </tr>
-                      <tr>
-                        <th>Weight</th>
-                        <td>{ViewDetails.dimensions.weight}</td>
-                      </tr>
-                      <p style={{ color: 'red' }}>seller info</p>
-                      <tr>
-                        <th>Name</th>
-                        <td>{ViewDetails.seller_info.name}</td>
-                      </tr>
-                      <tr>
-                        <th>Email</th>
-                        <td>{ViewDetails.seller_info.email}</td>
-                      </tr>
-                      <tr>
-                        <th>City</th>
-                        <td>{ViewDetails.seller_info.city}</td>
-                      </tr>
-                      <tr>
-                        <th>Phone</th>
-                        <td>{ViewDetails.seller_info.phone}</td>
-                      </tr>
-                      <tr>
-                        <th>Address line1</th>
-                        <td>{ViewDetails.seller_info.address_line_1}</td>
-                      </tr>
-                      <tr>
-                        <th>Address line2</th>
-                        <td>{ViewDetails.seller_info.address_line_2}</td>
-                      </tr>
-                      <tr>
-                        <th>State</th>
-                        <td>{ViewDetails.seller_info.state}</td>
-                      </tr>
-                      <tr>
-                        <th>Pincode</th>
-                        <td>{ViewDetails.seller_info.pincode}</td>
-                      </tr>
-                      <tr>
-                        <th>important info</th>
-                        <td>{ViewDetails.important_info}</td>
-                      </tr>
-                      <tr>
-                        <th>Price</th>
-                        <td>{ViewDetails.price}</td>
-                      </tr>
-                      <tr>
-                        <th>Avaliable Products</th>
-                        <td>{ViewDetails.count}</td>
-                      </tr>
-                    </tbody>
-                  </Table>
+                <Row>                    
+                    {
+                      reviews.map((item, i) => {
+                        return (
+                          <Col sm="6">
+                            <Card body key={i}>
+                          <CardTitle><span>Rating:</span>{item.rating}</CardTitle>
+                          <CardText><span>Comment:</span>{item.description}</CardText>
+                          <CardFooter><span>Customer Name:</span>{item.customerName}</CardFooter>
+                        </Card>
+                        </Col>
+               
+                        )
+                      })
+                    }
+                   </Row>
                 </Container>
+                
 
-              </Row>
 
-              <Button
-                className=""
-                color=""
-                to="/admin/products"
-                outline
-                size="lg"
-                tag={Link}
-                style={{ background: "red" }}
-              >
-                Back
+                <Button
+                  className=""
+                  color=""
+                  to="/admin/products"
+                  outline
+                  size="lg"
+                  tag={Link}
+                  style={{ background: "red" }}
+                >
+                  Back
             </Button>
 
-            </CardBody>
-          </Card>
+              </CardBody>
+            </Card>
           </Col>
         </Row>
-    
+
       </>
     )
   }
 
 }
 const mapStateToProps = (state) => {
+  debugger;
   return {
-    ViewDetails: state.products.ViewDetails
+    ViewDetails: state.products.ViewDetails,
+    reviews: state.products.reviews
   }
 };
+const mapDispatchToProps = {
+  fetchReviews
+}
 
 
-export default connect(mapStateToProps)(ViewProducts);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewProducts);
