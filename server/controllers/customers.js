@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const upload = multer({ dest: "uploads/" });
 const fs = require("fs");
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+
 
 
 const signToken = customer => {
@@ -157,5 +159,66 @@ module.exports = {
         );
       }
     })
+  },
+  otpGenerate: async (req, res) => {
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    let foundCustomers = await Customers.findOne({ email: req.body.email });
+    if (!foundCustomers) {
+      return res.status(403).json({ error: "Email is not exit" });
+    }
+    Customers.findOneAndUpdate(
+      { email: req.body.email }, { otp: otp },
+      (err, response) => {
+        if (err)
+          res.status(400).json({ message: "Error in updating otp" });
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'chadapradeepreddy@gmail.com',
+            pass: 'qmmypbseyfgplppo'
+          }
+        });
+        const mailOptions = {
+          from: 'indrajaranga@gmail.com',
+          to: req.body.email,
+          subject: 'Forgot Password',
+          text: `your otp is ${otp}`
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log('ERROR', error);
+            res.status(400).json({ message: "Error", error });
+          } else {
+            console.log('Email sent: ' + info.response);
+            res.json(info.response);
+          }
+        }); res.json(response);
+      }
+    );
+  },
+  checkOtp: async (req, res) => {
+    Customers.findOne({ email: req.body.email, otp: req.body.otp }, (err, response) => {
+      if (err)
+        res.status(400).json({ message: "Error in updating otp" });
+      else {
+        if (!response)
+          res.status(404).json({ message: "Invalid otp or email" })
+        else res.send({ success: true })
+      }
+    });
+  },
+  updateNewPassword: async (req, res) => {
+    let foundCustomers = await Customers.findOne({ email: req.body.email });
+    if (!foundCustomers) {
+      return res.status(403).json({ error: "Email is not exit" });
+    }
+    Customers.findOneAndUpdate(
+      { email: req.body.email }, { password: req.body.newpassword },
+      (err, response) => {
+        if (err)
+          res.status(400).json({ message: "Error in updating customer" });
+        else res.json(response);
+      }
+    );
   }
 };

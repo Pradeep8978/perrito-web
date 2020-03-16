@@ -22,6 +22,7 @@ const customerSchema = new Schema({
     state: String,
     pincode: Number
   }],
+  otp: Number,
   createdOn: String
 });
 customerSchema.pre('save', async function (next) {
@@ -44,9 +45,9 @@ customerSchema.pre('save', async function (next) {
 
 });
 customerSchema.pre('findOneAndUpdate', function (next) {
-  if (!this._update.password ) {
+  if (!this._update.password) {
     return next();
-}
+  }
   this._update.password = bcrypt.hashSync(this._update.password, 10)
   next();
 })

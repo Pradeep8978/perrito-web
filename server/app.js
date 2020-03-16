@@ -53,7 +53,8 @@ app.use("/customers", require("./routes/customers"));
 app.use("/reviews", require("./routes/reviews"));
 app.use("/feedback", require("./routes/feedback"));
 app.use("/orders",require("./routes/orders"));
-app.use("/images", require("./routes/images"))
+app.use("/images", require("./routes/images"));
+app.use("/emails", require("./routes/emails"))
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
