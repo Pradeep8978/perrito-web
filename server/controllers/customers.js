@@ -201,9 +201,18 @@ module.exports = {
       if (err)
         res.status(400).json({ message: "Error in updating otp" });
       else {
-        if (!response)
+        if (!response){
           res.status(404).json({ message: "Invalid otp or email" })
-        else res.send({ success: true })
+        }
+        else{          
+          Customers.findOneAndUpdate(
+            { email: req.body.email }, { otp: "" },
+            (err, response) => {
+             
+            }
+          )
+          res.send({ success: true })
+        }
       }
     });
   },
