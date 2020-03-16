@@ -209,10 +209,27 @@ module.exports = {
         // orderedOn: Joi.string().required()
       })
     }),
-    passwordUpdate:Joi.object().keys({
-      oldpassword:Joi.string().required(),
-      newpassword:Joi.string().required(),
-      confirmpassword:Joi.any().valid(Joi.ref('newpassword')).required().options({ language: { any: { allowOnly: 'must match password' } } })
+    passwordUpdate: Joi.object().keys({
+      oldpassword: Joi.string().required(),
+      newpassword: Joi.string().required(),
+      confirmpassword: Joi.any().valid(Joi.ref('newpassword')).required().options({ language: { any: { allowOnly: 'must match password' } } })
+    }),
+    emailSchema: Joi.object().keys({
+      toMail: Joi.string().email().required(),
+      title: Joi.string().required(),
+      content: Joi.string().required()
+    }),
+    otpGenerate: Joi.object().keys({
+      email: Joi.string().email().required()
+    }),
+    checkOtp: Joi.object().keys({
+      "email": Joi.string().email().required(),
+      "otp": Joi.string().required()
+    }),
+    updateNewpassword: Joi.object().keys({
+      email: Joi.string().email().required(),
+      newpassword: Joi.string().required(),
+      confirmpassword: Joi.any().valid(Joi.ref('newpassword')).required().options({ language: { any: { allowOnly: 'must match password' } } })
     })
   }
 };

@@ -72,5 +72,8 @@ router.route("/update/password").put(passportJWT, validateBody(schemas.passwordU
 router.route("/profile").get(passportJWT, CustomerController.getProfile);
 
 router.route("/status").get(passportJWT, CustomerController.checkAuth);
+router.route("/otp/generate").post(validateBody(schemas.otpGenerate), CustomerController.otpGenerate);
+router.route("/check/otp").post(validateBody(schemas.checkOtp), CustomerController.checkOtp);
+router.route("/update/newpassword").put(validateBody(schemas.updateNewpassword), CustomerController.updateNewPassword)
 
 module.exports = router;
