@@ -224,9 +224,10 @@ module.exports = {
     Customers.findOneAndUpdate(
       { email: req.body.email }, { password: req.body.newpassword },
       (err, response) => {
+        const token = signToken(Customers);
         if (err)
           res.status(400).json({ message: "Error in updating customer" });
-        else res.json(response);
+        else res.json(token);
       }
     );
   }
