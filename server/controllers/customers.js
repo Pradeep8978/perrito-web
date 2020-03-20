@@ -230,5 +230,17 @@ module.exports = {
         else res.json(token);
       }
     );
+  },
+  getCustomerList:async (req,res) =>{
+    const {pageNumber = 1, pageSize = 20 } = {...req.query};
+    const pageNo  = pageNumber*pageSize;
+    Customers.find({}).sort({_id:-1}).skip(pageNo).limit(Number(pageSize)).exec(function(err, customers){
+      if (err) {
+        return res.status(404)
+          .json({ message: "No customers", err });
+      } else {
+        res.send(customers);
+      }
+    })
   }
 };

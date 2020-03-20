@@ -50,16 +50,16 @@ module.exports = {
   },
 
   getProductReviews: async (req, res) => {
-    const { productId } = req.params;
-    Review.find({ productId }, (err, reviews) => {
+    const { productId, pageNumber = 1, pageSize = 20 } = {...req.params, ...req.query};
+    const pageNo  = pageNumber*pageSize;
+    Review.find({ productId }).sort({_id:-1}).skip(pageNo).limit(Number(pageSize)).exec(function(err, reviews){
       if (err) {
-        return req
-          .status(404)
+        return res.status(404)
           .json({ message: "No reviews for this product", err });
       } else {
         res.send(reviews);
       }
-    });
+    })
   },
 
   updateReview: async (req, res) => {
