@@ -67,7 +67,9 @@ module.exports = {
     });
   },
   getAllOrders:(req,res)=>{
-    Orders.find({},function(err,allOrdersList){
+    const { pageNumber = 1, pageSize = 20 } = {...req.query};
+    const pageNo  = pageNumber*pageSize;
+    Orders.find().sort({_id:-1}).skip(pageNo).limit(Number(pageSize)).exec(function(err,allOrdersList){
       if(err){
         res.status(400).send(err);
       }
