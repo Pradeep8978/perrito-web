@@ -5,10 +5,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const GoogleTokenStrategy = require('passport-google-token').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const config = require('./configuration');
-const Admin = require('./models/admin');
-const Product = require('./models/products');
-const Customers = require('./models/customers');
-const Orders = require('./models/orders');
+const User = require('./models/users');
 
 
 const tokenExtractor = req => {
@@ -29,14 +26,14 @@ passport.use(new JwtStrategy({
   try {
     // Find the user specified in token
     if (payload.role == 'admin') {
-      admin = await Admin.findById(payload.sub);
+      admin = await User.findById(payload.sub);
       if (!admin) {
         return done(null, false);
       }
       done(null, admin);
     }
     if (payload.role == 'customer') {
-      customer = await Customers.findById(payload.sub);
+      customer = await User.findById(payload.sub);
       if (!customer) {
         return done(null, false);
       }
@@ -58,7 +55,7 @@ passport.use(new LocalStrategy({
   try {
     // Find the user given the email
     if (req.body.role == 'admin') {
-      admin = await Admin.findOne({ "email": email });
+      admin = await User.findOne({ "email": email });
       if (!admin) {
         return done(null, false);
       }
@@ -72,7 +69,7 @@ passport.use(new LocalStrategy({
     }
 
     if (req.body.role == 'customer') {
-      customer = await Customers.findOne({ "email": email });
+      customer = await User.findOne({ "email": email });
       if (!customer) {
         return done(null, false);
       }

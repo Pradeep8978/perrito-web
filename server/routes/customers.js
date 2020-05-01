@@ -27,53 +27,15 @@ var storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router
-  .route("/signup")
-  .post(validateBody(schemas.customerAuthSchema), CustomerController.signUp);
-
-router
-  .route("/signin")
-  .post(
-    validateBody(schemas.customerloginSchema),
-    passportSignIn,
-    CustomerController.signIn
-  );
-
-router
-  .route("/profile/update")
-  .put(
-    passportJWT,
-    validateBody(schemas.customerupdateSchema),
-    CustomerController.updateProfile
-  );
-
-router
-  .route("/profile/address/new")
-  .post(
-    passportJWT,
-    validateBody(schemas.customerAddress),
-    CustomerController.addNewAddress
-  );
-router
-  .route("/profile/address/update/:addressId")
-  .put(
-    passportJWT,
-    CustomerController.updateAddress
-  );
-
-router
-  .route("/profile/address/delete/:addressId")
-  .delete(
-    passportJWT,
-    CustomerController.removeAddress
-  );
-router.route("/update/password").put(passportJWT, validateBody(schemas.passwordUpdate), CustomerController.passwordUpdate)
-
-router.route("/profile").get(passportJWT, CustomerController.getProfile);
-
+router.route("/signup").post(validateBody(schemas.customerAuthSchema), CustomerController.signUp);
+router.route("/signin").post(validateBody(schemas.customerloginSchema),passportSignIn,CustomerController.signIn );
+router.route("/profile/update").put(passportJWT,validateBody(schemas.customerupdateSchema),CustomerController.updateProfile);
+router.route("/update/password").put(passportJWT, validateBody(schemas.passwordUpdate), CustomerController.passwordUpdate);
 router.route("/status").get(passportJWT, CustomerController.checkAuth);
 router.route("/otp/generate").post(validateBody(schemas.otpGenerate), CustomerController.otpGenerate);
 router.route("/check/otp").post(validateBody(schemas.checkOtp), CustomerController.checkOtp);
+router.route("/profile").get(passportJWT, CustomerController.getProfile);
+router.route("/status").get(passportJWT, CustomerController.checkAuth);
 router.route("/update/newpassword").put(validateBody(schemas.updateNewpassword), CustomerController.updateNewPassword)
 router.route("/customer/list").get(passportJWT,CustomerController.getCustomerList)
 

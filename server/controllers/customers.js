@@ -1,5 +1,5 @@
 const JWT = require("jsonwebtoken");
-const Customers = require("../models/customers");
+const Customers = require("../models/users");
 const { JWT_SECRET } = require("../configuration");
 const multer = require("multer");
 const mongoose = require("mongoose");
@@ -13,7 +13,7 @@ const nodemailer = require('nodemailer');
 const signToken = customer => {
   return JWT.sign(
     {
-      iss: "perrito",
+      iss: "ramustocks",
       sub: customer.id,
       role: "customer",
       iat: new Date().getTime(), // current time
@@ -22,13 +22,6 @@ const signToken = customer => {
     JWT_SECRET
   );
 };
-const getImageUrl = body => {
-  const imgPath = `uploads/customerimages/customer_${
-    body.name
-    }_${new Date().getTime()}.png`;
-  return imgPath;
-};
-
 module.exports = {
   signUp: async (req, res, next) => {
     const { email } = req.body;
@@ -36,7 +29,7 @@ module.exports = {
     if (foundCustomers) {
       return res.status(403).json({ error: "Email is already in use" });
     }
-    const cusObj = { ...req.body, createdOn: new Date().getTime() };
+    const cusObj = { ...req.body,role:'customer', createdOn: new Date().getTime() };
     const newCustomers = new Customers(cusObj);
     const customerObj = await newCustomers.save();
     // Generate the token
@@ -67,14 +60,6 @@ module.exports = {
     res.json({ token });
   },
 
-  //   getCustomers: async (req, res, next) => {
-  //     const findSchema = req.query.role ? {
-  //       'profile.role': { "$in": req.query.role }
-  //     } : {};
-  //     const users = await Customers.find(findSchema)
-  //     res.json(users);
-  //   },
-
   updateProfile: async (req, res) => {
     Customers.findOneAndUpdate(
       { _id: req.user.id },
@@ -82,55 +67,6 @@ module.exports = {
       (err, response) => {
         if (err)
           res.status(400).json({ message: "Error in updating customer" });
-        else res.json(response);
-      }
-    );
-  },
-
-  addNewAddress: (req, res) => {
-    Customers.update(
-      { _id: req.user.id },
-      { $push: { address: req.body } },
-      (err, response) => {
-        if (err)
-          res
-            .status(400)
-            .json({ message: "Error in adding customer Address", error: err });
-        else res.json(response);
-      }
-    );
-  },
-
-  removeAddress: (req, res) => {
-    console.log('PARAMS =>', req.params)
-    Customers.updateOne(
-      { _id: req.user.id },
-      { $pull: { address: { _id: req.params.addressId } } },
-      (err, response) => {
-        if (err)
-          res
-            .status(400)
-            .json({ message: "Error in Deleting customer Address", error: err });
-        else res.json(response);
-      }
-    );
-  },
-
-  updateAddress: (req, res) => {
-    const updateAddress = {};
-    Object.keys(req.body).forEach(key => {
-      updateAddress[`address.$.${key}`] = req.body[key];
-    })
-    Customers.updateOne(
-      { _id: req.user.id, 'address._id': req.params.addressId },
-      {
-        $set: updateAddress
-      },
-      (err, response) => {
-        if (err)
-          res
-            .status(400)
-            .json({ message: "Error in adding customer Address", error: err });
         else res.json(response);
       }
     );
@@ -159,6 +95,21 @@ module.exports = {
         );
       }
     })
+  },  
+  updateNewPassword: async (req, res) => {
+    let foundCustomers = await Customers.findOne({ email: req.body.email });
+    if (!foundCustomers) {
+      return res.status(403).json({ error: "Email is not exit" });
+    }
+    Customers.findOneAndUpdate(
+      { email: req.body.email }, { password: req.body.newpassword },
+      (err, response) => {
+        const token = signToken(Customers);
+        if (err)
+          res.status(400).json({ message: "Error in updating customer" });
+        else res.json(token);
+      }
+    );
   },
   otpGenerate: async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000);
@@ -216,25 +167,10 @@ module.exports = {
       }
     });
   },
-  updateNewPassword: async (req, res) => {
-    let foundCustomers = await Customers.findOne({ email: req.body.email });
-    if (!foundCustomers) {
-      return res.status(403).json({ error: "Email is not exit" });
-    }
-    Customers.findOneAndUpdate(
-      { email: req.body.email }, { password: req.body.newpassword },
-      (err, response) => {
-        const token = signToken(Customers);
-        if (err)
-          res.status(400).json({ message: "Error in updating customer" });
-        else res.json(token);
-      }
-    );
-  },
   getCustomerList:async (req,res) =>{
     const {pageNumber = 1, pageSize = 20 } = {...req.query};
     const pageNo  = pageNumber*pageSize;
-    Customers.find({}).sort({_id:-1}).skip(pageNo).limit(Number(pageSize)).exec(function(err, customers){
+    Customers.find({ }).sort({_id:-1}).skip(pageNo).limit(Number(pageSize)).exec(function(err, customers){
       if (err) {
         return res.status(404)
           .json({ message: "No customers", err });

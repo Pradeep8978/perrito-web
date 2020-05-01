@@ -132,8 +132,7 @@ module.exports = {
         .email()
         .required(),
       password: Joi.string().required(),
-      name: Joi.string().required(),
-      image: Joi.string()
+      name: Joi.string().required()
     }),
     customerloginSchema: Joi.object().keys({
       email: Joi.string()

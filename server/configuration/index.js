@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV === 'test') {
   module.exports = {
-    JWT_SECRET: 'perrito',
+    JWT_SECRET: 'ramustocks',
     oauth: {
       google: {
         clientID: 'number',
@@ -14,8 +14,8 @@ if (process.env.NODE_ENV === 'test') {
   };
 } else {
   module.exports = {
-    MONGODB_CONN_STR: "mongodb+srv://perrito_user:perrito_password@cluster0-bfvje.mongodb.net/test?retryWrites=true&w=majority",
-    JWT_SECRET: 'perrito',
+    MONGODB_CONN_STR: "mongodb+srv://ramustocksuser:ramupassword@cluster0-nzh6a.mongodb.net/test?retryWrites=true&w=majority",
+    JWT_SECRET: 'ramustocks',
     oauth: {
       google: {
         clientID: '338601550454-1u2bn4i06l30sn0brqgshlqu3jnn7f2h.apps.googleusercontent.com',

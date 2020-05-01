@@ -1,10 +1,10 @@
 const JWT = require('jsonwebtoken');
-const Admin = require('../models/admin');
+const Admin = require('../models/users');
 const { JWT_SECRET } = require('../configuration');
 
 const signToken = admin => {
   return JWT.sign({
-    iss: 'hostelly',
+    iss: 'ramustocks',
     sub: admin.id,
     role:"admin",
     iat: new Date().getTime(), // current time
@@ -23,10 +23,12 @@ module.exports = {
     }
 
     // Create a new user
+    const role = 'admin'
     const newAdmin = new Admin({
       email,
       phone,
       name,
+      role,
       password
     });
 
@@ -68,26 +70,5 @@ module.exports = {
     } : {};
     const users = await Admin.find(findSchema)
     res.json(users);
-  },
-
-  updateProfile: async (req, res) => {
-    const profileObj = req.body || {}
-    // if(req.body.phone) updateProfile.phone = req.body.phone
-    // if(req.body.name) updateProfile.name = req.body.name
-    // if(req.body.email) updateProfile.email = req.body.email
-    // if(req.body.password) updateProfile.password = req.body.password
-    Admin.findByIdAndUpdate(req.user.id, profileObj, { multi: false }, function (err, response) {
-      if (err) res.json({ message: "Error in updating product with id " + req.user.id });
-      res.json(response);
-    })
-    // console.log('UPDATE PROFILE BODY', req.body);
-    // console.log('USER INFO =>', req.user);
-    // const newProfile = {...req.user.profile, ...req.body}
-    // await Admin.update({ _id: req.user._id}, {profile: newProfile});
-    // res.send({message: 'success'});
-  },
-
-  getProfile: async (req, res) => {
-    res.send(req.user);
   }
 }
