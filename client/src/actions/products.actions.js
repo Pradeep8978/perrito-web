@@ -155,7 +155,7 @@ export const deleteProduct = (id) => dispatch => {
 
 export const fetchOrderList = () => dispatch => {
     dispatch(fetchOrderLoading());
-    const url = '/orders/list/all';
+    const url = '/orders/order/list/all';
     return Axios.get(url)
     .then(res => {
         dispatch(fetchOrderSuccess(res.data));
